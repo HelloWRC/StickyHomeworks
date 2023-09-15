@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34004.107
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StickyHomeworks", "StickyHomeworks\StickyHomeworks.csproj", "{88C2773A-34FB-44BB-A377-A66B63983D2E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{88C2773A-34FB-44BB-A377-A66B63983D2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88C2773A-34FB-44BB-A377-A66B63983D2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88C2773A-34FB-44BB-A377-A66B63983D2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88C2773A-34FB-44BB-A377-A66B63983D2E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {43AEE9A8-BA64-4A4D-A6C9-FDCB5E37D3AC}
+	EndGlobalSection
+EndGlobal

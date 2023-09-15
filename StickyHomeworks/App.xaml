@@ -1,0 +1,16 @@
+﻿<elysiaFramework:AppEx x:Class="StickyHomeworks.App"
+       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       xmlns:local="clr-namespace:StickyHomeworks"
+       xmlns:elysiaFramework="clr-namespace:ElysiaFramework;assembly=ElysiaFramework"
+       StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/ElysiaFramework;component/Resources.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/ElysiaFramework;component/Assets/Fonts/Fonts.xaml"/>
+
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</elysiaFramework:AppEx>
