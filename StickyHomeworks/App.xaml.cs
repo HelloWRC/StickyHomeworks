@@ -2,7 +2,11 @@
 using System.Data;
 using System.Windows;
 using ElysiaFramework;
+using ElysiaFramework.Interfaces;
+using ElysiaFramework.Services;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using StickyHomeworks.Services;
 
 namespace StickyHomeworks;
 
@@ -16,9 +20,15 @@ public partial class App : AppEx
         Host = Microsoft.Extensions.Hosting.Host.
             CreateDefaultBuilder().
             UseContentRoot(AppContext.BaseDirectory).
-            ConfigureServices((context, services) => { }).
+            ConfigureServices((context, services) =>
+            {
+                services.AddSingleton<IThemeService, ThemeService>();
+                services.AddSingleton<ProfileService>();
+                services.AddSingleton<MainWindow>();
+            }).
             Build();
         _ = Host.StartAsync();
+        GetService<MainWindow>().Show();
         base.OnStartup(e);
     }
 }
