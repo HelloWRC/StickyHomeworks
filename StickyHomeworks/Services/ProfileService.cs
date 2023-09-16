@@ -14,6 +14,7 @@ public class ProfileService : IHostedService, INotifyPropertyChanged
     public ProfileService(IHostApplicationLifetime applicationLifetime)
     {
         LoadProfile();
+        CleanupOutdated();
         //applicationLifetime.ApplicationStopping.Register(SaveProfile);
         Profile.PropertyChanged += (sender, args) => SaveProfile();
     }
@@ -38,6 +39,15 @@ public class ProfileService : IHostedService, INotifyPropertyChanged
         {
             Profile = r;
             Profile.PropertyChanged += (sender, args) => SaveProfile();
+        }
+    }
+
+    private void CleanupOutdated()
+    {
+        var rm = Profile.Homeworks.Where(i => i.DueTime.Date < DateTime.Today.Date).ToList();
+        foreach (var i in rm)
+        {
+            Profile.Homeworks.Remove(i);
         }
     }
 
