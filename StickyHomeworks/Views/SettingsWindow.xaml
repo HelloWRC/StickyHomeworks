@@ -153,6 +153,9 @@
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
+                <models:ContributionLabel Title="ElysiaFramework"
+                                          License="GPLv3"
+                                          Website="-" />
                 <models:ContributionLabel Title="MaterialDesignInXamlToolkit"
                                           License="MIT License"
                                           Website="https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit/" />
@@ -630,7 +633,10 @@
                                             关于本应用
                                         </Paragraph>
                                         <Paragraph>
-                                            ClassIsland，名字灵感源于 iOS 灵动岛（Dynamic Island）功能，基于 WPF 开发，适用于班级多媒体屏幕的课表等信息显示工具，信息一目了然。
+                                            注意！本应用处于早期开发阶段！大部分功能尚不完善，或存在bug，可能会在后期的版本中完善或修复。饼要一个一个画，功能要一个一个实现（
+                                        </Paragraph>
+                                        <Paragraph>
+                                            别看了，没做完。
                                         </Paragraph>
                                         <Paragraph Style="{StaticResource MarkdownHeadline2Style}"
                                                    LineHeight="2">
@@ -647,40 +653,11 @@
                                                 <ely:IconText Kind="PackageVariant" Text="第三方库"/>
                                             </Button>
                                         </Paragraph>
-                                        <List LineHeight="6">
-                                            <ListItem>
-                                                <Paragraph>
-                                                    界面主题和部分控件使用了 MaterialDesignInXamlToolkit 框架。
-                                                </Paragraph>
-                                            </ListItem>
-                                            <ListItem>
-                                                <Paragraph>
-                                                    应用字体使用了华为出品的 HarmonyOS Sans。
-                                                </Paragraph>
-                                            </ListItem>
-                                            <ListItem>
-                                                <Paragraph>
-                                                    协助本应用测试的同学。
-                                                </Paragraph>
-                                            </ListItem>
-                                            <ListItem>
-                                                <Paragraph>
-                                                    应用分发、匿名使用情况统计使用了 App Center 的服务。
-                                                </Paragraph>
-                                            </ListItem>
-                                            <ListItem>
-                                                <Paragraph>
-                                                    部分图像资源（/Assets/帕姆_震惊.png, /Assets/普罗米修斯_查询.png）来自米游社表情包，版权归 miHoYo 所有。
-                                                </Paragraph>
-                                            </ListItem>
-                                            <ListItem>
-                                                <Paragraph>
-                                                    其他使用的第三方库和贡献成员，详见贡献名单和第三方库。
-                                                </Paragraph>
-                                            </ListItem>
-                                        </List>
+                                        <Paragraph>
+                                            Work In Progress
+                                        </Paragraph>
 
-                                        <Paragraph Foreground="#02f7d1ec">
+                                        <Paragraph Foreground="#fff7d1ec">
                                             永远喜欢爱莉希雅
                                         </Paragraph>
 
