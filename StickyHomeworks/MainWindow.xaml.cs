@@ -58,7 +58,10 @@ public partial class MainWindow : Window
         SettingsService.Settings.WindowX = Left * dpi;
         SettingsService.Settings.WindowY = Top * dpi;
         SettingsService.Settings.WindowWidth = Width * dpi;
-        SettingsService.Settings.WindowHeight = Height * dpi;
+        if (ViewModel.IsExpanded)
+        {
+            SettingsService.Settings.WindowHeight = Height * dpi;
+        }
     }
 
     protected override void OnInitialized(EventArgs e)
@@ -76,14 +79,15 @@ public partial class MainWindow : Window
     private void ButtonCreateHomework_OnClick(object sender, RoutedEventArgs e)
     {
         OnHomeworkEditorUpdated?.Invoke(this ,EventArgs.Empty);
+        var lastSubject = ViewModel.EditingHomework.Subject;
         ViewModel.IsCreatingMode = true;
         ViewModel.IsDrawerOpened = true;
         var o = new Homework()
         {
-            Subject = "其它"
+            Subject = lastSubject
         };
         ViewModel.EditingHomework = o;
-        ComboBoxSubject.Text = "其它";
+        ComboBoxSubject.Text = lastSubject;
     }
 
     private void ButtonAddHomeworkCompleted_OnClick(object sender, RoutedEventArgs e)
@@ -217,5 +221,21 @@ public partial class MainWindow : Window
         var today = DateTime.Today;
         var delta = DayOfWeek.Saturday - today.DayOfWeek + 1;
         ViewModel.EditingHomework.DueTime = today + TimeSpan.FromDays(delta);
+    }
+
+    private void ButtonExpandingSwitcher_OnClick(object sender, RoutedEventArgs e)
+    {
+        SavePos();
+        ViewModel.IsExpanded = !ViewModel.IsExpanded;
+        if (ViewModel.IsExpanded)
+        {
+            SizeToContent = SizeToContent.Manual;
+            SetPos();
+        }
+        else
+        {
+            ViewModel.IsUnlocked = false;
+            SizeToContent = SizeToContent.Height;
+        }
     }
 }

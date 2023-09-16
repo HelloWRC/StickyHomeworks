@@ -235,14 +235,34 @@
                                 </Style>
                             </StackPanel.Resources>
                             <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                          Margin="4 0"
                                           Content="{materialDesign:PackIcon UnlockedOutline}"
                                           materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Lock}"
                                           materialDesign:ToggleButtonAssist.SwitchTrackOnBackground="{DynamicResource MaterialDesignPaper}"
                                           ToolTip="锁定窗口"
+                                          Visibility="{Binding ViewModel.IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}"
                                           IsChecked="{Binding ViewModel.IsUnlocked, Converter={StaticResource InvertBooleanConverter}}" />
-                            <Button Content="{materialDesign:PackIcon FileExport, Size=18}" ToolTip="导出…" />
+                            <Button Content="{materialDesign:PackIcon FileExport, Size=18}" ToolTip="导出…" 
+                                    Visibility="{Binding ViewModel.IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                             <Button Content="{materialDesign:PackIcon Add, Size=18}" ToolTip="布置作业"
+                                    Visibility="{Binding ViewModel.IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}"
                                     Click="ButtonCreateHomework_OnClick" />
+                            <Button Margin="4 0" Click="ButtonExpandingSwitcher_OnClick">
+                                <Button.Style>
+                                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ViewModel.IsExpanded}" Value="True">
+                                                <Setter Property="Content" Value="{materialDesign:PackIcon ChevronUp}"/>
+                                                <Setter Property="ToolTip" Value="收起主界面"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ViewModel.IsExpanded}" Value="False">
+                                                <Setter Property="Content" Value="{materialDesign:PackIcon ChevronDown}"/>
+                                                <Setter Property="ToolTip" Value="展开主界面"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
                             <Button Content="{materialDesign:PackIcon Settings, Size=18}" ToolTip="设置…"
                                     Click="ButtonSettings_OnClick" />
                             <Button Content="{materialDesign:PackIcon ExitToApp, Size=18}" ToolTip="退出" 
@@ -265,6 +285,7 @@
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                           ScrollViewer.VerticalScrollBarVisibility="Disabled"
                           ScrollViewer.CanContentScroll="False"
+                          Visibility="{Binding ViewModel.IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}"
                           x:Name="MainListView">
                     <ListView.LayoutTransform>
                         <TransformGroup>
@@ -338,6 +359,7 @@
                 <!-- 布置作业 -->
                 <Button Grid.Row="2"
                         Click="ButtonCreateHomework_OnClick"
+                        Visibility="{Binding ViewModel.IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Style="{StaticResource MaterialDesignFlatButton}">
                     <ely:IconText Kind="Add" Text="布置作业" />
                 </Button>

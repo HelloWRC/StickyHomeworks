@@ -7,7 +7,10 @@ public class MainViewModel : ObservableRecipient
 {
     private bool _isDrawerOpened = false;
     private Homework? _selectedHomework;
-    private Homework _editingHomework = new();
+    private Homework _editingHomework = new()
+    {
+        Subject = "其它"
+    };
     private bool _isTagEditingPopupOpened = false;
     private bool _isCreatingMode = false;
     private bool _isUnlocked = false;
