@@ -8,6 +8,7 @@ public class MainViewModel : ObservableRecipient
     private bool _isDrawerOpened = false;
     private Homework? _selectedHomework;
     private Homework _editingHomework = new();
+    private bool _isTagEditingPopupOpened = false;
 
     public bool IsDrawerOpened
     {
@@ -38,6 +39,17 @@ public class MainViewModel : ObservableRecipient
         {
             if (Equals(value, _editingHomework)) return;
             _editingHomework = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsTagEditingPopupOpened
+    {
+        get => _isTagEditingPopupOpened;
+        set
+        {
+            if (value == _isTagEditingPopupOpened) return;
+            _isTagEditingPopupOpened = value;
             OnPropertyChanged();
         }
     }

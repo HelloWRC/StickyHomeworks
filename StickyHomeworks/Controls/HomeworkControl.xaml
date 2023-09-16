@@ -74,6 +74,7 @@
                                 IsChecked="True"
                                 IsHitTestVisible="False"
                                 FontSize="18"
+                                Height="28"
                                 Margin="0 0"
                                 Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}" />
                         </DataTemplate>

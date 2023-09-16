@@ -10,6 +10,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ElysiaFramework;
+using Microsoft.Xaml.Behaviors;
+using StickyHomeworks.Behaviors;
 using StickyHomeworks.Models;
 using StickyHomeworks.Services;
 using StickyHomeworks.ViewModels;
@@ -28,6 +30,8 @@ public partial class MainWindow : Window
 
     public SettingsService SettingsService { get; }
 
+    public event EventHandler? OnHomeworkEditorUpdated;
+
     public MainWindow(ProfileService profileService,
                       SettingsService settingsService)
     {
@@ -40,11 +44,13 @@ public partial class MainWindow : Window
 
     private void ButtonCreateHomework_OnClick(object sender, RoutedEventArgs e)
     {
+        OnHomeworkEditorUpdated?.Invoke(this ,EventArgs.Empty);
         ViewModel.IsDrawerOpened = true;
         var o = new Homework()
         {
-            
+            Subject = "其它"
         };
+        ComboBoxSubject.Text = "其它";
         ViewModel.EditingHomework = o;
     }
 
@@ -97,5 +103,27 @@ public partial class MainWindow : Window
     {
         SettingsService.SaveSettings();
         ProfileService.SaveProfile();
+    }
+
+    private void ButtonEditTags_OnClick(object sender, RoutedEventArgs e)
+    {
+        OnHomeworkEditorUpdated?.Invoke(this, EventArgs.Empty);
+        ViewModel.IsTagEditingPopupOpened = true;
+    }
+
+    private void ButtonEditHomework_OnClick(object sender, RoutedEventArgs e)
+    {
+        OnHomeworkEditorUpdated?.Invoke(this, EventArgs.Empty);
+        if (ViewModel.SelectedHomework== null)
+            return;
+        ViewModel.EditingHomework = ViewModel.SelectedHomework;
+        ViewModel.IsDrawerOpened = true;
+    }
+
+    private void ButtonRemoveHomework_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (ViewModel.SelectedHomework == null)
+            return;
+        ProfileService.Profile.Homeworks.Remove(ViewModel.SelectedHomework);
     }
 }

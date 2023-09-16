@@ -8,10 +8,12 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:ely="http://github.com/HelloWRC/ElysiaFramework"
         xmlns:controls="clr-namespace:StickyHomeworks.Controls"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:behaviors="clr-namespace:StickyHomeworks.Behaviors"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
         TextElement.FontWeight="Regular"
-        TextElement.FontSize="18"
+        TextElement.FontSize="14"
         FontFamily="{StaticResource HarmonyOsSans}"
         Title="作业" 
         d:DataContext="{d:DesignInstance local:MainWindow}"
@@ -31,9 +33,53 @@
         <materialDesign:DrawerHost.BottomDrawerContent>
             <Grid Margin="16">
                 <StackPanel>
-                    <TextBox Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                             Text="{Binding ViewModel.EditingHomework.Subject}"
-                             materialDesign:HintAssist.Hint="科目"/>
+                    <ComboBox Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                              SelectedItem="{Binding ViewModel.EditingHomework.Subject, Mode=TwoWay}"
+                              ItemsSource="{Binding SettingsService.Settings.Subjects}"
+                              x:Name="ComboBoxSubject"
+                              materialDesign:HintAssist.Hint="科目"/>
+                    <DatePicker Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                                materialDesign:HintAssist.Hint="截止日期"
+                                SelectedDate="{Binding ViewModel.EditingHomework.DueTime}"/>
+                    <!-- Tags -->
+                    <WrapPanel>
+                        <TextBlock VerticalAlignment="Center" Text="标签："/>
+                        <Button Content="{materialDesign:PackIcon EditOutline}" Click="ButtonEditTags_OnClick"
+                                Style="{StaticResource MaterialDesignFlatButton}"/>
+                        <ListBox ItemsSource="{Binding ViewModel.EditingHomework.Tags}"
+                                 Style="{StaticResource MaterialDesignChoiceChipListBox}">
+                            
+                        </ListBox>
+                        <Popup IsOpen="{Binding ViewModel.IsTagEditingPopupOpened}"
+                               StaysOpen="False"
+                               AllowsTransparency="True">
+                            <materialDesign:Card Margin="8">
+                                <Grid Margin="12" MaxWidth="400" MaxHeight="300">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <!-- Tags选择 -->
+                                    <ListBox Grid.Row="0"
+                                             ItemsSource="{Binding SettingsService.Settings.Tags}"
+                                             Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineListBox}">
+                                        <ListBox.ItemContainerStyle>
+                                            <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignFilterChipPrimaryOutlineListBoxItem}">
+                                                <Setter Property="materialDesign:BehaviorsAssist.Behaviors">
+                                                    <Setter.Value>
+                                                        <materialDesign:BehaviorCollection>
+                                                            <behaviors:AllCollectionBehavior AllCollection="{Binding ViewModel.EditingHomework.Tags ,RelativeSource={RelativeSource FindAncestor, AncestorType=local:MainWindow}}"
+                                                                CurrentValue="{Binding}"/>
+                                                        </materialDesign:BehaviorCollection>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </ListBox.ItemContainerStyle>
+                                    </ListBox>
+                                </Grid>
+                            </materialDesign:Card>
+                        </Popup>
+                    </WrapPanel>
                     <TextBox Style="{StaticResource MaterialDesignOutlinedTextBox}"
                              Text="{Binding ViewModel.EditingHomework.Content}"
                              materialDesign:HintAssist.Hint="作业"/>
@@ -77,6 +123,8 @@
 
             <!-- 作业列表 -->
             <ListView Grid.Row="1" 
+                      HorizontalContentAlignment="Stretch"
+                      SelectionMode="Single"
                       ItemsSource="{Binding Source={StaticResource SourceGrouped}}"
                       SelectedItem="{Binding ViewModel.SelectedHomework}"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled">
@@ -119,7 +167,24 @@
                 </ListView.GroupStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <controls:HomeworkControl Homework="{Binding}"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <controls:HomeworkControl Grid.Column="0"
+                                                      Homework="{Binding}"/>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                        Visibility="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <Button Content="{materialDesign:PackIcon EditOutline}"
+                                        Style="{StaticResource MaterialDesignToolForegroundButton}"
+                                        Margin="4 -8" ToolTip="编辑"  Click="ButtonEditHomework_OnClick"/>
+                                <Button Content="{materialDesign:PackIcon DeleteOutline}"
+                                        Style="{StaticResource MaterialDesignToolForegroundButton}"
+                                        Margin="4 -8" ToolTip="删除" Foreground="IndianRed"
+                                        Click="ButtonRemoveHomework_OnClick" />
+                            </StackPanel>
+                        </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
