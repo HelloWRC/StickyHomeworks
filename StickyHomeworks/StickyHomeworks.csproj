@@ -48,8 +48,4 @@
     <Resource Include="Assets\Contributiors\HelloWRC@64w.jpg" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Converters\" />
-  </ItemGroup>
-
 </Project>

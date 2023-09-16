@@ -31,6 +31,9 @@ public class Settings : ObservableRecipient
     private double _windowY = 0;
     private double _windowWidth = 400;
     private double _windowHeight = 800;
+    private bool _isBottom = true;
+    private string _title = "作业";
+    private double _maxPanelWidth = 350;
 
     public double WindowX
     {
@@ -109,6 +112,38 @@ public class Settings : ObservableRecipient
         }
     }
 
+    public bool IsBottom
+    {
+        get => _isBottom;
+        set
+        {
+            if (value == _isBottom) return;
+            _isBottom = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string Title
+    {
+        get => _title;
+        set
+        {
+            if (value == _title) return;
+            _title = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double MaxPanelWidth
+    {
+        get => _maxPanelWidth;
+        set
+        {
+            if (value.Equals(_maxPanelWidth)) return;
+            _maxPanelWidth = value;
+            OnPropertyChanged();
+        }
+    }
 
     #endregion
 

@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -67,6 +68,7 @@ public partial class MainWindow : Window
 
     protected override void OnContentRendered(EventArgs e)
     {
+        SetBottom();
         SetPos();
         base.OnContentRendered(e);
     }
@@ -168,7 +170,29 @@ public partial class MainWindow : Window
     {
         if (ViewModel.IsUnlocked && e.LeftButton == MouseButtonState.Pressed)
         {
+            SetBottom();
             DragMove();
+            SetBottom();
         }
+    }
+
+    private void SetBottom()
+    {
+        if (!SettingsService.Settings.IsBottom)
+        {
+            return;
+        }
+        var hWnd = new WindowInteropHelper(this).Handle;
+        NativeWindowHelper.SetWindowPos(hWnd, NativeWindowHelper.HWND_BOTTOM, 0, 0, 0, 0, NativeWindowHelper.SWP_NOSIZE | NativeWindowHelper.SWP_NOMOVE | NativeWindowHelper.SWP_NOACTIVATE);
+    }
+
+    private void MainWindow_OnStateChanged(object? sender, EventArgs e)
+    {
+        SetBottom();
+    }
+
+    private void MainWindow_OnActivated(object? sender, EventArgs e)
+    {
+        SetBottom();
     }
 }

@@ -249,6 +249,29 @@
                                 <ely:SettingsCard IconGlyph="AutomaticStart" Header="开机自启"
                                                        Description="在系统启动时自动运行本应用。"
                                                        IsOn="{Binding Settings.IsAutoStartEnabled, Mode=TwoWay}" />
+                                <!-- 窗口置底 -->
+                                <ely:SettingsCard IconGlyph="LayersOutline" Header="窗口置底"
+                                                  Description="将窗口置于底端。"
+                                                  IsOn="{Binding Settings.IsBottom, Mode=TwoWay}" />
+                                <!-- 窗口标题 -->
+                                <ely:SettingsCard IconGlyph="DesktopWindows" Header="窗口标题"
+                                                  Description="在窗口上显示的标题。">
+                                    <ely:SettingsCard.Switcher>
+                                        <TextBox MinWidth="150" Text="{Binding Settings.Title}"/>
+                                    </ely:SettingsCard.Switcher>
+                                </ely:SettingsCard>
+                                <!-- 最大面板宽度 -->
+                                <ely:SettingsCard IconGlyph="DesktopWindows" Header="最大面板宽度"
+                                                  Description="当作业超出显示范围换行时，各个列面板的最大宽度。">
+                                    <ely:SettingsCard.Switcher>
+                                        <ely:NumbericTextBox MinWidth="150" 
+                                                             Style="{StaticResource MaterialDesignTextBox}"
+                                                             Text="{Binding Settings.MaxPanelWidth, Converter={StaticResource IntToStringConverter}}"
+                                                             MinValue="0"
+                                                             MaxValue="2000"
+                                                             materialDesign:TextFieldAssist.SuffixText="px"/>
+                                    </ely:SettingsCard.Switcher>
+                                </ely:SettingsCard>
                                 
                             </StackPanel>
                         </ScrollViewer>

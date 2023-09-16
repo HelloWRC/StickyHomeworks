@@ -14,11 +14,14 @@
         TextElement.FontWeight="Regular"
         TextElement.FontSize="14"
         FontFamily="{StaticResource HarmonyOsSans}"
-        Title="作业" 
+        Title="{Binding SettingsService.Settings.Title, Mode=OneWay}" 
+        ShowInTaskbar="False"
         d:DataContext="{d:DesignInstance local:MainWindow}"
         Closing="MainWindow_OnClosing"
         WindowStyle="None"
-        Height="450" Width="800">
+        Height="450" Width="800"
+        StateChanged="MainWindow_OnStateChanged"
+        Activated="MainWindow_OnActivated">
     <Window.Style>
         <Style TargetType="Window">
             <Style.Triggers>
@@ -160,8 +163,8 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <!-- 标题 -->
-                    <!-- TODO: 自定义标题 -->
-                    <TextBlock Grid.Column="0" Text="作业" VerticalAlignment="Center"
+                    <TextBlock Grid.Column="0" Text="{Binding SettingsService.Settings.Title, Mode=OneWay}" 
+                               VerticalAlignment="Center"
                                FontSize="22" Margin="2"/>
                     <!-- 功能区 -->
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
@@ -177,7 +180,7 @@
                                       ToolTip="锁定窗口"
                                       IsChecked="{Binding ViewModel.IsUnlocked, Converter={StaticResource InvertBooleanConverter}}"/>
                         <Button Content="{materialDesign:PackIcon FileExport, Size=18}" ToolTip="导出…"/>
-                        <Button Content="{materialDesign:PackIcon Add, Size=18}" ToolTip="布置作业"/>
+                        <Button Content="{materialDesign:PackIcon Add, Size=18}" ToolTip="布置作业" Click="ButtonCreateHomework_OnClick"/>
                         <Button Content="{materialDesign:PackIcon Settings, Size=18}" ToolTip="设置…" Click="ButtonSettings_OnClick"/>
                         <Button Content="{materialDesign:PackIcon ExitToApp, Size=18}" ToolTip="退出"/>
                     </StackPanel>
@@ -186,11 +189,15 @@
 
             <!-- 作业列表 -->
             <ListView Grid.Row="1" 
+                      Margin="8"
                       HorizontalContentAlignment="Stretch"
                       SelectionMode="Single"
                       ItemsSource="{Binding Source={StaticResource SourceGrouped}}"
                       SelectedItem="{Binding ViewModel.SelectedHomework}"
-                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                      ScrollViewer.CanContentScroll="False"
+                      x:Name="MainListView">
                 <ListView.LayoutTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="{Binding SettingsService.Settings.Scale, Mode=OneWay}" 
@@ -209,7 +216,14 @@
                     <GroupStyle>
                         <GroupStyle.Panel>
                             <ItemsPanelTemplate>
-                                <StackPanel/>
+                                <WrapPanel Orientation="Vertical">
+                                    <WrapPanel.ItemWidth>
+                                        <MultiBinding Converter="{StaticResource MinValueMultiConverter}" Mode="OneWay">
+                                            <Binding Path="ActualWidth" ElementName="MainListView" Mode="OneWay"/>
+                                            <Binding Path="SettingsService.Settings.MaxPanelWidth" Mode="OneWay"/>
+                                        </MultiBinding>
+                                    </WrapPanel.ItemWidth>
+                                </WrapPanel>
                             </ItemsPanelTemplate>
                         </GroupStyle.Panel>
                         <GroupStyle.ContainerStyle>
@@ -253,8 +267,11 @@
             </ListView>
             
             <!-- 布置作业 -->
-            <Button Grid.Row="2" Content="布置作业"
-                    Click="ButtonCreateHomework_OnClick"/>
+            <Button Grid.Row="2"
+                    Click="ButtonCreateHomework_OnClick"
+                    Style="{StaticResource MaterialDesignFlatButton}">
+                <ely:IconText Kind="Add" Text="布置作业"/>
+            </Button>
 
             <!-- 已解锁 -->
             <Border Grid.Row="1" Grid.RowSpan="2" 
