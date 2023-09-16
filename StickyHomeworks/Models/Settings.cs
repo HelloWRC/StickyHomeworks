@@ -1,8 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using MaterialDesignColors;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Text.Json.Serialization;
 using System.Windows.Media;
+using IWshRuntimeLibrary;
+using File = System.IO.File;
 
 namespace StickyHomeworks.Models;
 
@@ -21,6 +24,45 @@ public class Settings : ObservableRecipient
     private double _targetLightValue = 0.6;
     private double _opacity = 0.7;
     private double _scale = 1.5;
+    private ObservableCollection<string> _subjects = new();
+    private ObservableCollection<string> _tags = new();
+    private bool _isDebugOptionsEnabled = false;
+
+    #region General
+
+    public bool IsAutoStartEnabled
+    {
+        get => File.Exists(
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "StickyHomeworks.lnk"));
+        set
+        {
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "StickyHomeworks.lnk");
+            try
+            {
+                if (value)
+                {
+                    var shell = new WshShell();
+                    var shortcut = (IWshShortcut)shell.CreateShortcut(path);//创建快捷方式对象
+                    shortcut.TargetPath = Environment.ProcessPath;
+                    shortcut.WorkingDirectory = Environment.CurrentDirectory;
+                    shortcut.WindowStyle = 1;
+                    shortcut.Save();
+                }
+                else
+                {
+                    File.Delete(path);
+                }
+                OnPropertyChanged();
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+    }
+
+
+    #endregion
 
     #region Appearence
 
@@ -173,4 +215,45 @@ public class Settings : ObservableRecipient
     }
 
     #endregion
+
+    #region Subjects
+
+    public ObservableCollection<string> Subjects
+    {
+        get => _subjects;
+        set
+        {
+            if (Equals(value, _subjects)) return;
+            _subjects = value;
+            OnPropertyChanged();
+        }
+    }
+
+    #endregion
+
+    #region Tags
+
+    public ObservableCollection<string> Tags
+    {
+        get => _tags;
+        set
+        {
+            if (Equals(value, _tags)) return;
+            _tags = value;
+            OnPropertyChanged();
+        }
+    }
+
+
+    #endregion
+    public bool IsDebugOptionsEnabled
+    {
+        get => _isDebugOptionsEnabled;
+        set
+        {
+            if (value == _isDebugOptionsEnabled) return;
+            _isDebugOptionsEnabled = value;
+            OnPropertyChanged();
+        }
+    }
 }

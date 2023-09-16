@@ -10,6 +10,94 @@
                 <ResourceDictionary Source="pack://application:,,,/ElysiaFramework;component/Assets/Fonts/Fonts.xaml"/>
 
             </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="MarkdownParagraphBaseStyle" TargetType="Paragraph">
+                <Setter Property="LineHeight" Value="25"/>
+                <Setter Property="FontWeight" Value="Light"></Setter>
+            </Style>
+
+            <Style TargetType="Paragraph" BasedOn="{StaticResource MarkdownParagraphBaseStyle}"/>
+
+            <Style x:Key="MarkdownImageStyle" TargetType="Image">
+                <Setter Property="Stretch" Value="Uniform"/>
+                <Setter Property="MaxWidth" Value="700"/>
+                <Setter Property="Margin" Value="0 0"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+            </Style>
+
+            <Style x:Key="MarkdownHeadline1Style" TargetType="Paragraph">
+                <Setter Property="Margin" Value="0, 10, 0, 10"/>
+                <Setter Property="Foreground"  Value="{DynamicResource MaterialDesignBody}" />
+                <Setter Property="FontSize"    Value="32"/>
+                <Setter Property="FontWeight"  Value="Bold" />
+            </Style>
+
+            <Style x:Key="MarkdownHeadline2Style" TargetType="Paragraph">
+                <Setter Property="Margin" Value="0, 10, 0, 10"/>
+                <Setter Property="Foreground"  Value="{DynamicResource MaterialDesignBody}" />
+                <Setter Property="FontSize"    Value="24"/>
+                <Setter Property="FontWeight"  Value="Medium" />
+            </Style>
+
+            <Style x:Key="MarkdownHeadline3Style" TargetType="Paragraph">
+                <Setter Property="Margin" Value="0, 6, 0, 6"/>
+                <Setter Property="Foreground"  Value="{DynamicResource MaterialDesignBody}" />
+                <Setter Property="FontSize"    Value="16" />
+                <Setter Property="FontWeight"  Value="Medium" />
+            </Style>
+
+            <Style x:Key="MarkdownHeadline4Style" TargetType="Paragraph">
+                <Setter Property="Margin" Value="0, 6, 0, 4"/>
+                <Setter Property="Foreground"  Value="{DynamicResource MaterialDesignBody}" />
+                <Setter Property="FontSize"    Value="16"/>
+                <Setter Property="FontWeight"  Value="Light" />
+            </Style>
+
+            <Style x:Key="MarkdownCodeBlockStyle" TargetType="Paragraph">
+                <Setter Property="FontFamily"      Value="Courier New"/>
+                <Setter Property="Foreground"      Value="DarkBlue"/>
+                <Setter Property="Background"      Value="#EEEEEE"/>
+                <Setter Property="BorderBrush"     Value="#DEDEDE"/>
+                <Setter Property="BorderThickness" Value="0,5,0,5"/>
+                <Setter Property="Margin"          Value="5,0,5,0"/>
+            </Style>
+
+            <Style x:Key="MarkdownNoteStyle" TargetType="Paragraph">
+                <Setter Property="Margin"      Value="5,0,5,0"/>
+                <Setter Property="Padding"     Value="10, 5"/>
+                <Setter Property="BorderBrush" Value="#DEDEDE"/>
+                <Setter Property="BorderThickness" Value="3,3,3,3"/>
+                <Setter Property="Background"  Value="#FAFAFA"/>
+            </Style>
+
+            <Style TargetType="Table" >
+                <Setter Property="CellSpacing" Value="0"/>
+                <Setter Property="BorderThickness" Value="0.5"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesignBody}"/>
+            </Style>
+
+            <Style TargetType="TableRowGroup">
+                <Style.Triggers>
+                    <Trigger Property="Tag" Value="TableHeader">
+                        <Setter Property="FontWeight" Value="DemiBold"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="TableCell">
+                <Setter Property="BorderThickness" Value="0.5"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesignBody}"/>
+                <Setter Property="Padding" Value="8"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TableRow}}, Path=Tag}" Value="EvenTableRow">
+                        <Setter Property="Background" Value="{DynamicResource MaterialDesignCardBackground}"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="ScrollViewer" BasedOn="{StaticResource MaterialDesignScrollViewer}">
+                <Setter Property="PanningMode" Value="Both"/>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </elysiaFramework:AppEx>

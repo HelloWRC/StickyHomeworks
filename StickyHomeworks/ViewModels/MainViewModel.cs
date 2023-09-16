@@ -7,6 +7,7 @@ public class MainViewModel : ObservableRecipient
 {
     private bool _isDrawerOpened = false;
     private Homework? _selectedHomework;
+    private Homework _editingHomework = new();
 
     public bool IsDrawerOpened
     {
@@ -26,6 +27,17 @@ public class MainViewModel : ObservableRecipient
         {
             if (Equals(value, _selectedHomework)) return;
             _selectedHomework = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Homework EditingHomework
+    {
+        get => _editingHomework;
+        set
+        {
+            if (Equals(value, _editingHomework)) return;
+            _editingHomework = value;
             OnPropertyChanged();
         }
     }

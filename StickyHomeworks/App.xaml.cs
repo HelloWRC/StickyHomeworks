@@ -1,12 +1,15 @@
 ﻿using System.Configuration;
 using System.Data;
+using System.Reflection;
 using System.Windows;
+using ClassIsland.Services;
 using ElysiaFramework;
 using ElysiaFramework.Interfaces;
 using ElysiaFramework.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using StickyHomeworks.Services;
+using StickyHomeworks.Views;
 
 namespace StickyHomeworks;
 
@@ -15,6 +18,8 @@ namespace StickyHomeworks;
 /// </summary>
 public partial class App : AppEx
 {
+    public static string AppVersion => Assembly.GetExecutingAssembly().GetName().Version!.ToString();
+
     protected override void OnStartup(StartupEventArgs e)
     {
         Host = Microsoft.Extensions.Hosting.Host.
@@ -25,6 +30,8 @@ public partial class App : AppEx
                 services.AddSingleton<IThemeService, ThemeService>();
                 services.AddSingleton<ProfileService>();
                 services.AddSingleton<SettingsService>();
+                services.AddSingleton<SettingsWindow>();
+                services.AddSingleton<WallpaperPickingService>();
                 services.AddSingleton<MainWindow>();
             }).
             Build();

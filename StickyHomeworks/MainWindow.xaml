@@ -31,12 +31,12 @@
             <Grid Margin="16">
                 <StackPanel>
                     <TextBox Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                             Text="{Binding ViewModel.SelectedHomework.Subject}"
+                             Text="{Binding ViewModel.EditingHomework.Subject}"
                              materialDesign:HintAssist.Hint="科目"/>
                     <TextBox Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                             Text="{Binding ViewModel.SelectedHomework.Content}"
+                             Text="{Binding ViewModel.EditingHomework.Content}"
                              materialDesign:HintAssist.Hint="作业"/>
-                    <Button Content="完成布置"/>
+                    <Button Content="完成布置" Click="ButtonAddHomeworkCompleted_OnClick"/>
                 </StackPanel>
             </Grid>
         </materialDesign:DrawerHost.BottomDrawerContent>
@@ -68,7 +68,7 @@
                         </StackPanel.Resources>
                         <Button Content="{materialDesign:PackIcon FileExport, Size=18}" ToolTip="导出…"/>
                         <Button Content="{materialDesign:PackIcon Add, Size=18}" ToolTip="布置作业"/>
-                        <Button Content="{materialDesign:PackIcon Settings, Size=18}" ToolTip="设置…"/>
+                        <Button Content="{materialDesign:PackIcon Settings, Size=18}" ToolTip="设置…" Click="ButtonSettings_OnClick"/>
                         <Button Content="{materialDesign:PackIcon ExitToApp, Size=18}" ToolTip="退出"/>
                     </StackPanel>
                 </Grid>
