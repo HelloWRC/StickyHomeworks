@@ -206,4 +206,16 @@ public partial class MainWindow : Window
         ViewModel.IsClosing = true;
         Close();
     }
+
+    private void ButtonDateSetToday_OnClick(object sender, RoutedEventArgs e)
+    {
+        ViewModel.EditingHomework.DueTime = DateTime.Today;
+    }
+
+    private void ButtonDateSetWeekends_OnClick(object sender, RoutedEventArgs e)
+    {
+        var today = DateTime.Today;
+        var delta = DayOfWeek.Saturday - today.DayOfWeek + 1;
+        ViewModel.EditingHomework.DueTime = today + TimeSpan.FromDays(delta);
+    }
 }

@@ -20,6 +20,8 @@
         Closing="MainWindow_OnClosing"
         WindowStyle="None"
         Height="450" Width="800"
+        MinWidth="250"
+        MinHeight="45"
         StateChanged="MainWindow_OnStateChanged"
         Activated="MainWindow_OnActivated">
     <Window.Style>
@@ -117,14 +119,28 @@
                                   Margin="0 0 0 8"
                                   IsReadOnly="{Binding ViewModel.IsCreatingMode, Converter={StaticResource InvertBooleanConverter}}"
                                   materialDesign:HintAssist.Hint="科目" />
-                        <DatePicker Style="{StaticResource MaterialDesignOutlinedDatePicker}"
-                                    materialDesign:HintAssist.Hint="截止日期"
-                                    Margin="0 0 0 8"
-                                    SelectedDate="{Binding ViewModel.EditingHomework.DueTime}" />
+                        <Grid Margin="0 0 0 8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <DatePicker Grid.Column="0"
+                                        Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                                        materialDesign:HintAssist.Hint="截止日期"
+                                        SelectedDate="{Binding ViewModel.EditingHomework.DueTime}" />
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="6 0 0 0">
+                                <Button Content="今天" Style="{StaticResource MaterialDesignFlatButton}" 
+                                        Margin="0 0 2 0"
+                                        Click="ButtonDateSetToday_OnClick"/>
+                                <Button Content="周末" Style="{StaticResource MaterialDesignFlatButton}"
+                                        Click="ButtonDateSetWeekends_OnClick"/>
+                            </StackPanel>
+                        </Grid>
                         <!-- Tags -->
                         <WrapPanel Margin="0 0 0 8">
                             <TextBlock VerticalAlignment="Center" Text="标签：" />
                             <Button Content="{materialDesign:PackIcon EditOutline}" Click="ButtonEditTags_OnClick"
+                                    ToolTip="编辑标签…"
                                     Style="{StaticResource MaterialDesignFlatButton}" />
                             <ListBox ItemsSource="{Binding ViewModel.EditingHomework.Tags}"
                                      Style="{StaticResource MaterialDesignChoiceChipListBox}">
@@ -134,13 +150,15 @@
                                    StaysOpen="False"
                                    AllowsTransparency="True">
                                 <materialDesign:Card Margin="8">
-                                    <Grid Margin="12" MaxWidth="400" MaxHeight="300">
+                                    <Grid Margin="6" MaxWidth="400" MaxHeight="300">
                                         <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
                                             <RowDefinition />
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0" Text="选择标签" FontSize="18" Margin="4"/>
                                         <!-- Tags选择 -->
-                                        <ListBox Grid.Row="0"
+                                        <ListBox Grid.Row="1"
                                                  ItemsSource="{Binding SettingsService.Settings.Tags}"
                                                  Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineListBox}">
                                             <ListBox.ItemContainerStyle>
@@ -206,7 +224,8 @@
                         <!-- 标题 -->
                         <TextBlock Grid.Column="0" Text="{Binding SettingsService.Settings.Title, Mode=OneWay}"
                                    VerticalAlignment="Center"
-                                   FontSize="22" Margin="2" />
+                                   FontWeight="Medium"
+                                   FontSize="22" Margin="6 2 2 2" />
                         <!-- 功能区 -->
                         <StackPanel Grid.Column="1" Orientation="Horizontal">
                             <StackPanel.Resources>
@@ -330,9 +349,15 @@
                 <StackPanel Grid.Row="1" Grid.RowSpan="2"
                             Visibility="{Binding ViewModel.IsUnlocked, Converter={StaticResource BooleanToVisibilityConverter}}"
                             VerticalAlignment="Center"
-                            HorizontalAlignment="Center">
+                            HorizontalAlignment="Center"
+                            Margin="12">
+                    <Image Source="/Assets/光辉矢愿_瞄准.png" Height="81" Width="81"
+                           HorizontalAlignment="Center"
+                           Margin="0 0 0 8"/>
                     <TextBlock Text="窗口已经解锁，拖动以移动窗口，拉伸边缘以调整窗口大小。"
-                               TextWrapping="Wrap" />
+                               TextWrapping="Wrap" 
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"/>
                 </StackPanel>
                 <Border Grid.Row="1" Grid.RowSpan="2"
                         x:Name="DragBorder"
