@@ -42,16 +42,46 @@ public partial class MainWindow : Window
         DataContext = this;
     }
 
+    private void SetPos()
+    {
+        GetCurrentDpi(out var dpi, out _);
+        Left = SettingsService.Settings.WindowX / dpi;
+        Top = SettingsService.Settings.WindowY / dpi;
+        Width = SettingsService.Settings.WindowWidth / dpi;
+        Height = SettingsService.Settings.WindowHeight / dpi;
+    }
+
+    private void SavePos()
+    {
+        GetCurrentDpi(out var dpi, out _);
+        SettingsService.Settings.WindowX = Left * dpi;
+        SettingsService.Settings.WindowY = Top * dpi;
+        SettingsService.Settings.WindowWidth = Width * dpi;
+        SettingsService.Settings.WindowHeight = Height * dpi;
+    }
+
+    protected override void OnInitialized(EventArgs e)
+    {
+        base.OnInitialized(e);
+    }
+
+    protected override void OnContentRendered(EventArgs e)
+    {
+        SetPos();
+        base.OnContentRendered(e);
+    }
+
     private void ButtonCreateHomework_OnClick(object sender, RoutedEventArgs e)
     {
         OnHomeworkEditorUpdated?.Invoke(this ,EventArgs.Empty);
+        ViewModel.IsCreatingMode = true;
         ViewModel.IsDrawerOpened = true;
         var o = new Homework()
         {
             Subject = "其它"
         };
-        ComboBoxSubject.Text = "其它";
         ViewModel.EditingHomework = o;
+        ComboBoxSubject.Text = "其它";
     }
 
     private void ButtonAddHomeworkCompleted_OnClick(object sender, RoutedEventArgs e)
@@ -101,6 +131,7 @@ public partial class MainWindow : Window
 
     private void MainWindow_OnClosing(object? sender, CancelEventArgs e)
     {
+        SavePos();
         SettingsService.SaveSettings();
         ProfileService.SaveProfile();
     }
@@ -114,6 +145,7 @@ public partial class MainWindow : Window
     private void ButtonEditHomework_OnClick(object sender, RoutedEventArgs e)
     {
         OnHomeworkEditorUpdated?.Invoke(this, EventArgs.Empty);
+        ViewModel.IsCreatingMode = false;
         if (ViewModel.SelectedHomework== null)
             return;
         ViewModel.EditingHomework = ViewModel.SelectedHomework;
@@ -125,5 +157,18 @@ public partial class MainWindow : Window
         if (ViewModel.SelectedHomework == null)
             return;
         ProfileService.Profile.Homeworks.Remove(ViewModel.SelectedHomework);
+    }
+
+    private void ButtonEditDone_OnClick(object sender, RoutedEventArgs e)
+    {
+        ViewModel.IsDrawerOpened = false;
+    }
+
+    private void DragBorder_OnMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (ViewModel.IsUnlocked && e.LeftButton == MouseButtonState.Pressed)
+        {
+            DragMove();
+        }
     }
 }

@@ -11,14 +11,28 @@
         xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:behaviors="clr-namespace:StickyHomeworks.Behaviors"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        Background="{DynamicResource MaterialDesignPaper}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="14"
         FontFamily="{StaticResource HarmonyOsSans}"
         Title="作业" 
         d:DataContext="{d:DesignInstance local:MainWindow}"
         Closing="MainWindow_OnClosing"
+        WindowStyle="None"
         Height="450" Width="800">
+    <Window.Style>
+        <Style TargetType="Window">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ViewModel.IsUnlocked}" Value="True">
+                    <Setter Property="ResizeMode" Value="CanResize"/>
+                    <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ViewModel.IsUnlocked}" Value="False">
+                    <Setter Property="ResizeMode" Value="NoResize"/>
+                    <Setter Property="Background" Value="{x:Null}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Style>
     <Window.Resources>
         <CollectionViewSource x:Key='SourceGrouped' 
                               Source="{Binding ProfileService.Profile.Homeworks}">
@@ -27,22 +41,46 @@
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
     </Window.Resources>
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="-1"
+                      ResizeBorderThickness="4"
+                      CaptionHeight="0">
+
+        </WindowChrome>
+    </WindowChrome.WindowChrome>
 
     <materialDesign:DrawerHost IsBottomDrawerOpen="{Binding ViewModel.IsDrawerOpened}">
         <!-- 作业编辑 -->
         <materialDesign:DrawerHost.BottomDrawerContent>
             <Grid Margin="16">
                 <StackPanel>
+                    <TextBlock Margin="0 0 0 16">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignHeadline5TextBlock}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ViewModel.IsCreatingMode}" Value="True">
+                                        <Setter Property="Text" Value="布置新作业"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ViewModel.IsCreatingMode}" Value="False">
+                                        <Setter Property="Text" Value="编辑作业"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
                     <ComboBox Style="{StaticResource MaterialDesignOutlinedComboBox}"
                               SelectedItem="{Binding ViewModel.EditingHomework.Subject, Mode=TwoWay}"
                               ItemsSource="{Binding SettingsService.Settings.Subjects}"
                               x:Name="ComboBoxSubject"
+                              Margin="0 0 0 8"
+                              IsReadOnly="{Binding ViewModel.IsCreatingMode, Converter={StaticResource InvertBooleanConverter}}"
                               materialDesign:HintAssist.Hint="科目"/>
                     <DatePicker Style="{StaticResource MaterialDesignOutlinedDatePicker}"
                                 materialDesign:HintAssist.Hint="截止日期"
+                                Margin="0 0 0 8"
                                 SelectedDate="{Binding ViewModel.EditingHomework.DueTime}"/>
                     <!-- Tags -->
-                    <WrapPanel>
+                    <WrapPanel Margin="0 0 0 8">
                         <TextBlock VerticalAlignment="Center" Text="标签："/>
                         <Button Content="{materialDesign:PackIcon EditOutline}" Click="ButtonEditTags_OnClick"
                                 Style="{StaticResource MaterialDesignFlatButton}"/>
@@ -82,8 +120,20 @@
                     </WrapPanel>
                     <TextBox Style="{StaticResource MaterialDesignOutlinedTextBox}"
                              Text="{Binding ViewModel.EditingHomework.Content}"
+                             Margin="0 0 0 8"
+                             TextWrapping="Wrap"
                              materialDesign:HintAssist.Hint="作业"/>
-                    <Button Content="完成布置" Click="ButtonAddHomeworkCompleted_OnClick"/>
+                    <Separator Margin="0 0 0 12"/>
+                    <Button Click="ButtonAddHomeworkCompleted_OnClick"
+                            HorizontalAlignment="Right"
+                            Visibility="{Binding ViewModel.IsCreatingMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ely:IconText Kind="Check" Text="完成布置"/>
+                    </Button>
+                    <Button Click="ButtonEditDone_OnClick"
+                            HorizontalAlignment="Right"
+                            Visibility="{Binding ViewModel.IsCreatingMode, Converter={StaticResource InverseBoolToVisConverter}}">
+                        <ely:IconText Kind="Check" Text="确定"/>
+                    </Button>
                 </StackPanel>
             </Grid>
         </materialDesign:DrawerHost.BottomDrawerContent>
@@ -93,10 +143,17 @@
                 <RowDefinition/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
+            <!-- 背景 -->
+            <Border Grid.Row="0" 
+                    Grid.RowSpan="3"
+                    Background="{DynamicResource MaterialDesignPaper}"
+                    Opacity="{Binding SettingsService.Settings.Opacity}"/>
             <!-- 标题栏 -->
             <materialDesign:ColorZone Grid.Row="0"
                                       Mode="PrimaryMid"
-                                      Padding="4">
+                                      Padding="6"
+                                      materialDesign:ElevationAssist.Elevation="Dp2"
+                                      MouseDown="DragBorder_OnMouseDown">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -105,7 +162,7 @@
                     <!-- 标题 -->
                     <!-- TODO: 自定义标题 -->
                     <TextBlock Grid.Column="0" Text="作业" VerticalAlignment="Center"
-                               FontSize="20"/>
+                               FontSize="22" Margin="2"/>
                     <!-- 功能区 -->
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
                         <StackPanel.Resources>
@@ -113,6 +170,12 @@
                                 <Setter Property="Margin" Value="4 0"></Setter>
                             </Style>
                         </StackPanel.Resources>
+                        <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                      Content="{materialDesign:PackIcon UnlockedOutline}"
+                                      materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Lock}"
+                                      materialDesign:ToggleButtonAssist.SwitchTrackOnBackground="{DynamicResource MaterialDesignPaper}"
+                                      ToolTip="锁定窗口"
+                                      IsChecked="{Binding ViewModel.IsUnlocked, Converter={StaticResource InvertBooleanConverter}}"/>
                         <Button Content="{materialDesign:PackIcon FileExport, Size=18}" ToolTip="导出…"/>
                         <Button Content="{materialDesign:PackIcon Add, Size=18}" ToolTip="布置作业"/>
                         <Button Content="{materialDesign:PackIcon Settings, Size=18}" ToolTip="设置…" Click="ButtonSettings_OnClick"/>
@@ -192,6 +255,25 @@
             <!-- 布置作业 -->
             <Button Grid.Row="2" Content="布置作业"
                     Click="ButtonCreateHomework_OnClick"/>
+
+            <!-- 已解锁 -->
+            <Border Grid.Row="1" Grid.RowSpan="2" 
+                    Visibility="{Binding ViewModel.IsUnlocked, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Opacity="0.75" Background="{DynamicResource MaterialDesignPaper}"/>
+            <StackPanel Grid.Row="1" Grid.RowSpan="2"
+                        Visibility="{Binding ViewModel.IsUnlocked, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+                <TextBlock Text="窗口已经解锁，拖动以移动窗口，拉伸边缘以调整窗口大小。"
+                           TextWrapping="Wrap"/>
+            </StackPanel>
+            <Border Grid.Row="1" Grid.RowSpan="2"
+                    x:Name="DragBorder"
+                    Visibility="{Binding ViewModel.IsUnlocked, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Background="Transparent"
+                    MouseDown="DragBorder_OnMouseDown">
+
+            </Border>
         </Grid>
     </materialDesign:DrawerHost>
 </Window>

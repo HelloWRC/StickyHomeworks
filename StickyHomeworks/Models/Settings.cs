@@ -27,6 +27,54 @@ public class Settings : ObservableRecipient
     private ObservableCollection<string> _subjects = new();
     private ObservableCollection<string> _tags = new();
     private bool _isDebugOptionsEnabled = false;
+    private double _windowX = 0;
+    private double _windowY = 0;
+    private double _windowWidth = 400;
+    private double _windowHeight = 800;
+
+    public double WindowX
+    {
+        get => _windowX;
+        set
+        {
+            if (value == _windowX) return;
+            _windowX = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double WindowY
+    {
+        get => _windowY;
+        set
+        {
+            if (value == _windowY) return;
+            _windowY = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double WindowWidth
+    {
+        get => _windowWidth;
+        set
+        {
+            if (value == _windowWidth) return;
+            _windowWidth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double WindowHeight
+    {
+        get => _windowHeight;
+        set
+        {
+            if (value == _windowHeight) return;
+            _windowHeight = value;
+            OnPropertyChanged();
+        }
+    }
 
     #region General
 
