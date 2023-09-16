@@ -23,7 +23,8 @@
         MinWidth="250"
         MinHeight="45"
         StateChanged="MainWindow_OnStateChanged"
-        Activated="MainWindow_OnActivated">
+        Activated="MainWindow_OnActivated"
+        Deactivated="MainWindow_OnDeactivated">
     <Window.Style>
         <Style TargetType="Window">
             <Style.Triggers>
@@ -147,6 +148,7 @@
 
                             </ListBox>
                             <Popup IsOpen="{Binding ViewModel.IsTagEditingPopupOpened}"
+                                   PopupAnimation="Fade"
                                    StaysOpen="False"
                                    AllowsTransparency="True">
                                 <materialDesign:Card Margin="8">
@@ -225,6 +227,7 @@
                         <TextBlock Grid.Column="0" Text="{Binding SettingsService.Settings.Title, Mode=OneWay}"
                                    VerticalAlignment="Center"
                                    FontWeight="Medium"
+                                   TextTrimming="CharacterEllipsis"
                                    FontSize="22" Margin="6 2 2 2" />
                         <!-- 功能区 -->
                         <StackPanel Grid.Column="1" Orientation="Horizontal">
@@ -247,25 +250,25 @@
                             <Button Content="{materialDesign:PackIcon Add, Size=18}" ToolTip="布置作业"
                                     Visibility="{Binding ViewModel.IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}"
                                     Click="ButtonCreateHomework_OnClick" />
+                            <Button Content="{materialDesign:PackIcon Settings, Size=18}" ToolTip="设置…"
+                                    Click="ButtonSettings_OnClick" />
                             <Button Margin="4 0" Click="ButtonExpandingSwitcher_OnClick">
                                 <Button.Style>
                                     <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ViewModel.IsExpanded}" Value="True">
-                                                <Setter Property="Content" Value="{materialDesign:PackIcon ChevronUp}"/>
+                                                <Setter Property="Content" Value="{materialDesign:PackIcon WindowMinimize}"/>
                                                 <Setter Property="ToolTip" Value="收起主界面"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding ViewModel.IsExpanded}" Value="False">
-                                                <Setter Property="Content" Value="{materialDesign:PackIcon ChevronDown}"/>
+                                                <Setter Property="Content" Value="{materialDesign:PackIcon WindowRestore}"/>
                                                 <Setter Property="ToolTip" Value="展开主界面"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </Button.Style>
                             </Button>
-                            <Button Content="{materialDesign:PackIcon Settings, Size=18}" ToolTip="设置…"
-                                    Click="ButtonSettings_OnClick" />
-                            <Button Content="{materialDesign:PackIcon ExitToApp, Size=18}" ToolTip="退出" 
+                            <Button Content="{materialDesign:PackIcon Close, Size=18}" ToolTip="退出" 
                                     Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
                                     CommandParameter="{StaticResource ExitConfirm}"/>
                         </StackPanel>

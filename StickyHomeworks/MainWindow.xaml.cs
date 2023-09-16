@@ -57,9 +57,9 @@ public partial class MainWindow : Window
         GetCurrentDpi(out var dpi, out _);
         SettingsService.Settings.WindowX = Left * dpi;
         SettingsService.Settings.WindowY = Top * dpi;
-        SettingsService.Settings.WindowWidth = Width * dpi;
         if (ViewModel.IsExpanded)
         {
+            SettingsService.Settings.WindowWidth = Width * dpi;
             SettingsService.Settings.WindowHeight = Height * dpi;
         }
     }
@@ -236,6 +236,12 @@ public partial class MainWindow : Window
         {
             ViewModel.IsUnlocked = false;
             SizeToContent = SizeToContent.Height;
+            Width = Math.Min(ActualWidth, 350);
         }
+    }
+
+    private void MainWindow_OnDeactivated(object? sender, EventArgs e)
+    {
+        MainListView.SelectedIndex = -1;
     }
 }
