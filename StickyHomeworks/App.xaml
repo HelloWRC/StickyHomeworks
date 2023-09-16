@@ -2,7 +2,9 @@
        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
        xmlns:local="clr-namespace:StickyHomeworks"
-       xmlns:elysiaFramework="clr-namespace:ElysiaFramework;assembly=ElysiaFramework">
+       xmlns:elysiaFramework="clr-namespace:ElysiaFramework;assembly=ElysiaFramework" 
+       ShutdownMode="OnMainWindowClose"
+       >
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

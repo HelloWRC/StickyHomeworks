@@ -2,6 +2,7 @@
 using System.Data;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Forms;
 using ClassIsland.Services;
 using ElysiaFramework;
 using ElysiaFramework.Interfaces;
@@ -32,10 +33,12 @@ public partial class App : AppEx
                 services.AddSingleton<SettingsService>();
                 services.AddSingleton<SettingsWindow>();
                 services.AddSingleton<WallpaperPickingService>();
+                services.AddHostedService<ThemeBackgroundService>();
                 services.AddSingleton<MainWindow>();
             }).
             Build();
         _ = Host.StartAsync();
+        MainWindow = GetService<MainWindow>();
         GetService<MainWindow>().Show();
         base.OnStartup(e);
     }

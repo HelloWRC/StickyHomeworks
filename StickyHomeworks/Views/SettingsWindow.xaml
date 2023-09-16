@@ -197,16 +197,6 @@
 
             </StackPanel>
         </ScrollViewer>
-
-        <!-- Enabled style -->
-        <Style TargetType="FrameworkElement" x:Key="UpdateEnabledStyle">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding UpdateService.CurrentWorkingStatus, Mode=OneWay}" Value="Idle">
-                    <Setter Property="IsEnabled" Value="True"/>
-                </DataTrigger>
-            </Style.Triggers>
-            <Setter Property="IsEnabled" Value="False"/>
-        </Style>
         <ely:BooleanToBooleanReConverter x:Key="BooleanToBooleanReConverter" />
     </Window.Resources>
 
