@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel;
+using System.IO;
+using System.Text.Json;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.Hosting;
 using StickyHomeworks.Models;
@@ -9,10 +11,38 @@ public class SettingsService : ObservableRecipient, IHostedService
 {
     private Settings _settings = new();
 
-    public SettingsService()
+    public SettingsService(IHostApplicationLifetime applicationLifetime)
     {
         PropertyChanged += OnPropertyChanged;
         Settings.PropertyChanged += (o, args) => OnSettingsChanged?.Invoke(o, args);
+        LoadSettings();
+        //applicationLifetime.ApplicationStopping.Register(SaveSettings);
+        OnSettingsChanged += OnOnSettingsChanged;
+    }
+
+    private void OnOnSettingsChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        SaveSettings();
+    }
+
+    public void LoadSettings()
+    {
+        if (!File.Exists("./Settings.json"))
+        {
+            return;
+        }
+        var json = File.ReadAllText("./Settings.json");
+        var r = JsonSerializer.Deserialize<Settings>(json);
+        if (r != null)
+        {
+            Settings = r;
+            //Settings.PropertyChanged += (sender, args) => SaveSettings();
+        }
+    }
+
+    public void SaveSettings()
+    {
+        File.WriteAllText("./Settings.json", JsonSerializer.Serialize<Settings>(Settings));
     }
 
     public event PropertyChangedEventHandler? OnSettingsChanged;

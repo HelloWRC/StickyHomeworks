@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.ComponentModel;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -90,5 +91,11 @@ public partial class MainWindow : Window
 
             win.Activate();
         }
+    }
+
+    private void MainWindow_OnClosing(object? sender, CancelEventArgs e)
+    {
+        SettingsService.SaveSettings();
+        ProfileService.SaveProfile();
     }
 }

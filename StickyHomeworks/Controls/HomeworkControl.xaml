@@ -45,7 +45,7 @@
         </Style>
     </UserControl.Resources>
     <Grid DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=local:HomeworkControl}}">
-        <DockPanel Margin="0 2">
+        <DockPanel Margin="0 0">
             <Ellipse Width="6" Height="6" Fill="{DynamicResource MaterialDesignBody}"
                      Margin="0 0 6 0"/>
             <WrapPanel>

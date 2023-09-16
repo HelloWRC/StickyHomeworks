@@ -62,6 +62,7 @@ public class ThemeBackgroundService : IHostedService
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
+        UpdateTheme();
         await WallpaperPickingService.GetWallpaperAsync();
         UpdateTheme();
     }

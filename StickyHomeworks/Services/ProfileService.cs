@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 using Microsoft.Extensions.Hosting;
 using StickyHomeworks.Models;
 
@@ -9,12 +11,39 @@ public class ProfileService : IHostedService, INotifyPropertyChanged
 {
     private Profile _profile = new();
 
+    public ProfileService(IHostApplicationLifetime applicationLifetime)
+    {
+        LoadProfile();
+        //applicationLifetime.ApplicationStopping.Register(SaveProfile);
+        Profile.PropertyChanged += (sender, args) => SaveProfile();
+    }
+
     public async Task StartAsync(CancellationToken cancellationToken)
     {
     }
 
     public async Task StopAsync(CancellationToken cancellationToken)
     {
+    }
+
+    public void LoadProfile()
+    {
+        if (!File.Exists("./Profile.json"))
+        {
+            return;
+        }
+        var json = File.ReadAllText("./Profile.json");
+        var r = JsonSerializer.Deserialize<Profile>(json);
+        if (r != null)
+        {
+            Profile = r;
+            Profile.PropertyChanged += (sender, args) => SaveProfile();
+        }
+    }
+
+    public void SaveProfile()
+    {
+        File.WriteAllText("./Profile.json", JsonSerializer.Serialize<Profile>(Profile));
     }
 
     public Profile Profile

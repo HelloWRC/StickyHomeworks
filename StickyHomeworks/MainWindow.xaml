@@ -15,6 +15,7 @@
         FontFamily="{StaticResource HarmonyOsSans}"
         Title="作业" 
         d:DataContext="{d:DesignInstance local:MainWindow}"
+        Closing="MainWindow_OnClosing"
         Height="450" Width="800">
     <Window.Resources>
         <CollectionViewSource x:Key='SourceGrouped' 
