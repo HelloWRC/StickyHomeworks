@@ -37,12 +37,47 @@
         </Style>
     </Window.Style>
     <Window.Resources>
+        <Style x:Key="BlankFocusVisualStyle">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Grid/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <CollectionViewSource x:Key='SourceGrouped' 
                               Source="{Binding ProfileService.Profile.Homeworks}">
             <CollectionViewSource.GroupDescriptions>
                 <PropertyGroupDescription PropertyName="Subject"/>
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
+
+        <StackPanel x:Key="ExitConfirm" VerticalAlignment="Stretch" Margin="16" MaxWidth="400">
+            <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}">
+                <Run Text="退出应用"/>
+            </TextBlock>
+            <TextBlock Margin="0 6 0 0" TextWrapping="Wrap">
+                <Run Text="确定要退出应用吗？"/>
+            </TextBlock>
+            <StackPanel Orientation="Horizontal" Margin="0 8 0 0" HorizontalAlignment="Right">
+                <Button Content="退出" HorizontalAlignment="Right" Style="{DynamicResource MaterialDesignFlatButton}" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" 
+                        Click="ButtonExit_OnClick">
+                    <Button.CommandParameter>
+                        <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                            True
+                        </system:Boolean>
+                    </Button.CommandParameter>
+                </Button>
+                <Button Content="取消" HorizontalAlignment="Right" Style="{DynamicResource MaterialDesignFlatButton}" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Margin="6 0 0 0">
+                    <Button.CommandParameter>
+                        <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                            False
+                        </system:Boolean>
+                    </Button.CommandParameter>
+                </Button>
+            </StackPanel>
+        </StackPanel>
     </Window.Resources>
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="-1"
@@ -52,245 +87,260 @@
         </WindowChrome>
     </WindowChrome.WindowChrome>
 
-    <materialDesign:DrawerHost IsBottomDrawerOpen="{Binding ViewModel.IsDrawerOpened}">
-        <!-- 作业编辑 -->
-        <materialDesign:DrawerHost.BottomDrawerContent>
-            <Grid Margin="16">
-                <StackPanel>
-                    <TextBlock Margin="0 0 0 16">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignHeadline5TextBlock}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ViewModel.IsCreatingMode}" Value="True">
-                                        <Setter Property="Text" Value="布置新作业"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ViewModel.IsCreatingMode}" Value="False">
-                                        <Setter Property="Text" Value="编辑作业"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                    <ComboBox Style="{StaticResource MaterialDesignOutlinedComboBox}"
-                              SelectedItem="{Binding ViewModel.EditingHomework.Subject, Mode=TwoWay}"
-                              ItemsSource="{Binding SettingsService.Settings.Subjects}"
-                              x:Name="ComboBoxSubject"
-                              Margin="0 0 0 8"
-                              IsReadOnly="{Binding ViewModel.IsCreatingMode, Converter={StaticResource InvertBooleanConverter}}"
-                              materialDesign:HintAssist.Hint="科目"/>
-                    <DatePicker Style="{StaticResource MaterialDesignOutlinedDatePicker}"
-                                materialDesign:HintAssist.Hint="截止日期"
-                                Margin="0 0 0 8"
-                                SelectedDate="{Binding ViewModel.EditingHomework.DueTime}"/>
-                    <!-- Tags -->
-                    <WrapPanel Margin="0 0 0 8">
-                        <TextBlock VerticalAlignment="Center" Text="标签："/>
-                        <Button Content="{materialDesign:PackIcon EditOutline}" Click="ButtonEditTags_OnClick"
-                                Style="{StaticResource MaterialDesignFlatButton}"/>
-                        <ListBox ItemsSource="{Binding ViewModel.EditingHomework.Tags}"
-                                 Style="{StaticResource MaterialDesignChoiceChipListBox}">
-                            
-                        </ListBox>
-                        <Popup IsOpen="{Binding ViewModel.IsTagEditingPopupOpened}"
-                               StaysOpen="False"
-                               AllowsTransparency="True">
-                            <materialDesign:Card Margin="8">
-                                <Grid Margin="12" MaxWidth="400" MaxHeight="300">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    <!-- Tags选择 -->
-                                    <ListBox Grid.Row="0"
-                                             ItemsSource="{Binding SettingsService.Settings.Tags}"
-                                             Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineListBox}">
-                                        <ListBox.ItemContainerStyle>
-                                            <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignFilterChipPrimaryOutlineListBoxItem}">
-                                                <Setter Property="materialDesign:BehaviorsAssist.Behaviors">
-                                                    <Setter.Value>
-                                                        <materialDesign:BehaviorCollection>
-                                                            <behaviors:AllCollectionBehavior AllCollection="{Binding ViewModel.EditingHomework.Tags ,RelativeSource={RelativeSource FindAncestor, AncestorType=local:MainWindow}}"
-                                                                CurrentValue="{Binding}"/>
-                                                        </materialDesign:BehaviorCollection>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </ListBox.ItemContainerStyle>
-                                    </ListBox>
-                                </Grid>
-                            </materialDesign:Card>
-                        </Popup>
-                    </WrapPanel>
-                    <TextBox Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                             Text="{Binding ViewModel.EditingHomework.Content}"
-                             Margin="0 0 0 8"
-                             TextWrapping="Wrap"
-                             materialDesign:HintAssist.Hint="作业"/>
-                    <Separator Margin="0 0 0 12"/>
-                    <Button Click="ButtonAddHomeworkCompleted_OnClick"
-                            HorizontalAlignment="Right"
-                            Visibility="{Binding ViewModel.IsCreatingMode, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <ely:IconText Kind="Check" Text="完成布置"/>
-                    </Button>
-                    <Button Click="ButtonEditDone_OnClick"
-                            HorizontalAlignment="Right"
-                            Visibility="{Binding ViewModel.IsCreatingMode, Converter={StaticResource InverseBoolToVisConverter}}">
-                        <ely:IconText Kind="Check" Text="确定"/>
-                    </Button>
-                </StackPanel>
-            </Grid>
-        </materialDesign:DrawerHost.BottomDrawerContent>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <!-- 背景 -->
-            <Border Grid.Row="0" 
-                    Grid.RowSpan="3"
-                    Background="{DynamicResource MaterialDesignPaper}"
-                    Opacity="{Binding SettingsService.Settings.Opacity}"/>
-            <!-- 标题栏 -->
-            <materialDesign:ColorZone Grid.Row="0"
-                                      Mode="PrimaryMid"
-                                      Padding="6"
-                                      materialDesign:ElevationAssist.Elevation="Dp2"
-                                      MouseDown="DragBorder_OnMouseDown">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <!-- 标题 -->
-                    <TextBlock Grid.Column="0" Text="{Binding SettingsService.Settings.Title, Mode=OneWay}" 
-                               VerticalAlignment="Center"
-                               FontSize="22" Margin="2"/>
-                    <!-- 功能区 -->
-                    <StackPanel Grid.Column="1" Orientation="Horizontal">
-                        <StackPanel.Resources>
-                            <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
-                                <Setter Property="Margin" Value="4 0"></Setter>
-                            </Style>
-                        </StackPanel.Resources>
-                        <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}"
-                                      Content="{materialDesign:PackIcon UnlockedOutline}"
-                                      materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Lock}"
-                                      materialDesign:ToggleButtonAssist.SwitchTrackOnBackground="{DynamicResource MaterialDesignPaper}"
-                                      ToolTip="锁定窗口"
-                                      IsChecked="{Binding ViewModel.IsUnlocked, Converter={StaticResource InvertBooleanConverter}}"/>
-                        <Button Content="{materialDesign:PackIcon FileExport, Size=18}" ToolTip="导出…"/>
-                        <Button Content="{materialDesign:PackIcon Add, Size=18}" ToolTip="布置作业" Click="ButtonCreateHomework_OnClick"/>
-                        <Button Content="{materialDesign:PackIcon Settings, Size=18}" ToolTip="设置…" Click="ButtonSettings_OnClick"/>
-                        <Button Content="{materialDesign:PackIcon ExitToApp, Size=18}" ToolTip="退出"/>
+    <materialDesign:DialogHost Identifier="MainWindow">
+        <materialDesign:DrawerHost IsBottomDrawerOpen="{Binding ViewModel.IsDrawerOpened}"
+                                   IsTabStop="False"
+                                   FocusVisualStyle="{x:Null}">
+            <!-- 作业编辑 -->
+            <materialDesign:DrawerHost.BottomDrawerContent>
+                <Grid Margin="16">
+                    <StackPanel>
+                        <TextBlock Margin="0 0 0 16">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock"
+                                       BasedOn="{StaticResource MaterialDesignHeadline5TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ViewModel.IsCreatingMode}" Value="True">
+                                            <Setter Property="Text" Value="布置新作业" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ViewModel.IsCreatingMode}" Value="False">
+                                            <Setter Property="Text" Value="编辑作业" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <ComboBox Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                                  SelectedItem="{Binding ViewModel.EditingHomework.Subject, Mode=TwoWay}"
+                                  ItemsSource="{Binding SettingsService.Settings.Subjects}"
+                                  x:Name="ComboBoxSubject"
+                                  Margin="0 0 0 8"
+                                  IsReadOnly="{Binding ViewModel.IsCreatingMode, Converter={StaticResource InvertBooleanConverter}}"
+                                  materialDesign:HintAssist.Hint="科目" />
+                        <DatePicker Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                                    materialDesign:HintAssist.Hint="截止日期"
+                                    Margin="0 0 0 8"
+                                    SelectedDate="{Binding ViewModel.EditingHomework.DueTime}" />
+                        <!-- Tags -->
+                        <WrapPanel Margin="0 0 0 8">
+                            <TextBlock VerticalAlignment="Center" Text="标签：" />
+                            <Button Content="{materialDesign:PackIcon EditOutline}" Click="ButtonEditTags_OnClick"
+                                    Style="{StaticResource MaterialDesignFlatButton}" />
+                            <ListBox ItemsSource="{Binding ViewModel.EditingHomework.Tags}"
+                                     Style="{StaticResource MaterialDesignChoiceChipListBox}">
+
+                            </ListBox>
+                            <Popup IsOpen="{Binding ViewModel.IsTagEditingPopupOpened}"
+                                   StaysOpen="False"
+                                   AllowsTransparency="True">
+                                <materialDesign:Card Margin="8">
+                                    <Grid Margin="12" MaxWidth="400" MaxHeight="300">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <!-- Tags选择 -->
+                                        <ListBox Grid.Row="0"
+                                                 ItemsSource="{Binding SettingsService.Settings.Tags}"
+                                                 Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineListBox}">
+                                            <ListBox.ItemContainerStyle>
+                                                <Style TargetType="ListBoxItem"
+                                                       BasedOn="{StaticResource MaterialDesignFilterChipPrimaryOutlineListBoxItem}">
+                                                    <Setter Property="materialDesign:BehaviorsAssist.Behaviors">
+                                                        <Setter.Value>
+                                                            <materialDesign:BehaviorCollection>
+                                                                <behaviors:AllCollectionBehavior
+                                                                    AllCollection="{Binding ViewModel.EditingHomework.Tags ,RelativeSource={RelativeSource FindAncestor, AncestorType=local:MainWindow}}"
+                                                                    CurrentValue="{Binding}" />
+                                                            </materialDesign:BehaviorCollection>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </ListBox.ItemContainerStyle>
+                                        </ListBox>
+                                    </Grid>
+                                </materialDesign:Card>
+                            </Popup>
+                        </WrapPanel>
+                        <TextBox Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 Text="{Binding ViewModel.EditingHomework.Content}"
+                                 Margin="0 0 0 8"
+                                 TextWrapping="Wrap"
+                                 materialDesign:HintAssist.Hint="作业" />
+                        <Separator Margin="0 0 0 12" />
+                        <Button Click="ButtonAddHomeworkCompleted_OnClick"
+                                HorizontalAlignment="Right"
+                                Visibility="{Binding ViewModel.IsCreatingMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <ely:IconText Kind="Check" Text="完成布置" />
+                        </Button>
+                        <Button Click="ButtonEditDone_OnClick"
+                                HorizontalAlignment="Right"
+                                Visibility="{Binding ViewModel.IsCreatingMode, Converter={StaticResource InverseBoolToVisConverter}}">
+                            <ely:IconText Kind="Check" Text="确定" />
+                        </Button>
                     </StackPanel>
                 </Grid>
-            </materialDesign:ColorZone>
+            </materialDesign:DrawerHost.BottomDrawerContent>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <!-- 背景 -->
+                <Border Grid.Row="0"
+                        Grid.RowSpan="3"
+                        Background="{DynamicResource MaterialDesignPaper}"
+                        Opacity="{Binding SettingsService.Settings.Opacity}" />
+                <!-- 标题栏 -->
+                <materialDesign:ColorZone Grid.Row="0"
+                                          Mode="PrimaryMid"
+                                          Padding="6"
+                                          materialDesign:ElevationAssist.Elevation="Dp2"
+                                          MouseDown="DragBorder_OnMouseDown">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <!-- 标题 -->
+                        <TextBlock Grid.Column="0" Text="{Binding SettingsService.Settings.Title, Mode=OneWay}"
+                                   VerticalAlignment="Center"
+                                   FontSize="22" Margin="2" />
+                        <!-- 功能区 -->
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <StackPanel.Resources>
+                                <Style TargetType="Button"
+                                       BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
+                                    <Setter Property="Margin" Value="4 0"></Setter>
+                                </Style>
+                            </StackPanel.Resources>
+                            <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                          Content="{materialDesign:PackIcon UnlockedOutline}"
+                                          materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Lock}"
+                                          materialDesign:ToggleButtonAssist.SwitchTrackOnBackground="{DynamicResource MaterialDesignPaper}"
+                                          ToolTip="锁定窗口"
+                                          IsChecked="{Binding ViewModel.IsUnlocked, Converter={StaticResource InvertBooleanConverter}}" />
+                            <Button Content="{materialDesign:PackIcon FileExport, Size=18}" ToolTip="导出…" />
+                            <Button Content="{materialDesign:PackIcon Add, Size=18}" ToolTip="布置作业"
+                                    Click="ButtonCreateHomework_OnClick" />
+                            <Button Content="{materialDesign:PackIcon Settings, Size=18}" ToolTip="设置…"
+                                    Click="ButtonSettings_OnClick" />
+                            <Button Content="{materialDesign:PackIcon ExitToApp, Size=18}" ToolTip="退出" 
+                                    Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                                    CommandParameter="{StaticResource ExitConfirm}"/>
+                        </StackPanel>
+                    </Grid>
+                </materialDesign:ColorZone>
 
-            <!-- 作业列表 -->
-            <ListView Grid.Row="1" 
-                      Margin="8"
-                      HorizontalContentAlignment="Stretch"
-                      SelectionMode="Single"
-                      ItemsSource="{Binding Source={StaticResource SourceGrouped}}"
-                      SelectedItem="{Binding ViewModel.SelectedHomework}"
-                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                      ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                      ScrollViewer.CanContentScroll="False"
-                      x:Name="MainListView">
-                <ListView.LayoutTransform>
-                    <TransformGroup>
-                        <ScaleTransform ScaleX="{Binding SettingsService.Settings.Scale, Mode=OneWay}" 
-                                        ScaleY="{Binding SettingsService.Settings.Scale, Mode=OneWay}"/>
-                        <SkewTransform/>
-                        <RotateTransform/>
-                        <TranslateTransform/>
-                    </TransformGroup>
-                </ListView.LayoutTransform>
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
-                        <Setter Property="Padding" Value="24 0 0 0"/>
-                    </Style>
-                </ListView.ItemContainerStyle>
-                <ListView.GroupStyle>
-                    <GroupStyle>
-                        <GroupStyle.Panel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel Orientation="Vertical">
-                                    <WrapPanel.ItemWidth>
-                                        <MultiBinding Converter="{StaticResource MinValueMultiConverter}" Mode="OneWay">
-                                            <Binding Path="ActualWidth" ElementName="MainListView" Mode="OneWay"/>
-                                            <Binding Path="SettingsService.Settings.MaxPanelWidth" Mode="OneWay"/>
-                                        </MultiBinding>
-                                    </WrapPanel.ItemWidth>
-                                </WrapPanel>
-                            </ItemsPanelTemplate>
-                        </GroupStyle.Panel>
-                        <GroupStyle.ContainerStyle>
-                            <Style TargetType="{x:Type GroupItem}">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type GroupItem}">
-                                            <StackPanel>
-                                                <TextBlock Text="{Binding Name}" FontSize="22" FontWeight="Bold"/>
-                                                <ItemsPresenter/>
-                                            </StackPanel>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </GroupStyle.ContainerStyle>
-                    </GroupStyle>
-                </ListView.GroupStyle>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <controls:HomeworkControl Grid.Column="0"
-                                                      Homework="{Binding}"/>
-                            <StackPanel Grid.Column="1" Orientation="Horizontal"
-                                        Visibility="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <Button Content="{materialDesign:PackIcon EditOutline}"
-                                        Style="{StaticResource MaterialDesignToolForegroundButton}"
-                                        Margin="4 -8" ToolTip="编辑"  Click="ButtonEditHomework_OnClick"/>
-                                <Button Content="{materialDesign:PackIcon DeleteOutline}"
-                                        Style="{StaticResource MaterialDesignToolForegroundButton}"
-                                        Margin="4 -8" ToolTip="删除" Foreground="IndianRed"
-                                        Click="ButtonRemoveHomework_OnClick" />
-                            </StackPanel>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            
-            <!-- 布置作业 -->
-            <Button Grid.Row="2"
-                    Click="ButtonCreateHomework_OnClick"
-                    Style="{StaticResource MaterialDesignFlatButton}">
-                <ely:IconText Kind="Add" Text="布置作业"/>
-            </Button>
+                <!-- 作业列表 -->
+                <ListView Grid.Row="1"
+                          Focusable="False"
+                          IsTabStop="False"
+                          Margin="8"
+                          FocusVisualStyle="{StaticResource BlankFocusVisualStyle}"
+                          HorizontalContentAlignment="Stretch"
+                          SelectionMode="Single"
+                          ItemsSource="{Binding Source={StaticResource SourceGrouped}}"
+                          SelectedItem="{Binding ViewModel.SelectedHomework}"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                          ScrollViewer.CanContentScroll="False"
+                          x:Name="MainListView">
+                    <ListView.LayoutTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="{Binding SettingsService.Settings.Scale, Mode=OneWay}"
+                                            ScaleY="{Binding SettingsService.Settings.Scale, Mode=OneWay}" />
+                            <SkewTransform />
+                            <RotateTransform />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </ListView.LayoutTransform>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                            <Setter Property="Padding" Value="24 0 0 0" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.Panel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Vertical" FocusVisualStyle="{x:Null}">
+                                        <WrapPanel.ItemWidth>
+                                            <MultiBinding Converter="{StaticResource MinValueMultiConverter}"
+                                                          Mode="OneWay">
+                                                <Binding Path="ActualWidth" ElementName="MainListView" Mode="OneWay" />
+                                                <Binding Path="SettingsService.Settings.MaxPanelWidth" Mode="OneWay" />
+                                            </MultiBinding>
+                                        </WrapPanel.ItemWidth>
+                                    </WrapPanel>
+                                </ItemsPanelTemplate>
+                            </GroupStyle.Panel>
+                            <GroupStyle.ContainerStyle>
+                                <Style TargetType="{x:Type GroupItem}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type GroupItem}">
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding Name}" FontSize="22" FontWeight="Bold" />
+                                                    <ItemsPresenter />
+                                                </StackPanel>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </GroupStyle.ContainerStyle>
+                        </GroupStyle>
+                    </ListView.GroupStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <controls:HomeworkControl Grid.Column="0"
+                                                          Homework="{Binding}" />
+                                <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                            Visibility="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <Button Content="{materialDesign:PackIcon EditOutline}"
+                                            Style="{StaticResource MaterialDesignToolForegroundButton}"
+                                            Margin="4 -8" ToolTip="编辑" Click="ButtonEditHomework_OnClick" />
+                                    <Button Content="{materialDesign:PackIcon DeleteOutline}"
+                                            Style="{StaticResource MaterialDesignToolForegroundButton}"
+                                            Margin="4 -8" ToolTip="删除" Foreground="IndianRed"
+                                            Click="ButtonRemoveHomework_OnClick" />
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
 
-            <!-- 已解锁 -->
-            <Border Grid.Row="1" Grid.RowSpan="2" 
-                    Visibility="{Binding ViewModel.IsUnlocked, Converter={StaticResource BooleanToVisibilityConverter}}"
-                    Opacity="0.75" Background="{DynamicResource MaterialDesignPaper}"/>
-            <StackPanel Grid.Row="1" Grid.RowSpan="2"
+                <!-- 布置作业 -->
+                <Button Grid.Row="2"
+                        Click="ButtonCreateHomework_OnClick"
+                        Style="{StaticResource MaterialDesignFlatButton}">
+                    <ely:IconText Kind="Add" Text="布置作业" />
+                </Button>
+
+                <!-- 已解锁 -->
+                <Border Grid.Row="1" Grid.RowSpan="2"
                         Visibility="{Binding ViewModel.IsUnlocked, Converter={StaticResource BooleanToVisibilityConverter}}"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center">
-                <TextBlock Text="窗口已经解锁，拖动以移动窗口，拉伸边缘以调整窗口大小。"
-                           TextWrapping="Wrap"/>
-            </StackPanel>
-            <Border Grid.Row="1" Grid.RowSpan="2"
-                    x:Name="DragBorder"
-                    Visibility="{Binding ViewModel.IsUnlocked, Converter={StaticResource BooleanToVisibilityConverter}}"
-                    Background="Transparent"
-                    MouseDown="DragBorder_OnMouseDown">
+                        Opacity="0.75" Background="{DynamicResource MaterialDesignPaper}" />
+                <StackPanel Grid.Row="1" Grid.RowSpan="2"
+                            Visibility="{Binding ViewModel.IsUnlocked, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center">
+                    <TextBlock Text="窗口已经解锁，拖动以移动窗口，拉伸边缘以调整窗口大小。"
+                               TextWrapping="Wrap" />
+                </StackPanel>
+                <Border Grid.Row="1" Grid.RowSpan="2"
+                        x:Name="DragBorder"
+                        Visibility="{Binding ViewModel.IsUnlocked, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Background="Transparent"
+                        MouseDown="DragBorder_OnMouseDown">
 
-            </Border>
-        </Grid>
-    </materialDesign:DrawerHost>
+                </Border>
+            </Grid>
+        </materialDesign:DrawerHost></materialDesign:DialogHost>
 </Window>

@@ -12,6 +12,7 @@ public class MainViewModel : ObservableRecipient
     private bool _isCreatingMode = false;
     private bool _isUnlocked = false;
     private bool _isExpanded = true;
+    private bool _isClosing = false;
 
     public bool IsDrawerOpened
     {
@@ -86,6 +87,17 @@ public class MainViewModel : ObservableRecipient
         {
             if (value == _isExpanded) return;
             _isExpanded = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsClosing
+    {
+        get => _isClosing;
+        set
+        {
+            if (value == _isClosing) return;
+            _isClosing = value;
             OnPropertyChanged();
         }
     }

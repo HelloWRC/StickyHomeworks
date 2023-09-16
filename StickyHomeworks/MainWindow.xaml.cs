@@ -133,6 +133,11 @@ public partial class MainWindow : Window
 
     private void MainWindow_OnClosing(object? sender, CancelEventArgs e)
     {
+        if (!ViewModel.IsClosing)
+        {
+            e.Cancel = true;
+            return;
+        }
         SavePos();
         SettingsService.SaveSettings();
         ProfileService.SaveProfile();
@@ -194,5 +199,11 @@ public partial class MainWindow : Window
     private void MainWindow_OnActivated(object? sender, EventArgs e)
     {
         SetBottom();
+    }
+
+    private void ButtonExit_OnClick(object sender, RoutedEventArgs e)
+    {
+        ViewModel.IsClosing = true;
+        Close();
     }
 }
