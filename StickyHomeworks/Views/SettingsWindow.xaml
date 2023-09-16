@@ -198,6 +198,31 @@
             </StackPanel>
         </ScrollViewer>
         <ely:BooleanToBooleanReConverter x:Key="BooleanToBooleanReConverter" />
+        <StackPanel x:Key="EditSubjectDialog" VerticalAlignment="Stretch" Margin="16" MaxWidth="400">
+            <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}" Text="编辑科目名称"/>
+            <TextBox Margin="0 6 0 0" TextWrapping="Wrap"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding ViewModel.SubjectEditText}"
+                     materialDesign:HintAssist.Hint="科目名称"/>
+            <StackPanel Orientation="Horizontal" Margin="0 8 0 0" HorizontalAlignment="Right">
+                <Button Content="确定" HorizontalAlignment="Right" Style="{DynamicResource MaterialDesignFlatButton}" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" 
+                        CommandParameter="{Binding ViewModel.SubjectEditText, Mode=OneWay}"/>
+                <Button Content="取消" HorizontalAlignment="Right" Style="{DynamicResource MaterialDesignFlatButton}" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Margin="6 0 0 0" CommandParameter="{x:Null}"/>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel x:Key="EditTagDialog" VerticalAlignment="Stretch" Margin="16" MaxWidth="400">
+            <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}" Text="编辑标签名称"/>
+            <TextBox Margin="0 6 0 0" TextWrapping="Wrap"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding ViewModel.TagEditText}"
+                     materialDesign:HintAssist.Hint="科目名称"/>
+            <StackPanel Orientation="Horizontal" Margin="0 8 0 0" HorizontalAlignment="Right">
+                <Button Content="确定" HorizontalAlignment="Right" Style="{DynamicResource MaterialDesignFlatButton}" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" 
+                        CommandParameter="{Binding ViewModel.TagEditText, Mode=OneWay}"/>
+                <Button Content="取消" HorizontalAlignment="Right" Style="{DynamicResource MaterialDesignFlatButton}" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Margin="6 0 0 0" CommandParameter="{x:Null}"/>
+            </StackPanel>
+        </StackPanel>
     </Window.Resources>
 
     <materialDesign:DialogHost Identifier="SettingsWindow">
@@ -430,6 +455,93 @@
                                 </StackPanel>
                             </StackPanel>
                         </ScrollViewer>
+                    </TabItem>
+
+                    <!-- 科目 -->
+                    <TabItem Header="科目">
+                        <Grid Margin="12" MaxWidth="750">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <DockPanel Grid.Row="0" Margin="0 0 0 8">
+                                <Button DockPanel.Dock="Right" Click="ButtonAddSubject_OnClick"
+                                        Style="{StaticResource MaterialDesignFlatButton}">
+                                    <ely:IconText Kind="Add" Text="添加科目" />
+                                </Button>
+                                <TextBlock Text="科目" VerticalAlignment="Center" />
+                            </DockPanel>
+                            <ListBox Grid.Row="1" ItemsSource="{Binding Settings.Subjects}"
+                                     SelectionMode="Single"
+                                     HorizontalContentAlignment="Stretch"
+                                     SelectedIndex="{Binding ViewModel.SubjectSelectedIndex}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding}" VerticalAlignment="Center" />
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                                        Visibility="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <Button Content="{materialDesign:PackIcon EditOutline}"
+                                                        Style="{StaticResource MaterialDesignToolForegroundButton}"
+                                                        Margin="4 -8" ToolTip="编辑" Click="ButtonEditSubject_OnClick" />
+                                                <Button Content="{materialDesign:PackIcon DeleteOutline}"
+                                                        Style="{StaticResource MaterialDesignToolForegroundButton}"
+                                                        Margin="4 -8" ToolTip="删除" Foreground="IndianRed"
+                                                        Click="ButtonDeleteSubject_OnClick" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
+                    </TabItem>
+
+                    <!-- 标签 -->
+                    <TabItem Header="标签">
+                        <Grid Margin="12" MaxWidth="750">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <DockPanel Grid.Row="0" Margin="0 0 0 8">
+                                <Button DockPanel.Dock="Right" Click="ButtonAddTag_OnClick"
+                                        Style="{StaticResource MaterialDesignFlatButton}">
+                                    <ely:IconText Kind="Add" Text="添加标签" />
+                                </Button>
+                                <TextBlock Text="标签" VerticalAlignment="Center" />
+                            </DockPanel>
+                            <ListBox Grid.Row="1" ItemsSource="{Binding Settings.Tags}"
+                                     SelectionMode="Single"
+                                     HorizontalContentAlignment="Stretch"
+                                     SelectedIndex="{Binding ViewModel.TagSelectedIndex}"
+                                     Style="{StaticResource MaterialDesignChoiceChipOutlineListBox}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding}" VerticalAlignment="Center" />
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="4 0 0 0"
+                                                        Visibility="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <Button Content="{materialDesign:PackIcon EditOutline, Size=16}"
+                                                        Style="{StaticResource MaterialDesignToolForegroundButton}"
+                                                        Margin="0 -8" ToolTip="编辑" Click="ButtonEditTag_OnClick" />
+                                                <Button Content="{materialDesign:PackIcon DeleteOutline, Size=16}"
+                                                        Style="{StaticResource MaterialDesignToolForegroundButton}"
+                                                        Margin="0 -8" ToolTip="删除" Foreground="IndianRed"
+                                                        Click="ButtonDeleteTag_OnClick" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
                     </TabItem>
 
                     <!-- 关于 -->

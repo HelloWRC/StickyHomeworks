@@ -8,6 +8,10 @@ public class SettingsViewModel : ObservableRecipient
     private object? _drawerContent;
     private bool _isPopupMenuOpened;
     private string _license = "";
+    private string _subjectEditText = "";
+    private int _subjectSelectedIndex = -1;
+    private string _tagEditText = "";
+    private int _tagSelectedIndex = -1;
 
     public int AppIconClickCount
     {
@@ -49,6 +53,50 @@ public class SettingsViewModel : ObservableRecipient
         {
             if (value == _license) return;
             _license = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string SubjectEditText
+    {
+        get => _subjectEditText;
+        set
+        {
+            if (value == _subjectEditText) return;
+            _subjectEditText = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int SubjectSelectedIndex
+    {
+        get => _subjectSelectedIndex;
+        set
+        {
+            if (value == _subjectSelectedIndex) return;
+            _subjectSelectedIndex = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string TagEditText
+    {
+        get => _tagEditText;
+        set
+        {
+            if (value == _tagEditText) return;
+            _tagEditText = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int TagSelectedIndex
+    {
+        get => _tagSelectedIndex;
+        set
+        {
+            if (value == _tagSelectedIndex) return;
+            _tagSelectedIndex = value;
             OnPropertyChanged();
         }
     }

@@ -137,6 +137,11 @@ public partial class SettingsWindow : MyWindow
         ViewModel.DrawerContent = FindResource(key);
     }
 
+    private async Task<object?> ShowDialog(string key)
+    {
+        return await DialogHost.Show(FindResource(key), "SettingsWindow");
+    }
+
 
     private void ButtonContributors_OnClick(object sender, RoutedEventArgs e)
     {
@@ -194,4 +199,85 @@ public partial class SettingsWindow : MyWindow
         OpenDrawer("ExperimentalSettings");
     }
 
+    private async Task EditSubjectAsync(int index)
+    {
+        ViewModel.SubjectEditText = Settings.Subjects[index];
+        var r = (string?)await ShowDialog("EditSubjectDialog");
+        if (r == null) return;
+        Settings.Subjects[index] = r;
+    }
+
+    private async Task EditTagAsync(int index)
+    {
+        ViewModel.TagEditText = Settings.Tags[index];
+        var r = (string?)await ShowDialog("EditTagDialog");
+        if (r == null) return;
+        Settings.Tags[index] = r;
+    }
+
+    private async void ButtonAddSubject_OnClick(object sender, RoutedEventArgs e)
+    {
+        Settings.Subjects.Add("");
+        await EditSubjectAsync(Settings.Subjects.Count - 1);
+        var r = Settings.Subjects.Last();
+        if (r == "")
+        {
+            Settings.Subjects.RemoveAt(Settings.Subjects.Count - 1);
+        }
+        else
+        {
+            ViewModel.SubjectSelectedIndex = Settings.Subjects.Count - 1;
+        }
+    }
+
+    private async void ButtonEditSubject_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (ViewModel.SubjectSelectedIndex == -1)
+        {
+            return;
+        }
+        await EditSubjectAsync(ViewModel.SubjectSelectedIndex);
+    }
+
+    private void ButtonDeleteSubject_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (ViewModel.SubjectSelectedIndex == -1)
+        {
+            return;
+        }
+        Settings.Subjects.RemoveAt(ViewModel.SubjectSelectedIndex);
+    }
+
+    private async void ButtonAddTag_OnClick(object sender, RoutedEventArgs e)
+    {
+        Settings.Tags.Add("");
+        await EditTagAsync(Settings.Tags.Count - 1);
+        var r = Settings.Tags.Last();
+        if (r == "")
+        {
+            Settings.Tags.RemoveAt(Settings.Tags.Count - 1);
+        }
+        else
+        {
+            ViewModel.TagSelectedIndex = Settings.Tags.Count - 1;
+        }
+    }
+
+    private async void ButtonEditTag_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (ViewModel.TagSelectedIndex == -1)
+        {
+            return;
+        }
+        await EditTagAsync(ViewModel.TagSelectedIndex);
+    }
+
+    private void ButtonDeleteTag_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (ViewModel.TagSelectedIndex == -1)
+        {
+            return;
+        }
+        Settings.Tags.RemoveAt(ViewModel.TagSelectedIndex);
+    }
 }
