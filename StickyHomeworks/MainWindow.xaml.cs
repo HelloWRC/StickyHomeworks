@@ -23,9 +23,13 @@ public partial class MainWindow : Window
 
     public ProfileService ProfileService { get; }
 
-    public MainWindow(ProfileService profileService)
+    public SettingsService SettingsService { get; }
+
+    public MainWindow(ProfileService profileService,
+                      SettingsService settingsService)
     {
         ProfileService = profileService;
+        SettingsService = settingsService;
 
         InitializeComponent();
         DataContext = this;
@@ -34,7 +38,11 @@ public partial class MainWindow : Window
     private void ButtonCreateHomework_OnClick(object sender, RoutedEventArgs e)
     {
         ViewModel.IsDrawerOpened = true;
-        var o = new Homework();
+        var o = new Homework()
+        {
+            Tags = {"test", "123", "456", "444"},
+            Subject = "test"
+        };
         ProfileService.Profile.Homeworks.Add(o);
         ViewModel.SelectedHomework = o;
     }

@@ -24,6 +24,7 @@ public partial class App : AppEx
             {
                 services.AddSingleton<IThemeService, ThemeService>();
                 services.AddSingleton<ProfileService>();
+                services.AddSingleton<SettingsService>();
                 services.AddSingleton<MainWindow>();
             }).
             Build();
