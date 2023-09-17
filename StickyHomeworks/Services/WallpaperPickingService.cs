@@ -89,6 +89,8 @@ public sealed class WallpaperPickingService : IHostedService, INotifyPropertyCha
         UpdateTimer.Start();
     }
 
+    public event EventHandler? WallpaperColorPlatteChanged;
+
     private void SettingsServiceOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(SettingsService.Settings.WallpaperAutoUpdateIntervalSeconds))
@@ -223,6 +225,7 @@ public sealed class WallpaperPickingService : IHostedService, INotifyPropertyCha
 
         // Update cached platte
         if (SettingsService.Settings.WallpaperColorPlatte.Count < SettingsService.Settings.SelectedPlatteIndex + 1 ||
+            SettingsService.Settings.SelectedPlatteIndex == -1 ||
             WallpaperColorPlatte.Count < SettingsService.Settings.SelectedPlatteIndex + 1 ||
             SettingsService.Settings.WallpaperColorPlatte[SettingsService.Settings.SelectedPlatteIndex] !=
             WallpaperColorPlatte[SettingsService.Settings.SelectedPlatteIndex])
@@ -237,6 +240,7 @@ public sealed class WallpaperPickingService : IHostedService, INotifyPropertyCha
 
         IsWorking = false;
         GC.Collect();
+        WallpaperColorPlatteChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
