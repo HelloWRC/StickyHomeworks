@@ -246,7 +246,8 @@
                                           Visibility="{Binding ViewModel.IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}"
                                           IsChecked="{Binding ViewModel.IsUnlocked, Converter={StaticResource InvertBooleanConverter}}" />
                             <Button Content="{materialDesign:PackIcon FileExport, Size=18}" ToolTip="导出…" 
-                                    Visibility="{Binding ViewModel.IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                    Visibility="{Binding ViewModel.IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                    Click="ButtonExport_OnClick"/>
                             <Button Content="{materialDesign:PackIcon Add, Size=18}" ToolTip="布置作业"
                                     Visibility="{Binding ViewModel.IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}"
                                     Click="ButtonCreateHomework_OnClick" />
@@ -285,7 +286,7 @@
                           SelectionMode="Single"
                           ItemsSource="{Binding Source={StaticResource SourceGrouped}}"
                           SelectedItem="{Binding ViewModel.SelectedHomework}"
-                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          ScrollViewer.HorizontalScrollBarVisibility="Auto"
                           ScrollViewer.VerticalScrollBarVisibility="Disabled"
                           ScrollViewer.CanContentScroll="False"
                           Visibility="{Binding ViewModel.IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}"
@@ -391,6 +392,22 @@
                         MouseDown="DragBorder_OnMouseDown">
 
                 </Border>
+
+                <!-- Working -->
+                <Border Grid.Row="1" Grid.RowSpan="2"
+                        Visibility="{Binding ViewModel.IsWorking, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Opacity="0.75" Background="{DynamicResource MaterialDesignPaper}" />
+                <StackPanel Grid.Row="1" Grid.RowSpan="2"
+                            Visibility="{Binding ViewModel.IsWorking, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center">
+                    <ely:StarRailLoadingControl/>
+                </StackPanel>
+
+                <!-- Snackbar -->
+                <materialDesign:Snackbar Grid.Row="0" Grid.RowSpan="3"
+                                         MessageQueue="{Binding ViewModel.SnackbarMessageQueue}"/>
             </Grid>
-        </materialDesign:DrawerHost></materialDesign:DialogHost>
+        </materialDesign:DrawerHost>
+    </materialDesign:DialogHost>
 </Window>

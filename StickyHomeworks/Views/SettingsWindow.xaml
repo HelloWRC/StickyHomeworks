@@ -664,7 +664,7 @@
                                     </FlowDocument>
                                 </FlowDocumentScrollViewer>
 
-                                <materialDesign:Card Margin="0 6 0 0" Visibility="{Binding Settings.IsDebugOptionsEnabled, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <materialDesign:Card Margin="0 6 0 0">
                                     <Expander Background="Transparent">
                                         <Expander.Header>
                                             <TextBlock Margin="-12 0">
@@ -673,7 +673,7 @@
                                             </TextBlock>
                                         </Expander.Header>
                                         <StackPanel Margin="12">
-                                            
+                                            <MenuItem Icon="{materialDesign:PackIcon BugOutline}" Header="崩溃测试" Click="ButtonCrash_OnClick"/>
                                         </StackPanel>
                                     </Expander>
                                 </materialDesign:Card>

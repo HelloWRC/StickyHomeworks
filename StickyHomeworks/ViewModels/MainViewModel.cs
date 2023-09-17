@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using MaterialDesignThemes.Wpf;
 using StickyHomeworks.Models;
 
 namespace StickyHomeworks.ViewModels;
@@ -16,6 +17,8 @@ public class MainViewModel : ObservableRecipient
     private bool _isUnlocked = false;
     private bool _isExpanded = true;
     private bool _isClosing = false;
+    private bool _isWorking = false;
+    private SnackbarMessageQueue _snackbarMessageQueue = new();
 
     public bool IsDrawerOpened
     {
@@ -101,6 +104,28 @@ public class MainViewModel : ObservableRecipient
         {
             if (value == _isClosing) return;
             _isClosing = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsWorking
+    {
+        get => _isWorking;
+        set
+        {
+            if (value == _isWorking) return;
+            _isWorking = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public SnackbarMessageQueue SnackbarMessageQueue
+    {
+        get => _snackbarMessageQueue;
+        set
+        {
+            if (Equals(value, _snackbarMessageQueue)) return;
+            _snackbarMessageQueue = value;
             OnPropertyChanged();
         }
     }

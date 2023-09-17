@@ -5,6 +5,7 @@
        xmlns:elysiaFramework="clr-namespace:ElysiaFramework;assembly=ElysiaFramework"
        xmlns:converters="clr-namespace:StickyHomeworks.Converters"
        ShutdownMode="OnMainWindowClose"
+       DispatcherUnhandledException="App_OnDispatcherUnhandledException"
        >
     <Application.Resources>
         <ResourceDictionary>

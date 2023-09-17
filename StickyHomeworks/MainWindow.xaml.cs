@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -243,5 +245,60 @@ public partial class MainWindow : Window
     private void MainWindow_OnDeactivated(object? sender, EventArgs e)
     {
         MainListView.SelectedIndex = -1;
+    }
+
+    private async void ButtonExport_OnClick(object sender, RoutedEventArgs e)
+    {
+        ViewModel.IsWorking = true;
+        var dialog = new System.Windows.Forms.SaveFileDialog()
+        {
+            Filter = "文本文件 (*.txt)|*.txt"
+        };
+        if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+        {
+            goto done;
+        }
+
+        var file = dialog.FileName!;
+        try
+        {
+            await Task.Run(() =>
+            {
+                var h = from i in ProfileService.Profile.Homeworks
+                    orderby i.Subject
+                    select i;
+                string? lastSubject = null;
+                var outText = new List<string>();
+                foreach (var i in h)
+                {
+                    if (lastSubject == null || i.Subject != lastSubject)
+                    {
+                        lastSubject = i.Subject;
+                        outText.Add(i.Subject);
+                    }
+
+                    outText.Add($"- {i.Content} {string.Join(' ', from t in i.Tags select $"【{t}】")}");
+                }
+
+                File.WriteAllText(file, string.Join('\n', outText));
+                ViewModel.SnackbarMessageQueue.Enqueue($"成功地导出到：{file}", "查看", () =>
+                {
+                    Process.Start(new ProcessStartInfo()
+                    {
+                        FileName = file,
+                        UseShellExecute = true
+                    });
+                });
+
+            });
+        }
+        catch(Exception ex)
+        {
+            ViewModel.SnackbarMessageQueue.Enqueue($"导出失败：{ex}");
+        }
+
+        done: 
+        dialog.Dispose();
+        ViewModel.IsWorking = false;
     }
 }
