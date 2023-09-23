@@ -84,7 +84,7 @@
     </Window.Resources>
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="-1"
-                      ResizeBorderThickness="4"
+                      ResizeBorderThickness="8"
                       CaptionHeight="0">
 
         </WindowChrome>
@@ -371,7 +371,9 @@
                 <!-- 已解锁 -->
                 <Border Grid.Row="1" Grid.RowSpan="2"
                         Visibility="{Binding ViewModel.IsUnlocked, Converter={StaticResource BooleanToVisibilityConverter}}"
-                        Opacity="0.75" Background="{DynamicResource MaterialDesignPaper}" />
+                        Opacity="0.75" Background="{DynamicResource MaterialDesignPaper}" 
+                        BorderThickness="8"
+                        BorderBrush="{DynamicResource PrimaryHueMidBrush}"/>
                 <StackPanel Grid.Row="1" Grid.RowSpan="2"
                             Visibility="{Binding ViewModel.IsUnlocked, Converter={StaticResource BooleanToVisibilityConverter}}"
                             VerticalAlignment="Center"
@@ -389,7 +391,8 @@
                         x:Name="DragBorder"
                         Visibility="{Binding ViewModel.IsUnlocked, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Background="Transparent"
-                        MouseDown="DragBorder_OnMouseDown">
+                        MouseDown="DragBorder_OnMouseDown"
+                        >
 
                 </Border>
 
