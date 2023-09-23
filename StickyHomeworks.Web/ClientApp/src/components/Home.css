@@ -1,0 +1,25 @@
+body {
+}
+
+.app-mainview {
+
+}
+
+.app-actionbar {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+}
+
+.app-text-header {
+    font-weight: bold
+}
+
+.app-mainlist-wrapper {
+}
+
+.app-mainlist-cell-actions {
+    display: flex;
+    flex-direction: column;
+}
