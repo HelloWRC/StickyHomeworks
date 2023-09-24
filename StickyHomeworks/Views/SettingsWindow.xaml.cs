@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using ClassIsland.Services;
+using ElysiaFramework;
 using ElysiaFramework.Controls;
 using MaterialDesignThemes.Wpf;
 using StickyHomeworks.Models;
@@ -98,6 +99,7 @@ public partial class SettingsWindow : MyWindow
     {
         e.Cancel = true;
         Hide();
+        AppEx.GetService<SettingsService>().SaveSettings();
         IsOpened = false;
     }
 

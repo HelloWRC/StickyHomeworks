@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ElysiaFramework;
+using MaterialDesignThemes.Wpf;
 using Microsoft.Xaml.Behaviors;
 using StickyHomeworks.Behaviors;
 using StickyHomeworks.Models;
@@ -300,5 +301,11 @@ public partial class MainWindow : Window
         done: 
         dialog.Dispose();
         ViewModel.IsWorking = false;
+    }
+
+    private void DrawerHost_OnDrawerClosing(object? sender, DrawerClosingEventArgs e)
+    {
+        SettingsService.SaveSettings();
+        ProfileService.SaveProfile();
     }
 }

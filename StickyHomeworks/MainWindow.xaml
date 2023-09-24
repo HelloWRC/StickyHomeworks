@@ -93,7 +93,8 @@
     <materialDesign:DialogHost Identifier="MainWindow">
         <materialDesign:DrawerHost IsBottomDrawerOpen="{Binding ViewModel.IsDrawerOpened}"
                                    IsTabStop="False"
-                                   FocusVisualStyle="{x:Null}">
+                                   FocusVisualStyle="{x:Null}"
+                                   DrawerClosing="DrawerHost_OnDrawerClosing">
             <!-- 作业编辑 -->
             <materialDesign:DrawerHost.BottomDrawerContent>
                 <Grid Margin="16">
