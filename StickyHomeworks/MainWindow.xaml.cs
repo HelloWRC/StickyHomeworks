@@ -69,6 +69,18 @@ public partial class MainWindow : Window
 
     protected override void OnInitialized(EventArgs e)
     {
+        var rm = ProfileService.CleanupOutdated();
+        if (rm.Count > 0)
+        {
+            ViewModel.SnackbarMessageQueue.Enqueue($"清除了{rm.Count}条过期的作业。",
+                "恢复", (o) =>
+                {
+                    foreach (var i in rm)
+                    {
+                        ProfileService.Profile.Homeworks.Add(i);
+                    }
+                }, null, false, false, TimeSpan.FromSeconds(30));
+        }
         base.OnInitialized(e);
     }
 
@@ -145,6 +157,7 @@ public partial class MainWindow : Window
             e.Cancel = true;
             return;
         }
+
         SavePos();
         SettingsService.SaveSettings();
         ProfileService.SaveProfile();

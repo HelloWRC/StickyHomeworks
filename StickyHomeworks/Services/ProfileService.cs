@@ -11,10 +11,12 @@ public class ProfileService : IHostedService, INotifyPropertyChanged
 {
     private Profile _profile = new();
 
+    public event EventHandler? ProfileSaved;
+
     public ProfileService(IHostApplicationLifetime applicationLifetime)
     {
         LoadProfile();
-        CleanupOutdated();
+        //CleanupOutdated();
         //applicationLifetime.ApplicationStopping.Register(SaveProfile);
         Profile.PropertyChanged += (sender, args) => SaveProfile();
     }
@@ -42,18 +44,20 @@ public class ProfileService : IHostedService, INotifyPropertyChanged
         }
     }
 
-    private void CleanupOutdated()
+    public List<Homework> CleanupOutdated()
     {
         var rm = Profile.Homeworks.Where(i => i.DueTime.Date < DateTime.Today.Date).ToList();
         foreach (var i in rm)
         {
             Profile.Homeworks.Remove(i);
         }
+        return rm;
     }
 
     public void SaveProfile()
     {
         File.WriteAllText("./Profile.json", JsonSerializer.Serialize<Profile>(Profile));
+        ProfileSaved?.Invoke(this, EventArgs.Empty);
     }
 
     public Profile Profile

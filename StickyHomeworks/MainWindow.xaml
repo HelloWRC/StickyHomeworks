@@ -81,6 +81,12 @@
                 </Button>
             </StackPanel>
         </StackPanel>
+        <Storyboard x:Key="StoryBoardSaving">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="PackIconArrowFile" Storyboard.TargetProperty="(Canvas.Top)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.2000000" Value="50"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
     </Window.Resources>
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="-1"
@@ -291,7 +297,8 @@
                           ScrollViewer.VerticalScrollBarVisibility="Disabled"
                           ScrollViewer.CanContentScroll="False"
                           Visibility="{Binding ViewModel.IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}"
-                          x:Name="MainListView">
+                          x:Name="MainListView" 
+                          d:ItemsSource="{d:SampleData ItemCount=5}">
                     <ListView.LayoutTransform>
                         <TransformGroup>
                             <ScaleTransform ScaleX="{Binding SettingsService.Settings.Scale, Mode=OneWay}"
@@ -369,13 +376,23 @@
                     <ely:IconText Kind="Add" Text="布置作业" />
                 </Button>
 
+                <!-- 保存中 -->
+                <!--<Canvas Grid.Row="1" Margin="0,30,50,0" HorizontalAlignment="Right" VerticalAlignment="Top">
+                    --><!-- File --><!--
+                    <materialDesign:PackIcon Name="PackIconArrowFile" Kind="ArrowDownBold" Width="26" Height="26" Canvas.Top="0"/>
+                    --><!-- File --><!--
+                    <materialDesign:PackIcon Name="PackIconFile" Kind="FileDocument" Width="26" Height="26" Canvas.Top="30"/>
+                </Canvas>-->
+
                 <!-- 已解锁 -->
                 <Border Grid.Row="1" Grid.RowSpan="2"
+                        d:Visibility="Collapsed"
                         Visibility="{Binding ViewModel.IsUnlocked, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Opacity="0.75" Background="{DynamicResource MaterialDesignPaper}" 
                         BorderThickness="8"
                         BorderBrush="{DynamicResource PrimaryHueMidBrush}"/>
                 <StackPanel Grid.Row="1" Grid.RowSpan="2"
+                            d:Visibility="Collapsed"
                             Visibility="{Binding ViewModel.IsUnlocked, Converter={StaticResource BooleanToVisibilityConverter}}"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
@@ -390,6 +407,7 @@
                 </StackPanel>
                 <Border Grid.Row="1" Grid.RowSpan="2"
                         x:Name="DragBorder"
+                        d:Visibility="Collapsed"
                         Visibility="{Binding ViewModel.IsUnlocked, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Background="Transparent"
                         MouseDown="DragBorder_OnMouseDown"
@@ -399,9 +417,11 @@
 
                 <!-- Working -->
                 <Border Grid.Row="1" Grid.RowSpan="2"
+                        d:Visibility="Collapsed"
                         Visibility="{Binding ViewModel.IsWorking, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Opacity="0.75" Background="{DynamicResource MaterialDesignPaper}" />
                 <StackPanel Grid.Row="1" Grid.RowSpan="2"
+                            d:Visibility="Collapsed"
                             Visibility="{Binding ViewModel.IsWorking, Converter={StaticResource BooleanToVisibilityConverter}}"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center">
