@@ -664,19 +664,31 @@
                                     </FlowDocument>
                                 </FlowDocumentScrollViewer>
 
-                                <materialDesign:Card Margin="0 6 0 0">
-                                    <Expander Background="Transparent">
-                                        <Expander.Header>
-                                            <TextBlock Margin="-12 0">
-                                                <Run FontWeight="Bold" FontSize="14" Text="调试" /><LineBreak />
-                                                <Run Text="仅供调试，除非你能知道您在做什么，请不要使用以下按钮。"></Run>
-                                            </TextBlock>
-                                        </Expander.Header>
-                                        <StackPanel Margin="12">
-                                            <MenuItem Icon="{materialDesign:PackIcon BugOutline}" Header="崩溃测试" Click="ButtonCrash_OnClick"/>
-                                        </StackPanel>
-                                    </Expander>
-                                </materialDesign:Card>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </TabItem>
+
+                    <!-- 调试 -->
+                    <TabItem Header="调试">
+                        <ScrollViewer>
+                            <StackPanel Style="{StaticResource SettingsPageStackPanelStyle}">
+                                <StackPanel.Resources>
+                                    <Style TargetType="MenuItem" BasedOn="{StaticResource MaterialDesignMenuItem}">
+                                        <Style.Resources>
+                                            <Style TargetType="materialDesign:PackIcon">
+                                                <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}"/>
+                                            </Style>
+                                        </Style.Resources>
+                                    </Style>
+                                </StackPanel.Resources>
+                                <TextBlock Text="调试" Style="{StaticResource MaterialDesignHeadline5TextBlock}"/>
+                                <TextBlock Margin="0 12">
+                                    <Run Text="仅供调试，除非你能知道您在做什么，请不要使用以下按钮。"></Run>
+                                </TextBlock>
+
+                                <MenuItem Icon="{materialDesign:PackIcon BugOutline}" Header="崩溃测试" Click="ButtonCrash_OnClick"/>
+                                <MenuItem IsCheckable="True" IsChecked="{Binding Settings.IsDebugShowInTaskBar}" Header="在任务栏显示图标"/>
+
                             </StackPanel>
                         </ScrollViewer>
                     </TabItem>

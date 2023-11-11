@@ -15,7 +15,7 @@
         TextElement.FontSize="14"
         FontFamily="{StaticResource HarmonyOsSans}"
         Title="{Binding SettingsService.Settings.Title, Mode=OneWay}" 
-        ShowInTaskbar="False"
+        ShowInTaskbar="{Binding SettingsService.Settings.IsDebugShowInTaskBar}"
         d:DataContext="{d:DesignInstance local:MainWindow}"
         Closing="MainWindow_OnClosing"
         WindowStyle="None"
@@ -124,6 +124,7 @@
                                   SelectedItem="{Binding ViewModel.EditingHomework.Subject, Mode=TwoWay}"
                                   ItemsSource="{Binding SettingsService.Settings.Subjects}"
                                   x:Name="ComboBoxSubject"
+                                  IsEnabled="{Binding ViewModel.IsCreatingMode}"
                                   Margin="0 0 0 8"
                                   IsReadOnly="{Binding ViewModel.IsCreatingMode, Converter={StaticResource InvertBooleanConverter}}"
                                   materialDesign:HintAssist.Hint="科目" />
@@ -441,7 +442,7 @@
                         d:Visibility="Collapsed"
                         Visibility="{Binding ViewModel.IsUnlocked, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Opacity="0.75" Background="{DynamicResource MaterialDesignPaper}" 
-                        BorderThickness="8"
+                        BorderThickness="8 0 8 8"
                         BorderBrush="{DynamicResource PrimaryHueMidBrush}"/>
                 <StackPanel Grid.Row="1" Grid.RowSpan="2"
                             d:Visibility="Collapsed"

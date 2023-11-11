@@ -34,6 +34,7 @@ public class Settings : ObservableRecipient
     private bool _isBottom = true;
     private string _title = "作业";
     private double _maxPanelWidth = 350;
+    private bool _isDebugShowInTaskBar = false;
 
     public double WindowX
     {
@@ -336,6 +337,17 @@ public class Settings : ObservableRecipient
         {
             if (value == _isDebugOptionsEnabled) return;
             _isDebugOptionsEnabled = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsDebugShowInTaskBar
+    {
+        get => _isDebugShowInTaskBar;
+        set
+        {
+            if (value == _isDebugShowInTaskBar) return;
+            _isDebugShowInTaskBar = value;
             OnPropertyChanged();
         }
     }
