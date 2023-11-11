@@ -103,7 +103,7 @@
                                    DrawerClosing="DrawerHost_OnDrawerClosing">
             <!-- 作业编辑 -->
             <materialDesign:DrawerHost.BottomDrawerContent>
-                <Grid Margin="16">
+                <Grid Margin="16" MaxWidth="500">
                     <StackPanel>
                         <TextBlock Margin="0 0 0 16">
                             <TextBlock.Style>
@@ -244,6 +244,58 @@
                                     <Setter Property="Margin" Value="4 0"></Setter>
                                 </Style>
                             </StackPanel.Resources>
+                            <Button Content="{materialDesign:PackIcon Menu, Size=18}" ToolTip="更多选项…" 
+                                    Visibility="{Binding ViewModel.IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                    Click="ButtonMore_Click"/>
+                            <materialDesign:PopupEx x:Name="PopupExAdvanced"
+                                                    StaysOpen="False"
+                                                    AllowsTransparency="True"
+                                                    PopupAnimation="Fade">
+                                <Grid Background="{DynamicResource MaterialDesignPaper}"
+                                      TextElement.Foreground="{DynamicResource MaterialDesignBody}"> 
+                                    <StackPanel Margin="12">
+                                        <ely:IconText Kind="CogOutline" Text="更多选项"/>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <!-- 界面缩放 -->
+                                            <TextBlock Grid.Row="0" 
+                                                       Grid.Column="0"
+                                                       Text="界面缩放"
+                                                       VerticalAlignment="Center"/>
+                                            <controls:NumberUpDownControl Grid.Row="0" 
+                                                                          Grid.Column="1"
+                                                                          StringFormat="P0"
+                                                                          MinValue="0.8"
+                                                                          MaxValue="5"
+                                                                          VerticalAlignment="Center"
+                                                                          Value="{Binding SettingsService.Settings.Scale, Mode=TwoWay}"
+                                                                          Step="0.05"/>
+                                            <!-- 背景不透明度 -->
+                                            <TextBlock Grid.Row="1" 
+                                                       Grid.Column="0"
+                                                       Text="背景不透明度"
+                                                       VerticalAlignment="Center"/>
+                                            <controls:NumberUpDownControl Grid.Row="1" 
+                                                                          Grid.Column="1"
+                                                                          StringFormat="P0"
+                                                                          MinValue="0"
+                                                                          MaxValue="1"
+                                                                          VerticalAlignment="Center"
+                                                                          Value="{Binding SettingsService.Settings.Opacity, Mode=TwoWay}"
+                                                                          Step="0.05"/>
+                                        </Grid>
+                                        <Separator Margin="-12 4"/>
+                                        <MenuItem Margin="-12 0" Icon="{materialDesign:PackIcon CogOutline}" Header="更多设置…" Click="ButtonSettings_OnClick"/>
+                                    </StackPanel>
+                                </Grid>
+                            </materialDesign:PopupEx>
                             <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}"
                                           Margin="4 0"
                                           Content="{materialDesign:PackIcon UnlockedOutline}"
@@ -397,9 +449,10 @@
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
                             Margin="12">
-                    <Image Source="/Assets/光辉矢愿_瞄准.png" Height="81" Width="81"
+                    <!--<Image Source="/Assets/光辉矢愿_瞄准.png" Height="81" Width="81"
                            HorizontalAlignment="Center"
-                           Margin="0 0 0 8"/>
+                           Margin="0 0 0 8"/>-->
+                    <controls:WindowMovingDemo Margin="0 0 0 8" ToolTip="窗口操作演示"/>
                     <TextBlock Text="窗口已经解锁，拖动以移动窗口，拉伸边缘以调整窗口大小。"
                                TextWrapping="Wrap" 
                                HorizontalAlignment="Center"

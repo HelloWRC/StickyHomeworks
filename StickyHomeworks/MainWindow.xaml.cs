@@ -321,4 +321,9 @@ public partial class MainWindow : Window
         SettingsService.SaveSettings();
         ProfileService.SaveProfile();
     }
+
+    private void ButtonMore_Click(object sender, RoutedEventArgs e)
+    {
+        PopupExAdvanced.IsOpen = true;
+    }
 }
