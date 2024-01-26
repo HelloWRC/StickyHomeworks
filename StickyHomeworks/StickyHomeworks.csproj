@@ -1,33 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <DebugType>embedded</DebugType>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <DebugType>embedded</DebugType>
   </PropertyGroup>
-
   <ItemGroup>
     <EditorConfigFiles Remove="E:\Coding\StickyHomeworks\StickyHomeworks\.editorconfig" />
   </ItemGroup>
-
   <ItemGroup>
     <None Remove="Assets\Contributiors\HelloWRC%4064w.jpg" />
     <None Remove="Assets\光辉矢愿_瞄准.png" />
   </ItemGroup>
-
   <ItemGroup>
     <COMReference Include="IWshRuntimeLibrary">
       <WrapperTool>tlbimp</WrapperTool>
@@ -39,18 +33,14 @@
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
-
   <ItemGroup>
     <None Include="E:\Coding\StickyHomeworks\StickyHomeworks\.editorconfig" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\ElysiaFramework\ElysiaFramework.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Resource Include="Assets\Contributiors\HelloWRC@64w.jpg" />
     <Resource Include="Assets\光辉矢愿_瞄准.png" />
   </ItemGroup>
-
 </Project>
