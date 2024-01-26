@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<TargetFramework>net6.0-windows</TargetFramework>
+	<Nullable>enable</Nullable>
+	<UseWPF>true</UseWPF>
+	<UseWindowsForms>true</UseWindowsForms>
+	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	<PackageId>dev.HelloWRC.$(AssemblyName)</PackageId>
+	<Authors>HelloWRC.Dev</Authors>
+	<AssemblyVersion>1.0.1</AssemblyVersion>
+	<FileVersion>1.0.1</FileVersion>
+	<Version>1.0.1</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<None Remove="Assets\Fonts\HarmonyOS_Sans_SC_Black.ttf" />
+	<None Remove="Assets\Fonts\HarmonyOS_Sans_SC_Bold.ttf" />
+	<None Remove="Assets\Fonts\HarmonyOS_Sans_SC_Light.ttf" />
+	<None Remove="Assets\Fonts\HarmonyOS_Sans_SC_Medium.ttf" />
+	<None Remove="Assets\Fonts\HarmonyOS_Sans_SC_Regular.ttf" />
+	<None Remove="Assets\Fonts\HarmonyOS_Sans_SC_Thin.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+	<PackageReference Include="MaterialDesignThemes" Version="4.8.0" />
+	<PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+	<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<Resource Include="Assets\Fonts\HarmonyOS_Sans_SC_Black.ttf" />
+	<Resource Include="Assets\Fonts\HarmonyOS_Sans_SC_Bold.ttf" />
+	<Resource Include="Assets\Fonts\HarmonyOS_Sans_SC_Light.ttf" />
+	<Resource Include="Assets\Fonts\HarmonyOS_Sans_SC_Medium.ttf" />
+	<Resource Include="Assets\Fonts\HarmonyOS_Sans_SC_Regular.ttf" />
+	<Resource Include="Assets\Fonts\HarmonyOS_Sans_SC_Thin.ttf" />
+  </ItemGroup>
+
+</Project>

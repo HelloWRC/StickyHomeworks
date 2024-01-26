@@ -5,7 +5,9 @@ VisualStudioVersion = 17.8.34004.107
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StickyHomeworks", "StickyHomeworks\StickyHomeworks.csproj", "{88C2773A-34FB-44BB-A377-A66B63983D2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StickyHomeworks.Web", "StickyHomeworks.Web\StickyHomeworks.Web.csproj", "{CA34684C-FE27-4EA2-8EBE-B46287D231F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StickyHomeworks.Web", "StickyHomeworks.Web\StickyHomeworks.Web.csproj", "{CA34684C-FE27-4EA2-8EBE-B46287D231F3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElysiaFramework", "ElysiaFramework\ElysiaFramework.csproj", "{1DA2E4CF-8B02-4960-AE3A-57ECE280F75B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{CA34684C-FE27-4EA2-8EBE-B46287D231F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA34684C-FE27-4EA2-8EBE-B46287D231F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA34684C-FE27-4EA2-8EBE-B46287D231F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DA2E4CF-8B02-4960-AE3A-57ECE280F75B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DA2E4CF-8B02-4960-AE3A-57ECE280F75B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DA2E4CF-8B02-4960-AE3A-57ECE280F75B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DA2E4CF-8B02-4960-AE3A-57ECE280F75B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
