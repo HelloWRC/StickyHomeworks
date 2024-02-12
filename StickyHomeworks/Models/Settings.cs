@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.Json.Serialization;
 using System.Windows.Media;
-using IWshRuntimeLibrary;
+using WindowsShortcutFactory;
 using File = System.IO.File;
 
 namespace StickyHomeworks.Models;
@@ -88,17 +88,15 @@ public class Settings : ObservableRecipient
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "StickyHomeworks.lnk"));
         set
         {
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "StickyHomeworks.lnk");
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "ClassIsland.lnk");
             try
             {
                 if (value)
                 {
-                    var shell = new WshShell();
-                    var shortcut = (IWshShortcut)shell.CreateShortcut(path);//创建快捷方式对象
-                    shortcut.TargetPath = Environment.ProcessPath;
+                    using var shortcut = new WindowsShortcut();
+                    shortcut.Path = Environment.ProcessPath;
                     shortcut.WorkingDirectory = Environment.CurrentDirectory;
-                    shortcut.WindowStyle = 1;
-                    shortcut.Save();
+                    shortcut.Save(path);
                 }
                 else
                 {
@@ -106,7 +104,7 @@ public class Settings : ObservableRecipient
                 }
                 OnPropertyChanged();
             }
-            catch
+            catch (Exception ex)
             {
                 // ignored
             }

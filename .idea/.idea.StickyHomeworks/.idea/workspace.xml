@@ -9,28 +9,73 @@
     <projectFile pubXmlPath="StickyHomeworks.Web/Properties/PublishProfiles/FolderProfile.pubxml">StickyHomeworks.Web/StickyHomeworks.Web.csproj</projectFile>
     <projectFile pubXmlPath="StickyHomeworks/Properties/PublishProfiles/FolderProfile.pubxml">StickyHomeworks/StickyHomeworks.csproj</projectFile>
   </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="3196fe86-df94-4a98-bee9-91111b77b7d0" name="更改" comment="" />
+    <list default="true" id="3196fe86-df94-4a98-bee9-91111b77b7d0" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/StickyHomeworks.Core/Class1.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StickyHomeworks.Core/Context/AppDbContext.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StickyHomeworks.Core/Entities/Emotion.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StickyHomeworks.Core/Entities/EmotionsGroup.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StickyHomeworks.Core/Entities/Homework.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StickyHomeworks.Core/StickyHomeworks.Core.csproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StickyHomeworks/db/app.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.StickyHomeworks/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.StickyHomeworks/.idea/indexLayout.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.StickyHomeworks/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.StickyHomeworks/.idea/projectSettingsUpdater.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.StickyHomeworks/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.StickyHomeworks/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.StickyHomeworks/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.StickyHomeworks/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ElysiaFramework/ElysiaFramework.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ElysiaFramework/ElysiaFramework.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StickyHomeworks.Core/Models/Emotion.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StickyHomeworks.Core/ServiceHost.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StickyHomeworks.Core/Services/EmotionService.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StickyHomeworks.sln" beforeDir="false" afterPath="$PROJECT_DIR$/StickyHomeworks.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StickyHomeworks/App.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StickyHomeworks/App.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StickyHomeworks/Models/Settings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StickyHomeworks/Models/Settings.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StickyHomeworks/StickyHomeworks.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/StickyHomeworks/StickyHomeworks.csproj" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="8491fe2afac672ef98033f7bf5c599964ed3cc61" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/bf5e279d9239bfef5bb1b8d6212f1b971c434606/src/libraries/System.Private.CoreLib/src/System/Runtime/ExceptionServices/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 0
-}]]></component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
   <component name="ProjectId" id="2cFgnJeCDdJlH8CyggJ6VcwkGFB" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    ".NET 项目.StickyHomeworks.executor": "Debug",
+    "ASKED_ADD_EXTERNAL_FILES": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "back",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
@@ -43,7 +88,7 @@
     ]
   }
 }]]></component>
-  <component name="RunManager" selected=".NET 项目.StickyHomeworks.Avalonia">
+  <component name="RunManager" selected=".NET 项目.StickyHomeworks">
     <configuration name="ElysiaFramework: FolderProfile" type="DotNetMsBuildPublish" factoryName="Publish to IIS">
       <riderPublish publish_profile="FolderProfile.pubxml" pubxml_path="$PROJECT_DIR$/ElysiaFramework/Properties/PublishProfiles/FolderProfile.pubxml" uuid_high="2135520753368582496" uuid_low="-5892300487536871589" />
       <method v="2" />
@@ -55,6 +100,24 @@
     <configuration name="StickyHomeworks.Web: FolderProfile" type="DotNetMsBuildPublish" factoryName="Publish to IIS">
       <riderPublish configuration="Release" platform="Any CPU" publish_profile="FolderProfile.pubxml" pubxml_path="$PROJECT_DIR$/StickyHomeworks.Web/Properties/PublishProfiles/FolderProfile.pubxml" uuid_high="-3876358699368362334" uuid_low="-8160887139470265869" />
       <method v="2" />
+    </configuration>
+    <configuration name="StickyHomeworks" type="DotNetProject" factoryName=".NET Project">
+      <option name="EXE_PATH" value="$PROJECT_DIR$/StickyHomeworks/bin/Debug/net8.0-windows/StickyHomeworks.exe" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/StickyHomeworks/bin/Debug/net8.0-windows" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="PROJECT_PATH" value="$PROJECT_DIR$/StickyHomeworks/StickyHomeworks.csproj" />
+      <option name="PROJECT_EXE_PATH_TRACKING" value="1" />
+      <option name="PROJECT_ARGUMENTS_TRACKING" value="1" />
+      <option name="PROJECT_WORKING_DIRECTORY_TRACKING" value="1" />
+      <option name="PROJECT_KIND" value="DotNetCore" />
+      <option name="PROJECT_TFM" value="net8.0-windows" />
+      <method v="2">
+        <option name="Build" />
+      </method>
     </configuration>
     <configuration name="StickyHomeworks.Avalonia" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
@@ -132,13 +195,47 @@
       <option name="presentableId" value="Default" />
       <updated>1707712907043</updated>
       <workItem from="1707712912085" duration="19000" />
+      <workItem from="1707712980429" duration="823000" />
+      <workItem from="1707713831740" duration="2441000" />
     </task>
+    <task id="LOCAL-00001" summary="merged">
+      <option name="closed" value="true" />
+      <created>1707713303885</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1707713303885</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ID_WIDTH">
+                <map>
+                  <entry key="Table.Default.Author.ColumnIdWidth" value="29" />
+                  <entry key="Table.Default.Date.ColumnIdWidth" value="67" />
+                  <entry key="Table.Space.CommitStatus.ColumnIdWidth" value="31" />
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="merged" />
+    <option name="LAST_COMMIT_MESSAGE" value="merged" />
   </component>
 </project>

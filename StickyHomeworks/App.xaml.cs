@@ -11,6 +11,7 @@ using ElysiaFramework.Interfaces;
 using ElysiaFramework.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using StickyHomeworks.Core.Context;
 using StickyHomeworks.Services;
 using StickyHomeworks.Views;
 using MessageBox = System.Windows.MessageBox;
@@ -41,6 +42,7 @@ public partial class App : AppEx
             UseContentRoot(AppContext.BaseDirectory).
             ConfigureServices((context, services) =>
             {
+                services.AddDbContext<AppDbContext>();
                 services.AddSingleton<IThemeService, ThemeService>();
                 services.AddSingleton<ProfileService>();
                 services.AddSingleton<SettingsService>();
@@ -52,6 +54,7 @@ public partial class App : AppEx
             }).
             Build();
         _ = Host.StartAsync();
+        GetService<AppDbContext>();
         MainWindow = GetService<MainWindow>();
         GetService<MainWindow>().Show();
         base.OnStartup(e);
