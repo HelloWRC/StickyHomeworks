@@ -1,0 +1,55 @@
+Index: StickyHomeworks.Avalonia/StickyHomeworks.Avalonia.csproj
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><Project Sdk=\"Microsoft.NET.Sdk\">\r\n  <PropertyGroup>\r\n    <TargetFramework>net8.0-windows</TargetFramework>\r\n    <Nullable>enable</Nullable>\r\n    <LangVersion>latest</LangVersion>\r\n    <OutputType>WinExe</OutputType>\r\n    <StartupObject>StickyHomeworks.Avalonia.Program</StartupObject>\r\n  </PropertyGroup>\r\n  <PropertyGroup Condition=\"'$(Configuration)|$(Platform)'=='Debug|AnyCPU'\">\r\n    <IsAotCompatible>False</IsAotCompatible>\r\n    <IsPublishable>False</IsPublishable>\r\n  </PropertyGroup>\r\n  <PropertyGroup Condition=\"'$(Configuration)|$(Platform)'=='Release|AnyCPU'\">\r\n    <IsAotCompatible>False</IsAotCompatible>\r\n    <IsPublishable>False</IsPublishable>\r\n  </PropertyGroup>\r\n  <ItemGroup>\r\n    <AvaloniaResource Include=\"Assets\\**\" />\r\n  </ItemGroup>\r\n  <ItemGroup>\r\n    <PackageReference Include=\"Avalonia\" Version=\"$(AvaloniaVersion)\" />\r\n    <PackageReference Include=\"Avalonia.Themes.Fluent\" Version=\"$(AvaloniaVersion)\" />\r\n    <PackageReference Include=\"Avalonia.Fonts.Inter\" Version=\"$(AvaloniaVersion)\" />\r\n    <PackageReference Include=\"CommunityToolkit.Mvvm\" Version=\"8.2.0\" />\r\n    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->\r\n    <PackageReference Condition=\"'$(Configuration)' == 'Debug'\" Include=\"Avalonia.Diagnostics\" Version=\"$(AvaloniaVersion)\" />\r\n    <PackageReference Include=\"Live.Avalonia\" Version=\"1.4.1\" />\r\n    <PackageReference Include=\"Material.Avalonia\" Version=\"3.2.2\" />\r\n    <PackageReference Include=\"Material.Avalonia.Dialogs\" Version=\"3.2.2\" />\r\n    <PackageReference Include=\"Avalonia.Desktop\" Version=\"$(AvaloniaVersion)\" />\r\n\r\n  </ItemGroup>\r\n  <ItemGroup>\r\n    <ProjectReference Include=\"..\\StickyHomeworks.Core\\StickyHomeworks.Core.csproj\" />\r\n    <Watch Include=\"**\\*.xaml\" />\r\n  </ItemGroup>\r\n\r\n</Project>
+===================================================================
+diff --git a/StickyHomeworks.Avalonia/StickyHomeworks.Avalonia.csproj b/StickyHomeworks.Avalonia/StickyHomeworks.Avalonia.csproj
+--- a/StickyHomeworks.Avalonia/StickyHomeworks.Avalonia.csproj	
++++ b/StickyHomeworks.Avalonia/StickyHomeworks.Avalonia.csproj	
+@@ -21,7 +21,7 @@
+     <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+     <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
+     <PackageReference Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
+-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
++    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
+     <PackageReference Include="Live.Avalonia" Version="1.4.1" />
+Index: StickyHomeworks.Core/StickyHomeworks.Core.csproj
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><Project Sdk=\"Microsoft.NET.Sdk\">\r\n\r\n  <PropertyGroup>\r\n    <TargetFramework>net8.0</TargetFramework>\r\n    <ImplicitUsings>enable</ImplicitUsings>\r\n    <Nullable>enable</Nullable>\r\n  </PropertyGroup>\r\n\r\n</Project>\r\n
+===================================================================
+diff --git a/StickyHomeworks.Core/StickyHomeworks.Core.csproj b/StickyHomeworks.Core/StickyHomeworks.Core.csproj
+--- a/StickyHomeworks.Core/StickyHomeworks.Core.csproj	
++++ b/StickyHomeworks.Core/StickyHomeworks.Core.csproj	
+@@ -6,4 +6,12 @@
+     <Nullable>enable</Nullable>
+   </PropertyGroup>
+ 
++  <ItemGroup>
++    <Folder Include="Models\" />
++  </ItemGroup>
++
++  <ItemGroup>
++    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
++  </ItemGroup>
++
+ </Project>
+Index: StickyHomeworks.Avalonia/App.axaml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><Application xmlns=\"https://github.com/avaloniaui\"\r\n             xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"\r\n             xmlns:themes=\"clr-namespace:Material.Styles.Themes;assembly=Material.Styles\"\r\n             x:Class=\"StickyHomeworks.Avalonia.App\"\r\n             RequestedThemeVariant=\"Default\">\r\n             <!-- \"Default\" ThemeVariant follows system theme variant. \"Dark\" or \"Light\" are other available options. -->\r\n\r\n    <Application.Resources>\r\n        <FontFamily x:Key=\"HarmonyOsSans\">avares://StickyHomeworks.Avalonia/Assets/Fonts/HarmonyOS_Sans_SC_Regular.ttf#HarmonyOS Sans SC</FontFamily>\r\n    </Application.Resources>\r\n    <Application.Styles>\r\n        <FluentTheme />\r\n        <themes:MaterialTheme BaseTheme=\"Inherit\" PrimaryColor=\"Purple\" SecondaryColor=\"Lime\"/>\r\n        <Style Selector=\"TextElement\">\r\n            <Setter Property=\"FontFamily\" Value=\"Microsoft YaHei\"/>\r\n        </Style>\r\n    </Application.Styles>\r\n\r\n</Application>\r\n
+===================================================================
+diff --git a/StickyHomeworks.Avalonia/App.axaml b/StickyHomeworks.Avalonia/App.axaml
+--- a/StickyHomeworks.Avalonia/App.axaml	
++++ b/StickyHomeworks.Avalonia/App.axaml	
+@@ -10,7 +10,7 @@
+     </Application.Resources>
+     <Application.Styles>
+         <FluentTheme />
+-        <themes:MaterialTheme BaseTheme="Inherit" PrimaryColor="Purple" SecondaryColor="Lime"/>
++        <!--<themes:MaterialTheme BaseTheme="Inherit" PrimaryColor="Purple" SecondaryColor="Lime"/>-->
+         <Style Selector="TextElement">
+             <Setter Property="FontFamily" Value="Microsoft YaHei"/>
+         </Style>

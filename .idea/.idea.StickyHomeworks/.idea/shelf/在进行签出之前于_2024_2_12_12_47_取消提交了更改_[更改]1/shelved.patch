@@ -1,0 +1,106 @@
+Index: StickyHomeworks/App.xaml.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>using System.Configuration;\r\nusing System.Data;\r\nusing System.Reflection;\r\nusing System.Windows;\r\nusing System.Windows.Forms;\r\nusing System.Windows.Input;\r\nusing System.Windows.Threading;\r\nusing ClassIsland.Services;\r\nusing ElysiaFramework;\r\nusing ElysiaFramework.Interfaces;\r\nusing ElysiaFramework.Services;\r\nusing Microsoft.Extensions.DependencyInjection;\r\nusing Microsoft.Extensions.Hosting;\r\nusing StickyHomeworks.Services;\r\nusing StickyHomeworks.Views;\r\nusing MessageBox = System.Windows.MessageBox;\r\n\r\nnamespace StickyHomeworks;\r\n\r\n/// <summary>\r\n/// Interaction logic for App.xaml\r\n/// </summary>\r\npublic partial class App : AppEx\r\n{\r\n    private static Mutex? Mutex;\r\n\r\n    public static string AppVersion => Assembly.GetExecutingAssembly().GetName().Version!.ToString();\r\n\r\n    static App()\r\n    {\r\n        _ = StickyHomeworks.Avalonia.Program.BuildAvaloniaApp()\r\n            .SetupWithoutStarting();\r\n    }\r\n\r\n    protected override void OnStartup(StartupEventArgs e)\r\n    {\r\n        Mutex = new Mutex(true, \"StickyHomeworks.Lock\", out var createNew);\r\n        if (!createNew)\r\n        {\r\n            MessageBox.Show(\"应用已经在运行中，请勿重复启动第二个实例。\");\r\n            Environment.Exit(0);\r\n            \r\n        }\r\n\r\n        Host = Microsoft.Extensions.Hosting.Host.\r\n            CreateDefaultBuilder().\r\n            UseContentRoot(AppContext.BaseDirectory).\r\n            ConfigureServices((context, services) =>\r\n            {\r\n                services.AddSingleton<IThemeService, ThemeService>();\r\n                services.AddSingleton<ProfileService>();\r\n                services.AddSingleton<SettingsService>();\r\n                services.AddSingleton<SettingsWindow>();\r\n                services.AddSingleton<WallpaperPickingService>();\r\n                services.AddHostedService<ThemeBackgroundService>();\r\n                services.AddSingleton<MainWindow>();\r\n                services.AddSingleton<CrashWindow>();\r\n            }).\r\n            Build();\r\n        _ = Host.StartAsync();\r\n        MainWindow = GetService<MainWindow>();\r\n        GetService<MainWindow>().Show();\r\n        base.OnStartup(e);\r\n    }\r\n\r\n    private void App_OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)\r\n    {\r\n        e.Handled = true;\r\n        var cw = GetService<CrashWindow>();\r\n        cw.CrashInfo = e.Exception.ToString();\r\n        cw.Exception = e.Exception;\r\n        cw.OpenWindow();\r\n    }\r\n\r\n    public static void ReleaseLock()\r\n    {\r\n        Mutex?.ReleaseMutex();\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/StickyHomeworks/App.xaml.cs b/StickyHomeworks/App.xaml.cs
+--- a/StickyHomeworks/App.xaml.cs	
++++ b/StickyHomeworks/App.xaml.cs	
+@@ -11,6 +11,7 @@
+ using ElysiaFramework.Services;
+ using Microsoft.Extensions.DependencyInjection;
+ using Microsoft.Extensions.Hosting;
++using StickyHomeworks.Core;
+ using StickyHomeworks.Services;
+ using StickyHomeworks.Views;
+ using MessageBox = System.Windows.MessageBox;
+@@ -57,6 +58,7 @@
+                 services.AddSingleton<CrashWindow>();
+             }).
+             Build();
++        ServiceHost.Host = Host;
+         _ = Host.StartAsync();
+         MainWindow = GetService<MainWindow>();
+         GetService<MainWindow>().Show();
+Index: ElysiaFramework/ElysiaFramework.csproj
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><Project Sdk=\"Microsoft.NET.Sdk\">\r\n\r\n  <PropertyGroup>\r\n\t<TargetFramework>net6.0-windows</TargetFramework>\r\n\t<Nullable>enable</Nullable>\r\n\t<UseWPF>true</UseWPF>\r\n\t<UseWindowsForms>true</UseWindowsForms>\r\n\t<GeneratePackageOnBuild>True</GeneratePackageOnBuild>\r\n\t<PackageId>dev.HelloWRC.$(AssemblyName)</PackageId>\r\n\t<Authors>HelloWRC.Dev</Authors>\r\n\t<AssemblyVersion>1.0.1</AssemblyVersion>\r\n\t<FileVersion>1.0.1</FileVersion>\r\n\t<Version>1.0.1</Version>\r\n  </PropertyGroup>\r\n\r\n  <ItemGroup>\r\n\t<None Remove=\"Assets\\Fonts\\HarmonyOS_Sans_SC_Black.ttf\" />\r\n\t<None Remove=\"Assets\\Fonts\\HarmonyOS_Sans_SC_Bold.ttf\" />\r\n\t<None Remove=\"Assets\\Fonts\\HarmonyOS_Sans_SC_Light.ttf\" />\r\n\t<None Remove=\"Assets\\Fonts\\HarmonyOS_Sans_SC_Medium.ttf\" />\r\n\t<None Remove=\"Assets\\Fonts\\HarmonyOS_Sans_SC_Regular.ttf\" />\r\n\t<None Remove=\"Assets\\Fonts\\HarmonyOS_Sans_SC_Thin.ttf\" />\r\n  </ItemGroup>\r\n\r\n  <ItemGroup>\r\n\t<PackageReference Include=\"CommunityToolkit.Mvvm\" Version=\"8.2.1\" />\r\n\t<PackageReference Include=\"MaterialDesignThemes\" Version=\"4.8.0\" />\r\n\t<PackageReference Include=\"Microsoft.Extensions.Hosting\" Version=\"7.0.1\" />\r\n\t<PackageReference Include=\"Microsoft.Extensions.Hosting.Abstractions\" Version=\"7.0.0\" />\r\n  </ItemGroup>\r\n\r\n  <ItemGroup>\r\n\t<Resource Include=\"Assets\\Fonts\\HarmonyOS_Sans_SC_Black.ttf\" />\r\n\t<Resource Include=\"Assets\\Fonts\\HarmonyOS_Sans_SC_Bold.ttf\" />\r\n\t<Resource Include=\"Assets\\Fonts\\HarmonyOS_Sans_SC_Light.ttf\" />\r\n\t<Resource Include=\"Assets\\Fonts\\HarmonyOS_Sans_SC_Medium.ttf\" />\r\n\t<Resource Include=\"Assets\\Fonts\\HarmonyOS_Sans_SC_Regular.ttf\" />\r\n\t<Resource Include=\"Assets\\Fonts\\HarmonyOS_Sans_SC_Thin.ttf\" />\r\n  </ItemGroup>\r\n\r\n</Project>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ElysiaFramework/ElysiaFramework.csproj b/ElysiaFramework/ElysiaFramework.csproj
+--- a/ElysiaFramework/ElysiaFramework.csproj	
++++ b/ElysiaFramework/ElysiaFramework.csproj	
+@@ -1,41 +1,36 @@
+ <Project Sdk="Microsoft.NET.Sdk">
+-
+   <PropertyGroup>
+-	<TargetFramework>net6.0-windows</TargetFramework>
+-	<Nullable>enable</Nullable>
+-	<UseWPF>true</UseWPF>
+-	<UseWindowsForms>true</UseWindowsForms>
+-	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+-	<PackageId>dev.HelloWRC.$(AssemblyName)</PackageId>
+-	<Authors>HelloWRC.Dev</Authors>
+-	<AssemblyVersion>1.0.1</AssemblyVersion>
+-	<FileVersion>1.0.1</FileVersion>
+-	<Version>1.0.1</Version>
++    <TargetFramework>net8.0-windows</TargetFramework>
++    <Nullable>enable</Nullable>
++    <UseWPF>true</UseWPF>
++    <UseWindowsForms>true</UseWindowsForms>
++    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
++    <PackageId>dev.HelloWRC.$(AssemblyName)</PackageId>
++    <Authors>HelloWRC.Dev</Authors>
++    <AssemblyVersion>1.0.1</AssemblyVersion>
++    <FileVersion>1.0.1</FileVersion>
++    <Version>1.0.1</Version>
+   </PropertyGroup>
+-
+   <ItemGroup>
+-	<None Remove="Assets\Fonts\HarmonyOS_Sans_SC_Black.ttf" />
+-	<None Remove="Assets\Fonts\HarmonyOS_Sans_SC_Bold.ttf" />
+-	<None Remove="Assets\Fonts\HarmonyOS_Sans_SC_Light.ttf" />
+-	<None Remove="Assets\Fonts\HarmonyOS_Sans_SC_Medium.ttf" />
+-	<None Remove="Assets\Fonts\HarmonyOS_Sans_SC_Regular.ttf" />
+-	<None Remove="Assets\Fonts\HarmonyOS_Sans_SC_Thin.ttf" />
++    <None Remove="Assets\Fonts\HarmonyOS_Sans_SC_Black.ttf" />
++    <None Remove="Assets\Fonts\HarmonyOS_Sans_SC_Bold.ttf" />
++    <None Remove="Assets\Fonts\HarmonyOS_Sans_SC_Light.ttf" />
++    <None Remove="Assets\Fonts\HarmonyOS_Sans_SC_Medium.ttf" />
++    <None Remove="Assets\Fonts\HarmonyOS_Sans_SC_Regular.ttf" />
++    <None Remove="Assets\Fonts\HarmonyOS_Sans_SC_Thin.ttf" />
+   </ItemGroup>
+-
+   <ItemGroup>
+-	<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+-	<PackageReference Include="MaterialDesignThemes" Version="4.8.0" />
+-	<PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+-	<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
++    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
++    <PackageReference Include="MaterialDesignThemes" Version="4.8.0" />
++    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
++    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
+   </ItemGroup>
+-
+   <ItemGroup>
+-	<Resource Include="Assets\Fonts\HarmonyOS_Sans_SC_Black.ttf" />
+-	<Resource Include="Assets\Fonts\HarmonyOS_Sans_SC_Bold.ttf" />
+-	<Resource Include="Assets\Fonts\HarmonyOS_Sans_SC_Light.ttf" />
+-	<Resource Include="Assets\Fonts\HarmonyOS_Sans_SC_Medium.ttf" />
+-	<Resource Include="Assets\Fonts\HarmonyOS_Sans_SC_Regular.ttf" />
+-	<Resource Include="Assets\Fonts\HarmonyOS_Sans_SC_Thin.ttf" />
++    <Resource Include="Assets\Fonts\HarmonyOS_Sans_SC_Black.ttf" />
++    <Resource Include="Assets\Fonts\HarmonyOS_Sans_SC_Bold.ttf" />
++    <Resource Include="Assets\Fonts\HarmonyOS_Sans_SC_Light.ttf" />
++    <Resource Include="Assets\Fonts\HarmonyOS_Sans_SC_Medium.ttf" />
++    <Resource Include="Assets\Fonts\HarmonyOS_Sans_SC_Regular.ttf" />
++    <Resource Include="Assets\Fonts\HarmonyOS_Sans_SC_Thin.ttf" />
+   </ItemGroup>
+-
+-</Project>
++</Project>
+\ No newline at end of file
