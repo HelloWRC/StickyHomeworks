@@ -14,25 +14,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3196fe86-df94-4a98-bee9-91111b77b7d0" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/StickyHomeworks.Core/Class1.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StickyHomeworks.Core/Context/AppDbContext.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StickyHomeworks.Core/Entities/Emotion.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StickyHomeworks.Core/Entities/EmotionsGroup.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StickyHomeworks.Core/Entities/Homework.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StickyHomeworks.Core/StickyHomeworks.Core.csproj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StickyHomeworks/db/app.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.StickyHomeworks/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.StickyHomeworks/.idea/indexLayout.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.StickyHomeworks/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.StickyHomeworks/.idea/projectSettingsUpdater.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.StickyHomeworks/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.StickyHomeworks/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StickyHomeworks/Behaviors/RichTextBoxBindingBehavior.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StickyHomeworks/RichTextBoxHelper.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.StickyHomeworks/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.StickyHomeworks/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ElysiaFramework/ElysiaFramework.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ElysiaFramework/ElysiaFramework.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StickyHomeworks.Core/Models/Emotion.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/StickyHomeworks.Core/ServiceHost.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/StickyHomeworks.Core/Services/EmotionService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/StickyHomeworks.sln" beforeDir="false" afterPath="$PROJECT_DIR$/StickyHomeworks.sln" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StickyHomeworks/App.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StickyHomeworks/App.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StickyHomeworks/Models/Settings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StickyHomeworks/Models/Settings.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StickyHomeworks/Controls/HomeworkControl.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/StickyHomeworks/Controls/HomeworkControl.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StickyHomeworks/MainWindow.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/StickyHomeworks/MainWindow.xaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StickyHomeworks/StickyHomeworks.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/StickyHomeworks/StickyHomeworks.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StickyHomeworks/ViewModels/SettingsViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StickyHomeworks/ViewModels/SettingsViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StickyHomeworks/Views/SettingsWindow.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/StickyHomeworks/Views/SettingsWindow.xaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,7 +66,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -197,6 +186,7 @@
       <workItem from="1707712912085" duration="19000" />
       <workItem from="1707712980429" duration="823000" />
       <workItem from="1707713831740" duration="2441000" />
+      <workItem from="1707742453475" duration="90000" />
     </task>
     <task id="LOCAL-00001" summary="merged">
       <option name="closed" value="true" />

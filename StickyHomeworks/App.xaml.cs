@@ -29,6 +29,7 @@ public partial class App : AppEx
 
     protected override void OnStartup(StartupEventArgs e)
     {
+        AppContext.SetSwitch(@"Switch.System.Windows.Controls.DoNotAugmentWordBreakingUsingSpeller", true);
         Mutex = new Mutex(true, "StickyHomeworks.Lock", out var createNew);
         if (!createNew)
         {
@@ -50,6 +51,7 @@ public partial class App : AppEx
                 services.AddSingleton<WallpaperPickingService>();
                 services.AddHostedService<ThemeBackgroundService>();
                 services.AddSingleton<MainWindow>();
+                services.AddSingleton<HomeworkEditWindow>();
                 services.AddSingleton<CrashWindow>();
             }).
             Build();

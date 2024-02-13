@@ -282,4 +282,9 @@ public partial class SettingsWindow : MyWindow
         }
         Settings.Tags.RemoveAt(ViewModel.TagSelectedIndex);
     }
+
+    private void MenuItemTestHomeworkEditWindow_OnClick(object sender, RoutedEventArgs e)
+    {
+        AppEx.GetService<HomeworkEditWindow>().Show();
+    }
 }

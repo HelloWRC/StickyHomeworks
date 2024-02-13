@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:StickyHomeworks.Controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:models="clr-namespace:StickyHomeworks.Models"
+             xmlns:stickyHomeworks="clr-namespace:StickyHomeworks"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -50,10 +51,12 @@
                      VerticalAlignment="Top"
                      Margin="0 10 6 0"/>
             <WrapPanel>
-                <TextBlock Text="{Binding Homework.Content}" d:Text="回应我吧，爱莉希雅"
-                           VerticalAlignment="Top"
-                           FontSize="20" 
-                           TextWrapping="Wrap"/>
+                <RichTextBox VerticalAlignment="Top"
+                             FontSize="20" 
+                             HorizontalAlignment="Stretch"
+                             BorderThickness="0"
+                             materialDesign:TextFieldAssist.UnderlineBrush="{x:Null}"
+                />
                 <ItemsControl ItemsSource="{Binding Homework.Tags}"
                               VerticalContentAlignment="Stretch"
                               VerticalAlignment="Top"

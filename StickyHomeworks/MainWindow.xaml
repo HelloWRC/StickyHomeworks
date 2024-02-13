@@ -399,12 +399,9 @@
                     </ListView.GroupStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
+                            <StackPanel>
                                 <controls:HomeworkControl Grid.Column="0"
+                                                          HorizontalAlignment="Stretch"
                                                           Homework="{Binding}" />
                                 <StackPanel Grid.Column="1" Orientation="Horizontal"
                                             Visibility="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}, Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -416,7 +413,7 @@
                                             Margin="4 -8" ToolTip="删除" Foreground="IndianRed"
                                             Click="ButtonRemoveHomework_OnClick" />
                                 </StackPanel>
-                            </Grid>
+                            </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

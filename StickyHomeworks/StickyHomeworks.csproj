@@ -34,6 +34,7 @@
     <Resource Include="Assets\光辉矢愿_瞄准.png" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Emoji.Wpf" Version="0.3.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
