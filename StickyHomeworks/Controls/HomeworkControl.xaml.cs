@@ -12,7 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ElysiaFramework;
 using StickyHomeworks.Models;
+using StickyHomeworks.Views;
 
 namespace StickyHomeworks.Controls;
 
@@ -30,8 +32,52 @@ public partial class HomeworkControl : UserControl
         set { SetValue(HomeworkProperty, value); }
     }
 
+    public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
+        nameof(IsSelected), typeof(bool), typeof(HomeworkControl), new PropertyMetadata(default(bool), (o, args) =>
+        {
+            var c = o as HomeworkControl;
+            c?.IsSelectedChanged((bool)args.NewValue);
+        }));
+
+    public bool IsSelected
+    {
+        get { return (bool)GetValue(IsSelectedProperty); }
+        set { SetValue(IsSelectedProperty, value); }
+    }
+
+    public static readonly DependencyProperty IsEditingProperty = DependencyProperty.Register(
+        nameof(IsEditing), typeof(bool), typeof(HomeworkControl), new PropertyMetadata(default(bool),
+            (o, args) =>
+            {
+                var c = o as HomeworkControl;
+                c?.IsEditingChanged((bool)args.NewValue);
+            }));
+
+
+    public bool IsEditing
+    {
+        get { return (bool)GetValue(IsEditingProperty); }
+        set { SetValue(IsEditingProperty, value); }
+    }
+
     public HomeworkControl()
     {
         InitializeComponent();
+    }
+
+    private void IsEditingChanged(bool value)
+    {
+        if (IsSelected && value)
+        {
+            AppEx.GetService<HomeworkEditWindow>().RelatedRichTextBox = RichTextBox;
+        }
+    }
+
+    private void IsSelectedChanged(bool value)
+    {
+        if (value && IsEditing)
+        {
+            AppEx.GetService<HomeworkEditWindow>().RelatedRichTextBox = RichTextBox;
+        }
     }
 }

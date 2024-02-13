@@ -40,6 +40,11 @@
         </Style>
     </Window.Style>
     <Window.Resources>
+        <Style x:Key="MarkdownParagraphBaseStyle" TargetType="Paragraph">
+            <Setter Property="FontWeight" Value="Regular"/>
+        </Style>
+
+        <Style TargetType="Paragraph" BasedOn="{StaticResource MarkdownParagraphBaseStyle}"/>
         <Style x:Key="BlankFocusVisualStyle">
             <Setter Property="Control.Template">
                 <Setter.Value>
@@ -401,6 +406,8 @@
                         <DataTemplate>
                             <StackPanel>
                                 <controls:HomeworkControl Grid.Column="0"
+                                                          IsEditing="{Binding ViewModel.IsDrawerOpened, RelativeSource={RelativeSource FindAncestor, AncestorType=local:MainWindow}}"
+                                                          IsSelected="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}, Mode=OneWay}"
                                                           HorizontalAlignment="Stretch"
                                                           Homework="{Binding}" />
                                 <StackPanel Grid.Column="1" Orientation="Horizontal"

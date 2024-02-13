@@ -17,7 +17,7 @@
 
             <Style x:Key="MarkdownParagraphBaseStyle" TargetType="Paragraph">
                 <Setter Property="LineHeight" Value="25"/>
-                <Setter Property="FontWeight" Value="Light"></Setter>
+                <Setter Property="FontWeight" Value="Regular"></Setter>
             </Style>
 
             <Style TargetType="Paragraph" BasedOn="{StaticResource MarkdownParagraphBaseStyle}"/>

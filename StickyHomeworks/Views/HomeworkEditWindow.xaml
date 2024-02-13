@@ -7,8 +7,10 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:ely="http://github.com/HelloWRC/ElysiaFramework"
         xmlns:behaviors="clr-namespace:StickyHomeworks.Behaviors"
+        xmlns:stickyHomeworks="clr-namespace:StickyHomeworks"
         mc:Ignorable="d"
         WindowStyle="None"
+        Topmost="True"
         d:DataContext="{d:DesignInstance local:HomeworkEditWindow}"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{x:Null}"
@@ -56,14 +58,34 @@
                         </Grid.ColumnDefinitions>
                         <ComboBox Grid.Column="0" 
                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                  materialDesign:HintAssist.Hint="科目"/>
+                                  materialDesign:HintAssist.Hint="科目"
+                                  ItemsSource="{Binding SettingsService.Settings.Subjects}"
+                                  SelectedItem="{Binding MainWindow.ViewModel.EditingHomework.Subject}"/>
                         <DatePicker Grid.Column="2"
                                     Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
-                                    materialDesign:HintAssist.Hint="截止日期"/>
+                                    materialDesign:HintAssist.Hint="截止日期"
+                                    SelectedDate="{Binding MainWindow.ViewModel.EditingHomework.DueTime}"/>
                     </Grid>
                     <Separator Margin="-6 6"/>
                     <ely:IconText Kind="TagMultipleOutline" Text="标签"/>
-                    
+                    <ListBox Grid.Row="1"
+                             ItemsSource="{Binding SettingsService.Settings.Tags}"
+                             Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineListBox}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem"
+                                   BasedOn="{StaticResource MaterialDesignFilterChipPrimaryOutlineListBoxItem}">
+                                <Setter Property="materialDesign:BehaviorsAssist.Behaviors">
+                                    <Setter.Value>
+                                        <materialDesign:BehaviorCollection>
+                                            <behaviors:AllCollectionBehavior
+                                                AllCollection="{Binding MainWindow.ViewModel.EditingHomework.Tags, RelativeSource={RelativeSource FindAncestor, AncestorType=local:HomeworkEditWindow}}"
+                                                CurrentValue="{Binding}" />
+                                        </materialDesign:BehaviorCollection>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
 
                     <Separator Margin="-6 6"/>
                     <ely:IconText Kind="FormatBold" Text="文本"/>
@@ -87,9 +109,17 @@
                     </StackPanel>
                     <WrapPanel Margin="0 6 0 0">
                         <ely:ColorPicker Margin="0 0 6 0"
+                                         Color="{Binding ViewModel.TextColor, Mode=TwoWay, Delay=50}"
                                          VerticalAlignment="Center" />
                         <Button Content="{materialDesign:PackIcon FormatColorReset}"
                                 VerticalAlignment="Center"
+                                ToolTip="清除颜色"
+                                Click="ButtonClearColor_OnClick"
+                                Style="{StaticResource MaterialDesignToolForegroundButton}" />
+                        <Button Content="{materialDesign:PackIcon Add}"
+                                VerticalAlignment="Center"
+                                ToolTip="添加到常用的颜色"
+                                Click="ButtonClearColor_OnClick"
                                 Style="{StaticResource MaterialDesignToolForegroundButton}" />
                     </WrapPanel>
                     <Expander Padding="0" materialDesign:ExpanderAssist.HorizontalHeaderPadding="0"
@@ -99,7 +129,7 @@
                         </Expander.Header>
                         <StackPanel Margin="0 4 0 0">
                             <StackPanel Orientation="Horizontal">
-                                <ListBox SelectionMode="Multiple">
+                                <ListBox SelectionMode="Multiple" SelectionChanged="ListBoxTextStyles_OnSelectionChanged">
                                     <ListBox.ItemContainerStyle>
                                         <Style TargetType="ListBoxItem"
                                                BasedOn="{StaticResource MaterialDesignListBoxItem}">
@@ -118,13 +148,13 @@
                                         </ItemsPanelTemplate>
                                     </ListBox.ItemsPanel>
                                     <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatBold}"
-                                                 ToolTip="粗体（Ctrl+B）" />
+                                                 ToolTip="粗体（Ctrl+B）" IsSelected="{Binding ViewModel.IsBold}"/>
                                     <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatItalic}"
-                                                 ToolTip="斜体（Ctrl+I）" />
+                                                 ToolTip="斜体（Ctrl+I）" IsSelected="{Binding ViewModel.IsItalic}"/>
                                     <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatUnderline}"
-                                                 ToolTip="下划线（Ctrl+U）" />
+                                                 ToolTip="下划线（Ctrl+U）" IsSelected="{Binding ViewModel.IsUnderlined}"/>
                                     <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatStrikethroughVariant}"
-                                                 ToolTip="删除线" />
+                                                 ToolTip="删除线" IsSelected="{Binding ViewModel.IsStrikeThrough}"/>
                                 </ListBox>
                                 <ListBox SelectionMode="Single" Margin="4 0 0 0">
                                     <ListBox.ItemContainerStyle>

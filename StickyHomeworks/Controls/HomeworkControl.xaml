@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:StickyHomeworks.Controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:models="clr-namespace:StickyHomeworks.Models"
+             xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
              xmlns:stickyHomeworks="clr-namespace:StickyHomeworks"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -51,11 +52,14 @@
                      VerticalAlignment="Top"
                      Margin="0 10 6 0"/>
             <WrapPanel>
-                <RichTextBox VerticalAlignment="Top"
-                             FontSize="20" 
-                             HorizontalAlignment="Stretch"
-                             BorderThickness="0"
-                             materialDesign:TextFieldAssist.UnderlineBrush="{x:Null}"
+                <emoji:RichTextBox VerticalAlignment="Top"
+                                  x:Name="RichTextBox"
+                                  FontSize="20" 
+                                  FontWeight="Regular"
+                                  Style="{StaticResource MaterialDesignRichTextBox}"
+                                  HorizontalAlignment="Stretch"
+                                  BorderThickness="0"
+                                  materialDesign:TextFieldAssist.UnderlineBrush="{x:Null}"
                 />
                 <ItemsControl ItemsSource="{Binding Homework.Tags}"
                               VerticalContentAlignment="Stretch"
