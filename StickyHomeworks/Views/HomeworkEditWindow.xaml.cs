@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -49,12 +50,32 @@ public partial class HomeworkEditWindow : Window
         ViewModel.PropertyChanged += ViewModelOnPropertyChanged;
     }
 
+    protected override void OnInitialized(EventArgs e)
+    {
+        ViewModel.FontFamilies =
+            new ObservableCollection<FontFamily>(from i in Fonts.SystemFontFamilies orderby i.ToString() select i)
+                { (FontFamily)FindResource("HarmonyOsSans") };
+        base.OnInitialized(e);
+    }
+
     private void ViewModelOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        var s = RelatedRichTextBox.Selection;
-        if (e.PropertyName == nameof(ViewModel.TextColor) && !ViewModel.IsRestoringSelection)
+        if (ViewModel.IsRestoringSelection)
         {
-            s.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(ViewModel.TextColor));
+            return;
+        }
+        var s = RelatedRichTextBox.Selection;
+        switch (e.PropertyName)
+        {
+            case nameof(ViewModel.TextColor):
+                s.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(ViewModel.TextColor));
+                break;
+            case nameof(ViewModel.Font):
+                s.ApplyPropertyValue(TextElement.FontFamilyProperty, ViewModel.Font);
+                break;
+            case nameof(ViewModel.FontSize):
+                s.ApplyPropertyValue(TextElement.FontSizeProperty, Math.Max(ViewModel.FontSize, 8));
+                break;
         }
     }
 
@@ -104,6 +125,15 @@ public partial class HomeworkEditWindow : Window
         {
             ViewModel.TextColor = fg.Color;
         }
+        if (s.GetPropertyValue(TextElement.FontFamilyProperty) is FontFamily font)
+        {
+            ViewModel.Font = font;
+        }
+
+        if (s.GetPropertyValue(TextElement.FontSizeProperty) is double fontSize)
+        {
+            ViewModel.FontSize = fontSize;
+        }
         ViewModel.IsRestoringSelection = false;
     }
 
@@ -119,6 +149,8 @@ public partial class HomeworkEditWindow : Window
 
     private void ListBoxTextStyles_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
+        if (ViewModel.IsRestoringSelection)
+            return;
         var s = RelatedRichTextBox.Selection;
         s.ApplyPropertyValue(TextElement.FontWeightProperty, ViewModel.IsBold? FontWeights.Bold : FontWeights.Regular);
         s.ApplyPropertyValue(TextElement.FontStyleProperty, ViewModel.IsItalic ? FontStyles.Italic : FontStyles.Normal);
@@ -135,5 +167,15 @@ public partial class HomeworkEditWindow : Window
     {
         var s = RelatedRichTextBox.Selection;
         s.ApplyPropertyValue(TextElement.ForegroundProperty, GetValue(TextElement.ForegroundProperty));
+    }
+
+    private void ButtonFontSizeDecrease_OnClick(object sender, RoutedEventArgs e)
+    {
+        ViewModel.FontSize -= 2;
+    }
+
+    private void ButtonFontSizeIncrease_OnClick(object sender, RoutedEventArgs e)
+    {
+        ViewModel.FontSize += 2;
     }
 }

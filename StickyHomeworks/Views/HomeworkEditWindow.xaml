@@ -23,6 +23,9 @@
         SizeToContent="Height"
         AllowsTransparency="True"
         Title="HomeworkEditWindow" Height="450" Width="300">
+    <Window.Resources>
+        <ely:IntToStringConverter x:Key="IntToStringConverter" />
+    </Window.Resources>
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="22"
                       ResizeBorderThickness="4"/>
@@ -186,7 +189,27 @@
                             </StackPanel>
                             <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                       Margin="0 6 0 0"
-                                      materialDesign:HintAssist.Hint="字体" />
+                                      SelectedItem="{Binding ViewModel.Font, Mode=TwoWay}"
+                                      ItemsSource="{Binding ViewModel.FontFamilies}"
+                                      materialDesign:HintAssist.Hint="字体">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontFamily="{Binding}"
+                                                   FontWeight="Regular">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding}" Value="{StaticResource HarmonyOsSans}">
+                                                            <Setter Property="Text" Value="HarmonyOs Sans SC (内置)"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                    <Setter Property="Text" Value="{Binding}"/>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
@@ -200,15 +223,18 @@
                                           materialDesign:HintAssist.Hint="字重" VerticalAlignment="Center"/>
                                 <TextBox Grid.Column="2" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                           Margin="0 6 0 0"
+                                          Text="{Binding ViewModel.FontSize, Converter={StaticResource IntToStringConverter}, UpdateSourceTrigger=PropertyChanged}"
                                           materialDesign:HintAssist.Hint="字号" VerticalAlignment="Center"/>
                                 <StackPanel Orientation="Horizontal" Grid.Column="4" VerticalAlignment="Bottom">
                                     <Button Content="{materialDesign:PackIcon FormatFontSizeDecrease}"
                                             VerticalAlignment="Center"
                                             Margin="3 0"
-                                            Style="{StaticResource MaterialDesignToolForegroundButton}" />
+                                            Style="{StaticResource MaterialDesignToolForegroundButton}" 
+                                            Click="ButtonFontSizeDecrease_OnClick"/>
                                     <Button Content="{materialDesign:PackIcon FormatFontSizeIncrease}"
                                             VerticalAlignment="Center"
                                             Margin="3 0"
+                                            Click="ButtonFontSizeIncrease_OnClick"
                                             Style="{StaticResource MaterialDesignToolForegroundButton}" />
                                 </StackPanel>
                             </Grid>

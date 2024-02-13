@@ -1,4 +1,6 @@
-﻿using System.Windows.Documents;
+﻿using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -16,6 +18,9 @@ public class HomeworkEditViewModel : ObservableRecipient
     private bool _isRestoringSelection = false;
     private TextPointer? _beforeTextPointerStart;
     private TextPointer? _beforeTextPointerEnd;
+    private ObservableCollection<FontFamily> _fontFamilies = new();
+    private FontFamily _font = new();
+    private double _fontSize = 14.0;
 
     public Paragraph SelectedParagraph
     {
@@ -123,6 +128,44 @@ public class HomeworkEditViewModel : ObservableRecipient
         {
             if (Equals(value, _beforeTextPointerEnd)) return;
             _beforeTextPointerEnd = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<FontFamily> FontFamilies
+    {
+        get => _fontFamilies;
+        set
+        {
+            if (Equals(value, _fontFamilies)) return;
+            _fontFamilies = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<FontWeight> FontWeights { get; } = new ObservableCollection<FontWeight>()
+    {
+        
+    };
+
+    public FontFamily Font
+    {
+        get => _font;
+        set
+        {
+            if (Equals(value, _font)) return;
+            _font = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double FontSize
+    {
+        get => _fontSize;
+        set
+        {
+            if (value.Equals(_fontSize)) return;
+            _fontSize = value;
             OnPropertyChanged();
         }
     }
