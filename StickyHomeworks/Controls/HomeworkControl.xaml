@@ -8,6 +8,7 @@
              xmlns:models="clr-namespace:StickyHomeworks.Models"
              xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
              xmlns:stickyHomeworks="clr-namespace:StickyHomeworks"
+             xmlns:behaviors="clr-namespace:StickyHomeworks.Behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -59,13 +60,18 @@
                                   Style="{StaticResource MaterialDesignRichTextBox}"
                                   HorizontalAlignment="Stretch"
                                   BorderThickness="0"
-                                  materialDesign:TextFieldAssist.UnderlineBrush="{x:Null}"
-                />
+                                  materialDesign:TextFieldAssist.UnderlineBrush="{x:Null}">
+                    <materialDesign:BehaviorsAssist.Behaviors>
+                        <materialDesign:BehaviorCollection>
+                            <behaviors:RichTextBoxBindingBehavior DocumentXaml="{Binding Homework.Content, PresentationTraceSources.TraceLevel=High, UpdateSourceTrigger=PropertyChanged}"/>
+                        </materialDesign:BehaviorCollection>
+                    </materialDesign:BehaviorsAssist.Behaviors>
+                </emoji:RichTextBox>
                 <ItemsControl ItemsSource="{Binding Homework.Tags}"
                               VerticalContentAlignment="Stretch"
                               VerticalAlignment="Top"
                               Margin="4 0 0 0"
-                              >
+                >
                     <d:ItemsControl.Items>
                         testtag
                     </d:ItemsControl.Items>
