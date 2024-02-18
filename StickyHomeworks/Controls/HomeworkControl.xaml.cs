@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ElysiaFramework;
+using Stfu.Linq;
 using StickyHomeworks.Models;
 using StickyHomeworks.Views;
 
@@ -72,9 +73,17 @@ public partial class HomeworkControl : UserControl
         if (IsSelected && value)
         {
             Debug.WriteLine("RelatedRichTextBox updated because IsEditing changed");
-            AppEx.GetService<HomeworkEditWindow>().RelatedRichTextBox = RichTextBox;
-            RichTextBox.Focus();
+            EnterEdit();
         }
+    }
+
+    private async void EnterEdit()
+    {
+        AppEx.GetService<HomeworkEditWindow>().RelatedRichTextBox = RichTextBox;
+        await System.Windows.Threading.Dispatcher.Yield();
+        RichTextBox.Focus();
+        //RichTextBox.Selection.Select(new TextPointer());
+        RichTextBox.CaretPosition = RichTextBox.CaretPosition.DocumentEnd;
     }
 
     private void IsSelectedChanged(bool value)
@@ -83,8 +92,7 @@ public partial class HomeworkControl : UserControl
         if (value && IsEditing)
         {
             Debug.WriteLine("RelatedRichTextBox updated because IsSelected changed");
-            AppEx.GetService<HomeworkEditWindow>().RelatedRichTextBox = RichTextBox;
-            RichTextBox.Focus();
+            EnterEdit();
         }
     }
 }

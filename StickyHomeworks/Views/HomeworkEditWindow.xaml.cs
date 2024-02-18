@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ElysiaFramework;
 using StickyHomeworks.Services;
 using StickyHomeworks.ViewModels;
 
@@ -205,6 +206,7 @@ public partial class HomeworkEditWindow : Window
     private void ButtonEditingDone_OnClick(object sender, RoutedEventArgs e)
     {
         EditingFinished?.Invoke(this, EventArgs.Empty);
+        AppEx.GetService<ProfileService>().SaveProfile();
     }
 
     private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

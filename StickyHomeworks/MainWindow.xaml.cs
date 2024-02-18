@@ -46,7 +46,16 @@ public partial class MainWindow : Window
         Automation.AddAutomationFocusChangedEventHandler(OnFocusChangedHandler);
         InitializeComponent();
         ViewModel.PropertyChanged += ViewModelOnPropertyChanged;
+        ViewModel.PropertyChanging += ViewModelOnPropertyChanging;
         DataContext = this;
+    }
+
+    private void ViewModelOnPropertyChanging(object? sender, PropertyChangingEventArgs e)
+    {
+        if (e.PropertyName == nameof(ViewModel.SelectedHomework))
+        {
+            ExitEditingMode(true);
+        }
     }
 
     private void ViewModelOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -54,6 +63,10 @@ public partial class MainWindow : Window
         if (e.PropertyName == nameof(ViewModel.SelectedListBoxItem))
         {
             RepositionEditingWindow();
+        }
+        if (e.PropertyName == nameof(ViewModel.SelectedHomework))
+        {
+            ExitEditingMode(false);
         }
     }
 
@@ -83,10 +96,16 @@ public partial class MainWindow : Window
 
     private void ExitEditingMode(bool hard=true)
     {
+        if (ViewModel.IsCreatingMode)
+        {
+            ViewModel.IsCreatingMode = false;
+            return;
+        }
         if (hard)
             MainListView.SelectedIndex = -1;
         ViewModel.IsDrawerOpened = false;
         AppEx.GetService<HomeworkEditWindow>().TryClose();
+        AppEx.GetService<ProfileService>().SaveProfile();
     }
 
     private void SetPos()
@@ -162,7 +181,7 @@ public partial class MainWindow : Window
         ViewModel.IsUpdatingHomeworkSubject = true;
         OnHomeworkEditorUpdated?.Invoke(this ,EventArgs.Empty);
         var lastSubject = ViewModel.EditingHomework.Subject;
-        //ViewModel.IsCreatingMode = true;
+        ViewModel.IsCreatingMode = true;
         ViewModel.IsDrawerOpened = true;
         var o = new Homework()
         {
@@ -365,6 +384,10 @@ public partial class MainWindow : Window
         }
 
         var file = dialog.FileName!;
+        var fd = new FlowDocument()
+        {
+            IsOptimalParagraphEnabled = true
+        };
         try
         {
             await Task.Run(() =>
@@ -420,6 +443,6 @@ public partial class MainWindow : Window
 
     private void MainListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        ExitEditingMode(false);
+        //ExitEditingMode(false);
     }
 }

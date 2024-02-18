@@ -62,20 +62,7 @@ public class RichTextBoxBindingBehavior : Behavior<RichTextBox>
                 // Parse the XAML to a document (or use XamlReader.Parse())
 
                 var documentXaml = GetDocumentXaml(b);
-                try
-                {
-                    var stream = new MemoryStream(Encoding.UTF8.GetBytes(documentXaml));
-                    var doc = (FlowDocument)XamlReader.Load(stream);
-                    // Set the document
-                    richTextBox.Document = doc;
-                }
-                catch (Exception)
-                {
-                    richTextBox.Document = new FlowDocument();
-                    var para = new Paragraph();
-                    para.Inlines.Add(documentXaml);
-                    richTextBox.Document.Blocks.Add(para);
-                }
+                richTextBox.Document = RichTextBoxHelper.ConvertDocument(documentXaml);
                 richTextBox.Document.IsOptimalParagraphEnabled = true;
 
                 // When the document changes update the source
