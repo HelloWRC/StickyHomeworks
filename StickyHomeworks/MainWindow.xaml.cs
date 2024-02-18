@@ -20,8 +20,10 @@ using StickyHomeworks.Models;
 using StickyHomeworks.Services;
 using StickyHomeworks.ViewModels;
 using StickyHomeworks.Views;
-//using System.Windows.Automation;
+using System.Windows.Automation;
 using System.Windows.Forms;
+using System.Windows.Threading;
+using Stfu.Linq;
 using DataFormats = System.Windows.DataFormats;
 
 namespace StickyHomeworks;
@@ -44,7 +46,7 @@ public partial class MainWindow : Window
     {
         ProfileService = profileService;
         SettingsService = settingsService;
-        //Automation.AddAutomationFocusChangedEventHandler(OnFocusChangedHandler);
+        Automation.AddAutomationFocusChangedEventHandler(OnFocusChangedHandler);
         InitializeComponent();
         ViewModel.PropertyChanged += ViewModelOnPropertyChanged;
         ViewModel.PropertyChanging += ViewModelOnPropertyChanging;
@@ -71,31 +73,31 @@ public partial class MainWindow : Window
         }
     }
 
-    //private void OnFocusChangedHandler(object sender, AutomationFocusChangedEventArgs e)
-    //{
-    //    if (!ViewModel.IsDrawerOpened)
-    //        return;
-    //    try
-    //    {
+    private void OnFocusChangedHandler(object sender, AutomationFocusChangedEventArgs e)
+    {
+        if (!ViewModel.IsDrawerOpened)
+            return;
+        try
+        {
 
-    //        var element = sender as AutomationElement;
-    //        if (element == null)
-    //            return;
-    //        var hWnd = NativeWindowHelper.GetForegroundWindow();
-    //        NativeWindowHelper.GetWindowThreadProcessId(hWnd, out var id);
-    //        using var proc = Process.GetProcessById(id);
-    //        Debug.WriteLine($"{proc.ProcessName} {e.EventId.ProgrammaticName}");
-    //        if (proc.Id != Environment.ProcessId &&
-    //            !new List<string>(["ctfmon", "textinputhost", "chsime"]).Contains(proc.ProcessName.ToLower()))
-    //        {
-    //            Dispatcher.Invoke(() => ExitEditingMode());
-    //        }
-    //    }
-    //    catch
-    //    {
-    //        // ignored
-    //    }
-    //}
+            var element = sender as AutomationElement;
+            if (element == null)
+                return;
+            var hWnd = NativeWindowHelper.GetForegroundWindow();
+            NativeWindowHelper.GetWindowThreadProcessId(hWnd, out var id);
+            using var proc = Process.GetProcessById(id);
+            Debug.WriteLine($"{proc.ProcessName} {e.EventId.ProgrammaticName}");
+            if (proc.Id != Environment.ProcessId &&
+                !new List<string>(["ctfmon", "textinputhost", "chsime"]).Contains(proc.ProcessName.ToLower()))
+            {
+                Dispatcher.Invoke(() => ExitEditingMode());
+            }
+        }
+        catch
+        {
+            // ignored
+        }
+    }
 
     private void ExitEditingMode(bool hard=true)
     {
@@ -387,6 +389,8 @@ public partial class MainWindow : Window
         }
 
         ExitEditingMode();
+        //MainListView.Background = (Brush)FindResource("MaterialDesignPaper");
+        await System.Windows.Threading.Dispatcher.Yield(DispatcherPriority.Render);
         var file = dialog.FileName!;
         var visual = new DrawingVisual();
         var s = SettingsService.Settings.Scale;
@@ -396,6 +400,8 @@ public partial class MainWindow : Window
             {
                 Stretch = Stretch.None
             };
+            var bg = (Brush)FindResource("MaterialDesignPaper");
+            context.DrawRectangle(bg, null, new Rect(0, 0, MainListView.ActualWidth * s, MainListView.ActualHeight * s)); 
             context.DrawRectangle(brush, null, new Rect(0, 0, MainListView.ActualWidth * s, MainListView.ActualHeight * s));
             context.Close();
         }
@@ -425,7 +431,8 @@ public partial class MainWindow : Window
             ViewModel.SnackbarMessageQueue.Enqueue($"导出失败：{ex}");
         }
 
-        done: 
+        done:
+        //MainListView.Background = null;
         dialog.Dispose();
         ViewModel.IsWorking = false;
     }

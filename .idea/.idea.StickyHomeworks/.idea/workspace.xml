@@ -14,7 +14,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3196fe86-df94-4a98-bee9-91111b77b7d0" name="更改" comment="">
-      <change beforePath="$PROJECT_DIR$/StickyHomeworks/MainWindow.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StickyHomeworks/MainWindow.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.StickyHomeworks/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.StickyHomeworks/.idea/indexLayout.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,13 +24,16 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="8491fe2afac672ef98033f7bf5c599964ed3cc61" />
+        <entry key="$PROJECT_DIR$" value="8351893db90f36c52d08e05e246abd6a39c95878" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/bf5e279d9239bfef5bb1b8d6212f1b971c434606/src/libraries/System.Private.CoreLib/src/System/Runtime/ExceptionServices/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StickyHomeworks.Core/Context/AppDbContext.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StickyHomeworks.Core/Entities/Emotion.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://E:/Coding/StickyHomeworks/StickyHomeworks/App.xaml.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -40,7 +43,7 @@
   &quot;associatedIndex&quot;: 0
 }</component>
   <component name="ProjectId" id="2cFgnJeCDdJlH8CyggJ6VcwkGFB" />
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
