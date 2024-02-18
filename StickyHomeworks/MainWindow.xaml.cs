@@ -20,8 +20,9 @@ using StickyHomeworks.Models;
 using StickyHomeworks.Services;
 using StickyHomeworks.ViewModels;
 using StickyHomeworks.Views;
-using System.Windows.Automation;
+//using System.Windows.Automation;
 using System.Windows.Forms;
+using DataFormats = System.Windows.DataFormats;
 
 namespace StickyHomeworks;
 
@@ -43,7 +44,7 @@ public partial class MainWindow : Window
     {
         ProfileService = profileService;
         SettingsService = settingsService;
-        Automation.AddAutomationFocusChangedEventHandler(OnFocusChangedHandler);
+        //Automation.AddAutomationFocusChangedEventHandler(OnFocusChangedHandler);
         InitializeComponent();
         ViewModel.PropertyChanged += ViewModelOnPropertyChanged;
         ViewModel.PropertyChanging += ViewModelOnPropertyChanging;
@@ -70,29 +71,31 @@ public partial class MainWindow : Window
         }
     }
 
-    private void OnFocusChangedHandler(object sender, AutomationFocusChangedEventArgs e)
-    {
-        try
-        {
+    //private void OnFocusChangedHandler(object sender, AutomationFocusChangedEventArgs e)
+    //{
+    //    if (!ViewModel.IsDrawerOpened)
+    //        return;
+    //    try
+    //    {
 
-            var element = sender as AutomationElement;
-            if (element == null)
-                return;
-            var hWnd = NativeWindowHelper.GetForegroundWindow();
-            NativeWindowHelper.GetWindowThreadProcessId(hWnd, out var id);
-            using var proc = Process.GetProcessById(id);
-            Debug.WriteLine($"{proc.ProcessName} {e.EventId.ProgrammaticName}");
-            if (proc.Id != Environment.ProcessId &&
-                !new List<string>(["ctfmon", "textinputhost", "chsime"]).Contains(proc.ProcessName.ToLower()))
-            {
-                Dispatcher.Invoke(() => ExitEditingMode());
-            }
-        }
-        catch
-        {
-            // ignored
-        }
-    }
+    //        var element = sender as AutomationElement;
+    //        if (element == null)
+    //            return;
+    //        var hWnd = NativeWindowHelper.GetForegroundWindow();
+    //        NativeWindowHelper.GetWindowThreadProcessId(hWnd, out var id);
+    //        using var proc = Process.GetProcessById(id);
+    //        Debug.WriteLine($"{proc.ProcessName} {e.EventId.ProgrammaticName}");
+    //        if (proc.Id != Environment.ProcessId &&
+    //            !new List<string>(["ctfmon", "textinputhost", "chsime"]).Contains(proc.ProcessName.ToLower()))
+    //        {
+    //            Dispatcher.Invoke(() => ExitEditingMode());
+    //        }
+    //    }
+    //    catch
+    //    {
+    //        // ignored
+    //    }
+    //}
 
     private void ExitEditingMode(bool hard=true)
     {
@@ -376,49 +379,46 @@ public partial class MainWindow : Window
         ViewModel.IsWorking = true;
         var dialog = new System.Windows.Forms.SaveFileDialog()
         {
-            Filter = "文本文件 (*.txt)|*.txt"
+            Filter = "图片 (*.png)|*.png"
         };
         if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
         {
             goto done;
         }
 
+        ExitEditingMode();
         var file = dialog.FileName!;
-        var fd = new FlowDocument()
+        var visual = new DrawingVisual();
+        var s = SettingsService.Settings.Scale;
+        using (var context = visual.RenderOpen())
         {
-            IsOptimalParagraphEnabled = true
-        };
+            var brush = new VisualBrush(MainListView)
+            {
+                Stretch = Stretch.None
+            };
+            context.DrawRectangle(brush, null, new Rect(0, 0, MainListView.ActualWidth * s, MainListView.ActualHeight * s));
+            context.Close();
+        }
+
+        var bitmap = new RenderTargetBitmap((int)(MainListView.ActualWidth * s), (int)(ActualHeight * s), 96d, 96d,
+            PixelFormats.Default);
+        bitmap.Render(visual);
+        var encoder = new PngBitmapEncoder();
+        encoder.Frames.Add(BitmapFrame.Create(bitmap));
         try
         {
-            await Task.Run(() =>
+            var stream = File.Open(file, FileMode.OpenOrCreate);
+            encoder.Save(stream);
+            stream.Close();
+            ViewModel.SnackbarMessageQueue.Enqueue($"成功地导出到：{file}", "查看", () =>
             {
-                var h = from i in ProfileService.Profile.Homeworks
-                    orderby i.Subject
-                    select i;
-                string? lastSubject = null;
-                var outText = new List<string>();
-                foreach (var i in h)
+                Process.Start(new ProcessStartInfo()
                 {
-                    if (lastSubject == null || i.Subject != lastSubject)
-                    {
-                        lastSubject = i.Subject;
-                        outText.Add(i.Subject);
-                    }
-
-                    outText.Add($"- {i.Content} {string.Join(' ', from t in i.Tags select $"【{t}】")}");
-                }
-
-                File.WriteAllText(file, string.Join('\n', outText));
-                ViewModel.SnackbarMessageQueue.Enqueue($"成功地导出到：{file}", "查看", () =>
-                {
-                    Process.Start(new ProcessStartInfo()
-                    {
-                        FileName = file,
-                        UseShellExecute = true
-                    });
+                    FileName = file,
+                    UseShellExecute = true
                 });
-
             });
+
         }
         catch(Exception ex)
         {

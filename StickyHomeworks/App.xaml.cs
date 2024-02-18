@@ -29,7 +29,7 @@ public partial class App : AppEx
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        AppContext.SetSwitch(@"Switch.System.Windows.Controls.DoNotAugmentWordBreakingUsingSpeller", true);
+        //AppContext.SetSwitch(@"Switch.System.Windows.Controls.DoNotAugmentWordBreakingUsingSpeller", true);
         Mutex = new Mutex(true, "StickyHomeworks.Lock", out var createNew);
         if (!createNew)
         {
