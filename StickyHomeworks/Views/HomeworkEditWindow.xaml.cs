@@ -213,4 +213,31 @@ public partial class HomeworkEditWindow : Window
     {
         SubjectChanged?.Invoke(this, EventArgs.Empty);
     }
+
+    private void ButtonAddToColor_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (SettingsService.Settings.SavedColors.Contains(ViewModel.TextColor))
+            return;
+        SettingsService.Settings.SavedColors.Insert(0, ViewModel.TextColor);
+        while (SettingsService.Settings.SavedColors.Count > 6)
+        {
+            SettingsService.Settings.SavedColors.RemoveAt(6);
+        }
+    }
+
+    private void ListBoxColors_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (ViewModel.IsUpdatingColor)
+            return;
+        ViewModel.IsUpdatingColor = true;
+        foreach (var i in e.AddedItems)
+        {
+            if (i is Color c)
+                ViewModel.TextColor = c;
+        }
+
+        if (sender is ListBox l)
+            l.SelectedIndex = -1;
+        ViewModel.IsUpdatingColor = false;
+    }
 }

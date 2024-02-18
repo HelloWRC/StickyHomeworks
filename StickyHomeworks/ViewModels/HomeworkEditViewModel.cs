@@ -21,6 +21,7 @@ public class HomeworkEditViewModel : ObservableRecipient
     private ObservableCollection<FontFamily> _fontFamilies = new();
     private FontFamily _font = new();
     private double _fontSize = 14.0;
+    private bool _isUpdatingColor = false;
 
     public Paragraph SelectedParagraph
     {
@@ -166,6 +167,17 @@ public class HomeworkEditViewModel : ObservableRecipient
         {
             if (value.Equals(_fontSize)) return;
             _fontSize = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsUpdatingColor
+    {
+        get => _isUpdatingColor;
+        set
+        {
+            if (value == _isUpdatingColor) return;
+            _isUpdatingColor = value;
             OnPropertyChanged();
         }
     }

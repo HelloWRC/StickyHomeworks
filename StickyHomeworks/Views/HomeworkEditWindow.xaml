@@ -8,6 +8,7 @@
         xmlns:ely="http://github.com/HelloWRC/ElysiaFramework"
         xmlns:behaviors="clr-namespace:StickyHomeworks.Behaviors"
         xmlns:stickyHomeworks="clr-namespace:StickyHomeworks"
+        xmlns:converter="clr-namespace:StickyHomeworks.Converter"
         mc:Ignorable="d"
         WindowStyle="None"
         Topmost="True"
@@ -25,6 +26,7 @@
         Title="HomeworkEditWindow" Height="450" Width="300">
     <Window.Resources>
         <ely:IntToStringConverter x:Key="IntToStringConverter" />
+        <converter:ColorToBrushConverter x:Key="ColorToBrushConverter" />
     </Window.Resources>
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="22"
@@ -123,8 +125,29 @@
                         <Button Content="{materialDesign:PackIcon Add}"
                                 VerticalAlignment="Center"
                                 ToolTip="添加到常用的颜色"
-                                Click="ButtonClearColor_OnClick"
+                                Click="ButtonAddToColor_OnClick"
                                 Style="{StaticResource MaterialDesignToolForegroundButton}" />
+                        <ListBox ItemsSource="{Binding SettingsService.Settings.SavedColors}"
+                                 VerticalAlignment="Center"
+                                 SelectionChanged="ListBoxColors_OnSelectionChanged">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                                    <Setter Property="Padding" Value="2"/>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Ellipse Width="16" Height="16"
+                                             Fill="{Binding Converter={StaticResource ColorToBrushConverter}}"
+                                             Stroke="{DynamicResource MaterialDesignBody}"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
                     </WrapPanel>
                     <Expander Padding="0" materialDesign:ExpanderAssist.HorizontalHeaderPadding="0"
                               Margin="0 6 0 0">
@@ -132,8 +155,17 @@
                             <TextBlock Text="更多格式"/>
                         </Expander.Header>
                         <StackPanel Margin="0 4 0 0">
-                            <StackPanel Orientation="Horizontal">
-                                <ListBox SelectionMode="Multiple" SelectionChanged="ListBoxTextStyles_OnSelectionChanged">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="4"/>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="4"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <ListBox Grid.Column="0" SelectionMode="Multiple" 
+                                         VerticalAlignment="Bottom"
+                                         SelectionChanged="ListBoxTextStyles_OnSelectionChanged">
                                     <ListBox.ItemContainerStyle>
                                         <Style TargetType="ListBoxItem"
                                                BasedOn="{StaticResource MaterialDesignListBoxItem}">
@@ -160,34 +192,23 @@
                                     <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatStrikethroughVariant}"
                                                  ToolTip="删除线" IsSelected="{Binding ViewModel.IsStrikeThrough}"/>
                                 </ListBox>
-                                <ListBox SelectionMode="Single" Margin="4 0 0 0">
-                                    <ListBox.ItemContainerStyle>
-                                        <Style TargetType="ListBoxItem"
-                                               BasedOn="{StaticResource MaterialDesignListBoxItem}">
-                                            <Style.Triggers>
-                                                <Trigger Property="IsSelected" Value="True">
-                                                    <Setter Property="Foreground"
-                                                            Value="{DynamicResource PrimaryHueMidBrush}">
-                                                    </Setter>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </ListBox.ItemContainerStyle>
-                                    <ListBox.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <WrapPanel />
-                                        </ItemsPanelTemplate>
-                                    </ListBox.ItemsPanel>
-                                    <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatAlignLeft}"
-                                                 ToolTip="居左（Ctrl+L）" />
-                                    <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatAlignCenter}"
-                                                 ToolTip="居中（Ctrl+E）" />
-                                    <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatAlignRight}"
-                                                 ToolTip="居右（Ctrl+R）" />
-                                    <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatAlignJustify}"
-                                                 ToolTip="适应" />
-                                </ListBox>
-                            </StackPanel>
+                                <TextBox Grid.Column="2" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                         Margin="0 6 0 0"
+                                         Text="{Binding ViewModel.FontSize, Converter={StaticResource IntToStringConverter}, UpdateSourceTrigger=PropertyChanged}"
+                                         materialDesign:HintAssist.Hint="字号" VerticalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" Grid.Column="4" VerticalAlignment="Bottom">
+                                    <Button Content="{materialDesign:PackIcon FormatFontSizeDecrease}"
+                                            VerticalAlignment="Center"
+                                            Margin="3 0"
+                                            Style="{StaticResource MaterialDesignToolForegroundButton}" 
+                                            Click="ButtonFontSizeDecrease_OnClick"/>
+                                    <Button Content="{materialDesign:PackIcon FormatFontSizeIncrease}"
+                                            VerticalAlignment="Center"
+                                            Margin="3 0"
+                                            Click="ButtonFontSizeIncrease_OnClick"
+                                            Style="{StaticResource MaterialDesignToolForegroundButton}" />
+                                </StackPanel>
+                            </Grid>
                             <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                       Margin="0 6 0 0"
                                       SelectedItem="{Binding ViewModel.Font, Mode=TwoWay}"
@@ -211,34 +232,6 @@
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition Width="4"/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition Width="4"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <ComboBox Grid.Column="0" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                          Margin="0 6 0 0"
-                                          materialDesign:HintAssist.Hint="字重" VerticalAlignment="Center"/>
-                                <TextBox Grid.Column="2" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                          Margin="0 6 0 0"
-                                          Text="{Binding ViewModel.FontSize, Converter={StaticResource IntToStringConverter}, UpdateSourceTrigger=PropertyChanged}"
-                                          materialDesign:HintAssist.Hint="字号" VerticalAlignment="Center"/>
-                                <StackPanel Orientation="Horizontal" Grid.Column="4" VerticalAlignment="Bottom">
-                                    <Button Content="{materialDesign:PackIcon FormatFontSizeDecrease}"
-                                            VerticalAlignment="Center"
-                                            Margin="3 0"
-                                            Style="{StaticResource MaterialDesignToolForegroundButton}" 
-                                            Click="ButtonFontSizeDecrease_OnClick"/>
-                                    <Button Content="{materialDesign:PackIcon FormatFontSizeIncrease}"
-                                            VerticalAlignment="Center"
-                                            Margin="3 0"
-                                            Click="ButtonFontSizeIncrease_OnClick"
-                                            Style="{StaticResource MaterialDesignToolForegroundButton}" />
-                                </StackPanel>
-                            </Grid>
                             
                         </StackPanel>
                     </Expander>

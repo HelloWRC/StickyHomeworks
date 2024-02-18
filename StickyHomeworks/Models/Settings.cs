@@ -35,6 +35,7 @@ public class Settings : ObservableRecipient
     private string _title = "作业";
     private double _maxPanelWidth = 350;
     private bool _isDebugShowInTaskBar = false;
+    private ObservableCollection<Color> _savedColors = new();
 
     public double WindowX
     {
@@ -346,6 +347,17 @@ public class Settings : ObservableRecipient
         {
             if (value == _isDebugShowInTaskBar) return;
             _isDebugShowInTaskBar = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<Color> SavedColors
+    {
+        get => _savedColors;
+        set
+        {
+            if (Equals(value, _savedColors)) return;
+            _savedColors = value;
             OnPropertyChanged();
         }
     }
