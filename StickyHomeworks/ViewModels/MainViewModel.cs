@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Windows.Controls;
+using CommunityToolkit.Mvvm.ComponentModel;
 using MaterialDesignThemes.Wpf;
 using StickyHomeworks.Models;
 
@@ -19,6 +20,19 @@ public class MainViewModel : ObservableRecipient
     private bool _isClosing = false;
     private bool _isWorking = false;
     private SnackbarMessageQueue _snackbarMessageQueue = new();
+    private Control? _selectedListBoxItem;
+    private bool _isUpdatingHomeworkSubject = false;
+
+    public Control? SelectedListBoxItem
+    {
+        get => _selectedListBoxItem;
+        set
+        {
+            if (Equals(value, _selectedListBoxItem)) return;
+            _selectedListBoxItem = value;
+            OnPropertyChanged();
+        }
+    }
 
     public bool IsDrawerOpened
     {
@@ -126,6 +140,17 @@ public class MainViewModel : ObservableRecipient
         {
             if (Equals(value, _snackbarMessageQueue)) return;
             _snackbarMessageQueue = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsUpdatingHomeworkSubject
+    {
+        get => _isUpdatingHomeworkSubject;
+        set
+        {
+            if (value == _isUpdatingHomeworkSubject) return;
+            _isUpdatingHomeworkSubject = value;
             OnPropertyChanged();
         }
     }

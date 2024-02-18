@@ -73,7 +73,7 @@ public static class NativeWindowHelper
     private static extern bool GetWindowRect(HandleRef hWnd, [In, Out] ref RECT rect);
 
     [DllImport("user32.dll")]
-    private static extern IntPtr GetForegroundWindow();
+    public static extern IntPtr GetForegroundWindow();
 
     [DllImport("user32.dll")]
     public static extern int GetWindowThreadProcessId(

@@ -62,12 +62,13 @@
                         <ComboBox Grid.Column="0" 
                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   materialDesign:HintAssist.Hint="科目"
+                                  SelectionChanged="Selector_OnSelectionChanged"
                                   ItemsSource="{Binding SettingsService.Settings.Subjects}"
-                                  SelectedItem="{Binding MainWindow.ViewModel.EditingHomework.Subject}"/>
+                                  SelectedItem="{Binding MainWindow.ViewModel.SelectedHomework.Subject}"/>
                         <DatePicker Grid.Column="2"
                                     Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                     materialDesign:HintAssist.Hint="截止日期"
-                                    SelectedDate="{Binding MainWindow.ViewModel.EditingHomework.DueTime}"/>
+                                    SelectedDate="{Binding MainWindow.ViewModel.SelectedHomework.DueTime}"/>
                     </Grid>
                     <Separator Margin="-6 6"/>
                     <ely:IconText Kind="TagMultipleOutline" Text="标签"/>
@@ -81,7 +82,7 @@
                                     <Setter.Value>
                                         <materialDesign:BehaviorCollection>
                                             <behaviors:AllCollectionBehavior
-                                                AllCollection="{Binding MainWindow.ViewModel.EditingHomework.Tags, RelativeSource={RelativeSource FindAncestor, AncestorType=local:HomeworkEditWindow}}"
+                                                AllCollection="{Binding MainWindow.ViewModel.SelectedHomework.Tags, RelativeSource={RelativeSource FindAncestor, AncestorType=local:HomeworkEditWindow}}"
                                                 CurrentValue="{Binding}" />
                                         </materialDesign:BehaviorCollection>
                                     </Setter.Value>
@@ -247,7 +248,7 @@
             <StackPanel Grid.Row="3" Orientation="Horizontal"
                         HorizontalAlignment="Right"
                         Margin="8">
-                <Button>
+                <Button Click="ButtonEditingDone_OnClick">
                     <ely:IconText Kind="Check" Text="确定"/>
                 </Button>
             </StackPanel>

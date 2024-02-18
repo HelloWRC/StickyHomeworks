@@ -30,6 +30,29 @@ public partial class HomeworkEditWindow : Window
 
     public HomeworkEditViewModel ViewModel { get; } = new();
 
+    public bool IsOpened { get; set; } = false;
+
+    public event EventHandler? EditingFinished;
+
+    public event EventHandler? SubjectChanged;
+
+    public void TryOpen()
+    {
+        if (IsOpened)
+            return;
+        Show();
+        Activate();
+        IsOpened = true;
+    }
+
+    public void TryClose()
+    {
+        if (!IsOpened)
+            return;
+        IsOpened = false;
+        Hide();
+    }
+
     public RichTextBox RelatedRichTextBox
     {
         get => _relatedRichTextBox;
@@ -177,5 +200,15 @@ public partial class HomeworkEditWindow : Window
     private void ButtonFontSizeIncrease_OnClick(object sender, RoutedEventArgs e)
     {
         ViewModel.FontSize += 2;
+    }
+
+    private void ButtonEditingDone_OnClick(object sender, RoutedEventArgs e)
+    {
+        EditingFinished?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        SubjectChanged?.Invoke(this, EventArgs.Empty);
     }
 }

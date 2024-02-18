@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,17 +68,23 @@ public partial class HomeworkControl : UserControl
 
     private void IsEditingChanged(bool value)
     {
+        Debug.WriteLine($"IsEditing changed! {value} {IsSelected}");
         if (IsSelected && value)
         {
+            Debug.WriteLine("RelatedRichTextBox updated because IsEditing changed");
             AppEx.GetService<HomeworkEditWindow>().RelatedRichTextBox = RichTextBox;
+            RichTextBox.Focus();
         }
     }
 
     private void IsSelectedChanged(bool value)
     {
+        Debug.WriteLine($"IsSelected changed! {value} {IsEditing}");
         if (value && IsEditing)
         {
+            Debug.WriteLine("RelatedRichTextBox updated because IsSelected changed");
             AppEx.GetService<HomeworkEditWindow>().RelatedRichTextBox = RichTextBox;
+            RichTextBox.Focus();
         }
     }
 }

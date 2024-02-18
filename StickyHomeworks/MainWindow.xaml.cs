@@ -20,6 +20,7 @@ using StickyHomeworks.Models;
 using StickyHomeworks.Services;
 using StickyHomeworks.ViewModels;
 using StickyHomeworks.Views;
+using System.Windows.Automation;
 
 namespace StickyHomeworks;
 
@@ -41,9 +42,49 @@ public partial class MainWindow : Window
     {
         ProfileService = profileService;
         SettingsService = settingsService;
-
+        Automation.AddAutomationFocusChangedEventHandler(OnFocusChangedHandler);
         InitializeComponent();
+        ViewModel.PropertyChanged += ViewModelOnPropertyChanged;
         DataContext = this;
+    }
+
+    private void ViewModelOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(ViewModel.SelectedListBoxItem))
+        {
+            RepositionEditingWindow();
+        }
+    }
+
+    private void OnFocusChangedHandler(object sender, AutomationFocusChangedEventArgs e)
+    {
+        try
+        {
+
+            var element = sender as AutomationElement;
+            if (element == null)
+                return;
+            var hWnd = NativeWindowHelper.GetForegroundWindow();
+            NativeWindowHelper.GetWindowThreadProcessId(hWnd, out var id);
+            using var proc = Process.GetProcessById(id);
+            Debug.WriteLine($"{proc.ProcessName} {e.EventId.ProgrammaticName}");
+            if (proc.Id != Environment.ProcessId &&
+                !new List<string>(["ctfmon", "textinputhost", "chsime"]).Contains(proc.ProcessName.ToLower()))
+            {
+                Dispatcher.Invoke(ExitEditingMode);
+            }
+        }
+        catch
+        {
+            // ignored
+        }
+    }
+
+    private void ExitEditingMode()
+    {
+        MainListView.SelectedIndex = -1;
+        ViewModel.IsDrawerOpened = false;
+        AppEx.GetService<HomeworkEditWindow>().TryClose();
     }
 
     private void SetPos()
@@ -88,21 +129,48 @@ public partial class MainWindow : Window
     {
         SetBottom();
         SetPos();
+        AppEx.GetService<HomeworkEditWindow>().EditingFinished += OnEditingFinished;
+        AppEx.GetService<HomeworkEditWindow>().SubjectChanged += OnSubjectChanged;
         base.OnContentRendered(e);
+    }
+
+    private void OnSubjectChanged(object? sender, EventArgs e)
+    {
+        if (ViewModel.IsUpdatingHomeworkSubject)
+            return;
+        if (ViewModel.SelectedHomework == null)
+            return;
+        ViewModel.IsUpdatingHomeworkSubject = true;
+        var s = ViewModel.SelectedHomework;
+        ProfileService.Profile.Homeworks.Remove(s);
+        ProfileService.Profile.Homeworks.Add(s);
+        ViewModel.SelectedHomework = s;
+        ViewModel.IsUpdatingHomeworkSubject = false;
+    }
+
+    private void OnEditingFinished(object? sender, EventArgs e)
+    {
+        ExitEditingMode();
     }
 
     private void ButtonCreateHomework_OnClick(object sender, RoutedEventArgs e)
     {
+        ViewModel.IsUpdatingHomeworkSubject = true;
         OnHomeworkEditorUpdated?.Invoke(this ,EventArgs.Empty);
         var lastSubject = ViewModel.EditingHomework.Subject;
-        ViewModel.IsCreatingMode = true;
+        //ViewModel.IsCreatingMode = true;
         ViewModel.IsDrawerOpened = true;
         var o = new Homework()
         {
             Subject = lastSubject
         };
         ViewModel.EditingHomework = o;
+        ViewModel.SelectedHomework = o;
+        ProfileService.Profile.Homeworks.Add(o);
         ComboBoxSubject.Text = lastSubject;
+        SettingsService.SaveSettings();
+        ProfileService.SaveProfile();
+        ViewModel.IsUpdatingHomeworkSubject = false;
     }
 
     private void ButtonAddHomeworkCompleted_OnClick(object sender, RoutedEventArgs e)
@@ -177,13 +245,29 @@ public partial class MainWindow : Window
             return;
         ViewModel.EditingHomework = ViewModel.SelectedHomework;
         ViewModel.IsDrawerOpened = true;
+        RepositionEditingWindow();
+        AppEx.GetService<HomeworkEditWindow>().TryOpen();
+    }
+
+    private void RepositionEditingWindow()
+    {
+        if (ViewModel.SelectedListBoxItem != null)
+        {
+            Debug.WriteLine("selected changed");
+            GetCurrentDpi(out var dpiX, out var dpiY);
+            var p = ViewModel.SelectedListBoxItem.PointToScreen(new Point(ViewModel.SelectedListBoxItem.ActualWidth, 0));
+            AppEx.GetService<HomeworkEditWindow>().Left = p.X / dpiX;
+            AppEx.GetService<HomeworkEditWindow>().Top = p.Y / dpiY;
+        }
     }
 
     private void ButtonRemoveHomework_OnClick(object sender, RoutedEventArgs e)
     {
+        ViewModel.IsUpdatingHomeworkSubject = true;
         if (ViewModel.SelectedHomework == null)
             return;
         ProfileService.Profile.Homeworks.Remove(ViewModel.SelectedHomework);
+        ViewModel.IsUpdatingHomeworkSubject = false;
     }
 
     private void ButtonEditDone_OnClick(object sender, RoutedEventArgs e)
@@ -258,7 +342,7 @@ public partial class MainWindow : Window
 
     private void MainWindow_OnDeactivated(object? sender, EventArgs e)
     {
-        MainListView.SelectedIndex = -1;
+        //MainListView.SelectedIndex = -1;
     }
 
     private async void ButtonExport_OnClick(object sender, RoutedEventArgs e)
@@ -325,5 +409,10 @@ public partial class MainWindow : Window
     private void ButtonMore_Click(object sender, RoutedEventArgs e)
     {
         PopupExAdvanced.IsOpen = true;
+    }
+
+    private void MainListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        RepositionEditingWindow();
     }
 }

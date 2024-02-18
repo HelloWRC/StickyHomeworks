@@ -102,8 +102,7 @@
     </WindowChrome.WindowChrome>
 
     <materialDesign:DialogHost Identifier="MainWindow">
-        <materialDesign:DrawerHost IsBottomDrawerOpen="{Binding ViewModel.IsDrawerOpened}"
-                                   IsTabStop="False"
+        <materialDesign:DrawerHost IsTabStop="False"
                                    FocusVisualStyle="{x:Null}"
                                    DrawerClosing="DrawerHost_OnDrawerClosing">
             <!-- 作业编辑 -->
@@ -369,6 +368,14 @@
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
                             <Setter Property="Padding" Value="24 0 0 0" />
+                            <Setter Property="materialDesign:BehaviorsAssist.Behaviors">
+                                <Setter.Value>
+                                    <materialDesign:BehaviorCollection>
+                                        <behaviors:ControlExposeBehavior Condition="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}}"
+                                                                         ExposedControl="{Binding ViewModel.SelectedListBoxItem, RelativeSource={RelativeSource FindAncestor, AncestorType=local:MainWindow}, Mode=OneWayToSource}"/>
+                                    </materialDesign:BehaviorCollection>
+                                </Setter.Value>
+                            </Setter>
                         </Style>
                     </ListView.ItemContainerStyle>
                     <ListView.GroupStyle>
