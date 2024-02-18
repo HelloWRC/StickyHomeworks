@@ -21,6 +21,7 @@ using StickyHomeworks.Services;
 using StickyHomeworks.ViewModels;
 using StickyHomeworks.Views;
 using System.Windows.Automation;
+using System.Windows.Forms;
 
 namespace StickyHomeworks;
 
@@ -71,7 +72,7 @@ public partial class MainWindow : Window
             if (proc.Id != Environment.ProcessId &&
                 !new List<string>(["ctfmon", "textinputhost", "chsime"]).Contains(proc.ProcessName.ToLower()))
             {
-                Dispatcher.Invoke(ExitEditingMode);
+                Dispatcher.Invoke(() => ExitEditingMode());
             }
         }
         catch
@@ -80,9 +81,10 @@ public partial class MainWindow : Window
         }
     }
 
-    private void ExitEditingMode()
+    private void ExitEditingMode(bool hard=true)
     {
-        MainListView.SelectedIndex = -1;
+        if (hard)
+            MainListView.SelectedIndex = -1;
         ViewModel.IsDrawerOpened = false;
         AppEx.GetService<HomeworkEditWindow>().TryClose();
     }
@@ -140,6 +142,8 @@ public partial class MainWindow : Window
             return;
         if (ViewModel.SelectedHomework == null)
             return;
+        if (!ViewModel.IsDrawerOpened)
+            return;
         ViewModel.IsUpdatingHomeworkSubject = true;
         var s = ViewModel.SelectedHomework;
         ProfileService.Profile.Homeworks.Remove(s);
@@ -171,6 +175,8 @@ public partial class MainWindow : Window
         SettingsService.SaveSettings();
         ProfileService.SaveProfile();
         ViewModel.IsUpdatingHomeworkSubject = false;
+        RepositionEditingWindow();
+        AppEx.GetService<HomeworkEditWindow>().TryOpen();
     }
 
     private void ButtonAddHomeworkCompleted_OnClick(object sender, RoutedEventArgs e)
@@ -251,14 +257,15 @@ public partial class MainWindow : Window
 
     private void RepositionEditingWindow()
     {
-        if (ViewModel.SelectedListBoxItem != null)
-        {
-            Debug.WriteLine("selected changed");
-            GetCurrentDpi(out var dpiX, out var dpiY);
-            var p = ViewModel.SelectedListBoxItem.PointToScreen(new Point(ViewModel.SelectedListBoxItem.ActualWidth, 0));
-            AppEx.GetService<HomeworkEditWindow>().Left = p.X / dpiX;
-            AppEx.GetService<HomeworkEditWindow>().Top = p.Y / dpiY;
-        }
+        if (ViewModel.SelectedListBoxItem == null) 
+            return;
+        Debug.WriteLine("selected changed");
+        GetCurrentDpi(out var dpiX, out var dpiY);
+        var p = ViewModel.SelectedListBoxItem.PointToScreen(new Point(ViewModel.SelectedListBoxItem.ActualWidth, 0));
+        var screen = Screen.PrimaryScreen!.WorkingArea;
+        var homeworkEditWindow = AppEx.GetService<HomeworkEditWindow>();
+        homeworkEditWindow.Left = p.X / dpiX;
+        homeworkEditWindow.Top = Math.Min(p.Y, screen.Bottom - homeworkEditWindow.ActualHeight * dpiY) / dpiY;
     }
 
     private void ButtonRemoveHomework_OnClick(object sender, RoutedEventArgs e)
@@ -413,6 +420,6 @@ public partial class MainWindow : Window
 
     private void MainListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        RepositionEditingWindow();
+        ExitEditingMode(false);
     }
 }

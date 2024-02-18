@@ -353,6 +353,7 @@
                           ScrollViewer.HorizontalScrollBarVisibility="Auto"
                           ScrollViewer.VerticalScrollBarVisibility="Disabled"
                           ScrollViewer.CanContentScroll="False"
+                          SelectionChanged="MainListView_OnSelectionChanged"
                           Visibility="{Binding ViewModel.IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}"
                           x:Name="MainListView" 
                           d:ItemsSource="{d:SampleData ItemCount=5}">
@@ -421,10 +422,10 @@
                                             Visibility="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}, Converter={StaticResource BooleanToVisibilityConverter}}">
                                     <Button Content="{materialDesign:PackIcon EditOutline}"
                                             Style="{StaticResource MaterialDesignToolForegroundButton}"
-                                            Margin="4 -8" ToolTip="编辑" Click="ButtonEditHomework_OnClick" />
+                                            Margin="4 0" ToolTip="编辑" Click="ButtonEditHomework_OnClick" />
                                     <Button Content="{materialDesign:PackIcon DeleteOutline}"
                                             Style="{StaticResource MaterialDesignToolForegroundButton}"
-                                            Margin="4 -8" ToolTip="删除" Foreground="IndianRed"
+                                            Margin="4 0" ToolTip="删除" Foreground="IndianRed"
                                             Click="ButtonRemoveHomework_OnClick" />
                                 </StackPanel>
                             </StackPanel>
