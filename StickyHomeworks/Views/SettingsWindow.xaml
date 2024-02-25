@@ -219,7 +219,7 @@
             <TextBox Margin="0 6 0 0" TextWrapping="Wrap"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      Text="{Binding ViewModel.TagEditText}"
-                     materialDesign:HintAssist.Hint="科目名称"/>
+                     materialDesign:HintAssist.Hint="标签名称"/>
             <StackPanel Orientation="Horizontal" Margin="0 8 0 0" HorizontalAlignment="Right">
                 <Button Content="确定" HorizontalAlignment="Right" Style="{DynamicResource MaterialDesignFlatButton}" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" 
                         CommandParameter="{Binding ViewModel.TagEditText, Mode=OneWay}"/>
@@ -641,18 +641,18 @@
                                         <Paragraph Style="{StaticResource MarkdownHeadline2Style}"
                                                    LineHeight="2">
                                             鸣谢：
-                                            <LineBreak/>
+                                        </Paragraph>
+                                        <Paragraph>
                                             <Button HorizontalAlignment="Left" Margin="6"
                                                     Style="{StaticResource MaterialDesignFlatButton}"
                                                     Click="ButtonContributors_OnClick">
-                                                <ely:IconText Kind="PeopleGroupOutline" Text="贡献人员"/>
+                                                <ely:IconText Kind="PeopleGroupOutline" Text="贡献人员" />
                                             </Button>
                                             <Button HorizontalAlignment="Left" Margin="6"
                                                     Style="{StaticResource MaterialDesignFlatButton}"
                                                     Click="ButtonThirdPartyLibs_OnClick">
-                                                <ely:IconText Kind="PackageVariant" Text="第三方库"/>
-                                            </Button>
-                                        </Paragraph>
+                                                <ely:IconText Kind="PackageVariant" Text="第三方库" />
+                                            </Button></Paragraph>
                                         <Paragraph>
                                             Work In Progress
                                         </Paragraph>

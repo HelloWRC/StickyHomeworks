@@ -12,6 +12,7 @@
         mc:Ignorable="d"
         WindowStyle="None"
         Topmost="True"
+        ShowInTaskbar="False"
         d:DataContext="{d:DesignInstance local:HomeworkEditWindow}"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{x:Null}"
@@ -23,7 +24,7 @@
         ResizeMode="NoResize"
         SizeToContent="Height"
         AllowsTransparency="True"
-        Title="HomeworkEditWindow" Height="450" Width="300">
+        Title="编辑作业" Height="450" Width="300">
     <Window.Resources>
         <ely:IntToStringConverter x:Key="IntToStringConverter" />
         <converter:ColorToBrushConverter x:Key="ColorToBrushConverter" />

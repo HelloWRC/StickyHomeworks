@@ -203,7 +203,8 @@ public static class NativeWindowHelper
     public enum DwmWindowAttribute : uint
     {
         DWMWA_USE_IMMERSIVE_DARK_MODE = 20,
-        DWMWA_MICA_EFFECT = 1029
+        DWMWA_MICA_EFFECT = 1029,
+        DWMWA_USE_IMMERSIVE_DARK_MODE_OLD = 0x19
     }
 
 
@@ -251,5 +252,10 @@ public static class NativeWindowHelper
 
         return windows;
     }
+
+
+    [DllImport("User32.dll")]
+
+    public static extern int SendMessage(IntPtr hwnd, int wMsg, int wParam, int lParam);
 
 }
