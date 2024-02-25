@@ -53,4 +53,16 @@ public partial class WindowMovingDemo : UserControl
     {
         BeginStoryboard((Storyboard)FindResource("Loop"));
     }
+
+    private void WindowMovingDemo_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        var sb = (Storyboard)FindResource("Loop");
+        if (IsVisible)
+            sb.Begin(this);
+        else
+        {
+            sb.Stop(this);
+            sb.Remove(this);
+        }
+    }
 }
