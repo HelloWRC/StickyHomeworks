@@ -198,7 +198,7 @@ public partial class MainWindow : Window
         ViewModel.EditingHomework = o;
         ViewModel.SelectedHomework = o;
         ProfileService.Profile.Homeworks.Add(o);
-        ComboBoxSubject.Text = lastSubject;
+        //ComboBoxSubject.Text = lastSubject;
         SettingsService.SaveSettings();
         ProfileService.SaveProfile();
         ViewModel.IsUpdatingHomeworkSubject = false;
@@ -287,12 +287,19 @@ public partial class MainWindow : Window
         if (ViewModel.SelectedListBoxItem == null) 
             return;
         Debug.WriteLine("selected changed");
-        GetCurrentDpi(out var dpiX, out var dpiY);
-        var p = ViewModel.SelectedListBoxItem.PointToScreen(new Point(ViewModel.SelectedListBoxItem.ActualWidth, 0));
-        var screen = Screen.PrimaryScreen!.WorkingArea;
-        var homeworkEditWindow = AppEx.GetService<HomeworkEditWindow>();
-        homeworkEditWindow.Left = p.X / dpiX;
-        homeworkEditWindow.Top = Math.Min(p.Y, screen.Bottom - homeworkEditWindow.ActualHeight * dpiY) / dpiY;
+        try
+        {
+            GetCurrentDpi(out var dpiX, out var dpiY);
+            var p = ViewModel.SelectedListBoxItem.PointToScreen(new Point(ViewModel.SelectedListBoxItem.ActualWidth, 0));
+            var screen = Screen.PrimaryScreen!.WorkingArea;
+            var homeworkEditWindow = AppEx.GetService<HomeworkEditWindow>();
+            homeworkEditWindow.Left = p.X / dpiX;
+            homeworkEditWindow.Top = Math.Min(p.Y, screen.Bottom - homeworkEditWindow.ActualHeight * dpiY) / dpiY;
+        }
+        catch (Exception e)
+        {
+            // ignored
+        }
     }
 
     private void ButtonRemoveHomework_OnClick(object sender, RoutedEventArgs e)

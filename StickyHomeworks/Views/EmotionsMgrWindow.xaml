@@ -14,6 +14,7 @@
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal" 
         TextOptions.TextRenderingMode="Auto"        
+        Icon="/Assets/AppLogo.png"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{StaticResource HarmonyOsSans}">
     <Grid>

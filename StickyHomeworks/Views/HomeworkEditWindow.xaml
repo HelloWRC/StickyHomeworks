@@ -24,6 +24,7 @@
         ResizeMode="NoResize"
         SizeToContent="Height"
         AllowsTransparency="True"
+        Icon="/Assets/AppLogo.png"
         Title="编辑作业" Height="450" Width="300">
     <Window.Resources>
         <ely:IntToStringConverter x:Key="IntToStringConverter" />

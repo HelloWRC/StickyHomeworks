@@ -22,6 +22,7 @@
         Height="450" Width="800"
         MinWidth="250"
         MinHeight="45"
+        Icon="/Assets/AppLogo.png"
         StateChanged="MainWindow_OnStateChanged"
         Activated="MainWindow_OnActivated"
         Deactivated="MainWindow_OnDeactivated">
@@ -111,114 +112,6 @@
         <materialDesign:DrawerHost IsTabStop="False"
                                    FocusVisualStyle="{x:Null}"
                                    DrawerClosing="DrawerHost_OnDrawerClosing">
-            <!-- 作业编辑 -->
-            <materialDesign:DrawerHost.BottomDrawerContent>
-                <Grid Margin="16" MaxWidth="500">
-                    <StackPanel>
-                        <TextBlock Margin="0 0 0 16">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock"
-                                       BasedOn="{StaticResource MaterialDesignHeadline5TextBlock}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ViewModel.IsCreatingMode}" Value="True">
-                                            <Setter Property="Text" Value="布置新作业" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding ViewModel.IsCreatingMode}" Value="False">
-                                            <Setter Property="Text" Value="编辑作业" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                        <ComboBox Style="{StaticResource MaterialDesignOutlinedComboBox}"
-                                  SelectedItem="{Binding ViewModel.EditingHomework.Subject, Mode=TwoWay}"
-                                  ItemsSource="{Binding SettingsService.Settings.Subjects}"
-                                  x:Name="ComboBoxSubject"
-                                  IsEnabled="{Binding ViewModel.IsCreatingMode}"
-                                  Margin="0 0 0 8"
-                                  IsReadOnly="{Binding ViewModel.IsCreatingMode, Converter={StaticResource InvertBooleanConverter}}"
-                                  materialDesign:HintAssist.Hint="科目" />
-                        <Grid Margin="0 0 0 8">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <DatePicker Grid.Column="0"
-                                        Style="{StaticResource MaterialDesignOutlinedDatePicker}"
-                                        materialDesign:HintAssist.Hint="截止日期"
-                                        SelectedDate="{Binding ViewModel.EditingHomework.DueTime}" />
-                            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="6 0 0 0">
-                                <Button Content="今天" Style="{StaticResource MaterialDesignFlatButton}" 
-                                        Margin="0 0 2 0"
-                                        Click="ButtonDateSetToday_OnClick"/>
-                                <Button Content="周末" Style="{StaticResource MaterialDesignFlatButton}"
-                                        Click="ButtonDateSetWeekends_OnClick"/>
-                            </StackPanel>
-                        </Grid>
-                        <!-- Tags -->
-                        <WrapPanel Margin="0 0 0 8">
-                            <TextBlock VerticalAlignment="Center" Text="标签：" />
-                            <Button Content="{materialDesign:PackIcon EditOutline}" Click="ButtonEditTags_OnClick"
-                                    ToolTip="编辑标签…"
-                                    Style="{StaticResource MaterialDesignFlatButton}" />
-                            <ListBox ItemsSource="{Binding ViewModel.EditingHomework.Tags}"
-                                     Style="{StaticResource MaterialDesignChoiceChipListBox}">
-
-                            </ListBox>
-                            <Popup IsOpen="{Binding ViewModel.IsTagEditingPopupOpened}"
-                                   PopupAnimation="Fade"
-                                   StaysOpen="False"
-                                   AllowsTransparency="True">
-                                <materialDesign:Card Margin="8">
-                                    <Grid Margin="6" MaxWidth="400" MaxHeight="300">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-                                        <TextBlock Grid.Row="0" Text="选择标签" FontSize="18" Margin="4"/>
-                                        <!-- Tags选择 -->
-                                        <ListBox Grid.Row="1"
-                                                 ItemsSource="{Binding SettingsService.Settings.Tags}"
-                                                 Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineListBox}">
-                                            <ListBox.ItemContainerStyle>
-                                                <Style TargetType="ListBoxItem"
-                                                       BasedOn="{StaticResource MaterialDesignFilterChipPrimaryOutlineListBoxItem}">
-                                                    <Setter Property="materialDesign:BehaviorsAssist.Behaviors">
-                                                        <Setter.Value>
-                                                            <materialDesign:BehaviorCollection>
-                                                                <behaviors:AllCollectionBehavior
-                                                                    AllCollection="{Binding ViewModel.EditingHomework.Tags ,RelativeSource={RelativeSource FindAncestor, AncestorType=local:MainWindow}}"
-                                                                    CurrentValue="{Binding}" />
-                                                            </materialDesign:BehaviorCollection>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Style>
-                                            </ListBox.ItemContainerStyle>
-                                        </ListBox>
-                                    </Grid>
-                                </materialDesign:Card>
-                            </Popup>
-                        </WrapPanel>
-                        <TextBox Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                 Text="{Binding ViewModel.EditingHomework.Content}"
-                                 Margin="0 0 0 8"
-                                 TextWrapping="Wrap"
-                                 materialDesign:HintAssist.Hint="作业" />
-                        <Separator Margin="0 0 0 12" />
-                        <Button Click="ButtonAddHomeworkCompleted_OnClick"
-                                HorizontalAlignment="Right"
-                                Visibility="{Binding ViewModel.IsCreatingMode, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <ely:IconText Kind="Check" Text="完成布置" />
-                        </Button>
-                        <Button Click="ButtonEditDone_OnClick"
-                                HorizontalAlignment="Right"
-                                Visibility="{Binding ViewModel.IsCreatingMode, Converter={StaticResource InverseBoolToVisConverter}}">
-                            <ely:IconText Kind="Check" Text="确定" />
-                        </Button>
-                    </StackPanel>
-                </Grid>
-            </materialDesign:DrawerHost.BottomDrawerContent>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />

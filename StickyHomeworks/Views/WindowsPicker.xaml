@@ -8,6 +8,7 @@
                    xmlns:controls="clr-namespace:StickyHomeworks.Controls"
                    xmlns:ely="http://github.com/HelloWRC/ElysiaFramework"
                    mc:Ignorable="d"
+                   Icon="/Assets/AppLogo.png"
                    d:DataContext="{d:DesignInstance local:WindowsPicker}"
                    Height="600" Width="1300"
                    TextElement.Foreground="{DynamicResource MaterialDesignBody}"

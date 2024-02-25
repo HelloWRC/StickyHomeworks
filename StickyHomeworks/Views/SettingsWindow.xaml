@@ -17,6 +17,7 @@
                    TextOptions.TextFormattingMode="Ideal" 
                    TextOptions.TextRenderingMode="Auto"   
                    Title="应用设置" Height="550" Width="1200"
+                   Icon="/Assets/AppLogo.png"
                    MinWidth="600"
                    Closing="SettingsWindow_OnClosing"
                    FrameworkElement.FocusVisualStyle="{StaticResource {x:Static SystemParameters.FocusVisualStyleKey}}"

@@ -20,6 +20,7 @@
     <EditorConfigFiles Remove="E:\Coding\StickyHomeworks\StickyHomeworks\.editorconfig" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Assets\AppLogo.png" />
     <None Remove="Assets\Contributiors\HelloWRC%4064w.jpg" />
     <None Remove="Assets\光辉矢愿_瞄准.png" />
   </ItemGroup>
@@ -31,8 +32,7 @@
     <ProjectReference Include="..\StickyHomeworks.Core\StickyHomeworks.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\Contributiors\HelloWRC@64w.jpg" />
-    <Resource Include="Assets\光辉矢愿_瞄准.png" />
+    <Resource Include="Assets\**" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Emoji.Wpf" Version="0.3.4" />
