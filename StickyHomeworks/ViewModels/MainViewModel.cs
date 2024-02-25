@@ -22,6 +22,8 @@ public class MainViewModel : ObservableRecipient
     private SnackbarMessageQueue _snackbarMessageQueue = new();
     private Control? _selectedListBoxItem;
     private bool _isUpdatingHomeworkSubject = false;
+    private List<Homework> _expiredHomeworks = new();
+    private bool _canRecoverExpireHomework = false;
 
     public Control? SelectedListBoxItem
     {
@@ -151,6 +153,28 @@ public class MainViewModel : ObservableRecipient
         {
             if (value == _isUpdatingHomeworkSubject) return;
             _isUpdatingHomeworkSubject = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public List<Homework> ExpiredHomeworks
+    {
+        get => _expiredHomeworks;
+        set
+        {
+            if (Equals(value, _expiredHomeworks)) return;
+            _expiredHomeworks = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool CanRecoverExpireHomework
+    {
+        get => _canRecoverExpireHomework;
+        set
+        {
+            if (value == _canRecoverExpireHomework) return;
+            _canRecoverExpireHomework = value;
             OnPropertyChanged();
         }
     }

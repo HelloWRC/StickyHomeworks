@@ -134,19 +134,26 @@ public partial class MainWindow : Window
 
     protected override void OnInitialized(EventArgs e)
     {
-        var rm = ProfileService.CleanupOutdated();
-        if (rm.Count > 0)
+        ViewModel.ExpiredHomeworks = ProfileService.CleanupOutdated();
+        if (ViewModel.ExpiredHomeworks.Count > 0)
         {
-            ViewModel.SnackbarMessageQueue.Enqueue($"清除了{rm.Count}条过期的作业。",
-                "恢复", (o) =>
-                {
-                    foreach (var i in rm)
-                    {
-                        ProfileService.Profile.Homeworks.Add(i);
-                    }
-                }, null, false, false, TimeSpan.FromSeconds(30));
+            ViewModel.CanRecoverExpireHomework = true;
+            ViewModel.SnackbarMessageQueue.Enqueue($"清除了{ViewModel.ExpiredHomeworks.Count}条过期的作业。",
+                "恢复", (o) => { RecoverExpiredHomework(); }, null, false, false, TimeSpan.FromSeconds(30));
         }
         base.OnInitialized(e);
+    }
+
+    private void RecoverExpiredHomework()
+    {
+        if (!ViewModel.CanRecoverExpireHomework)
+            return;
+        ViewModel.CanRecoverExpireHomework = false;
+        var rm = ViewModel.ExpiredHomeworks;
+        foreach (var i in rm)
+        {
+            ProfileService.Profile.Homeworks.Add(i);
+        }
     }
 
     protected override void OnContentRendered(EventArgs e)
@@ -466,5 +473,15 @@ public partial class MainWindow : Window
     public void OnTextBoxEnter()
     {
         CreateHomework();
+    }
+
+    private void MenuItem_OnClick(object sender, RoutedEventArgs e)
+    {
+        PopupExAdvanced.IsOpen = false;
+    }
+
+    private void MenuItemRecoverExpiredHomework_OnClick(object sender, RoutedEventArgs e)
+    {
+        RecoverExpiredHomework();
     }
 }

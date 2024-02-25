@@ -156,8 +156,15 @@
                                                     AllowsTransparency="True"
                                                     PopupAnimation="Fade">
                                 <Grid Background="{DynamicResource MaterialDesignPaper}"
-                                      TextElement.Foreground="{DynamicResource MaterialDesignBody}"> 
-                                    <StackPanel Margin="12">
+                                      Margin="8"
+                                      TextElement.Foreground="{DynamicResource MaterialDesignBody}">
+                                    <Grid.Effect>
+                                        <DropShadowEffect BlurRadius="8" Direction="0" 
+                                                          ShadowDepth="0"
+                                                          
+                                                          Opacity="0.5"/>
+                                    </Grid.Effect>
+                                    <StackPanel Margin="12" MenuItem.Click="MenuItem_OnClick">
                                         <ely:IconText Kind="CogOutline" Text="更多选项"/>
                                         <Grid>
                                             <Grid.RowDefinitions>
@@ -196,6 +203,7 @@
                                                                           Step="0.05"/>
                                         </Grid>
                                         <Separator Margin="-12 4"/>
+                                        <MenuItem Margin="-12 0" Icon="{materialDesign:PackIcon Refresh}" Header="恢复过期的作业" Click="MenuItemRecoverExpiredHomework_OnClick" IsEnabled="{Binding ViewModel.CanRecoverExpireHomework}"/>
                                         <MenuItem Margin="-12 0" Icon="{materialDesign:PackIcon CogOutline}" Header="更多设置…" Click="ButtonSettings_OnClick"/>
                                     </StackPanel>
                                 </Grid>
