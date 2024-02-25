@@ -95,24 +95,52 @@
 
                     <Separator Margin="-6 6"/>
                     <ely:IconText Kind="FormatBold" Text="文本"/>
-                    <StackPanel Orientation="Horizontal" Grid.Column="4" VerticalAlignment="Bottom">
-                        <Button Content="{materialDesign:PackIcon EmoticonOutline}"
-                                VerticalAlignment="Center"
-                                Margin="4 0"
-                                Style="{StaticResource MaterialDesignToolForegroundButton}" />
-                        <Button Content="{materialDesign:PackIcon ImageAddOutline}"
-                                VerticalAlignment="Center"
-                                Margin="4 0"
-                                Style="{StaticResource MaterialDesignToolForegroundButton}" />
-                        <Button Content="{materialDesign:PackIcon LinkAdd}"
-                                VerticalAlignment="Center"
-                                Margin="4 0"
-                                Style="{StaticResource MaterialDesignToolForegroundButton}" />
-                        <Button Content="{materialDesign:PackIcon FileDocumentAddOutline}"
-                                VerticalAlignment="Center"
-                                Margin="4 0"
-                                Style="{StaticResource MaterialDesignToolForegroundButton}" />
-                    </StackPanel>
+                    <Grid>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                            <Button Content="{materialDesign:PackIcon EmoticonOutline}"
+                                    VerticalAlignment="Center"
+                                    Margin="4 0"
+                                    Style="{StaticResource MaterialDesignToolForegroundButton}" />
+                            <Button Content="{materialDesign:PackIcon ImageAddOutline}"
+                                    VerticalAlignment="Center"
+                                    Margin="4 0"
+                                    Style="{StaticResource MaterialDesignToolForegroundButton}" />
+                            <Button Content="{materialDesign:PackIcon LinkAdd}"
+                                    VerticalAlignment="Center"
+                                    Margin="4 0"
+                                    Style="{StaticResource MaterialDesignToolForegroundButton}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                            <Button Content="{materialDesign:PackIcon Undo}"
+                                    Command="Undo"
+                                    ToolTip="撤销"
+                                    CommandTarget="{Binding RelatedRichTextBox}"
+                                    VerticalAlignment="Center"
+                                    Margin="4 0"
+                                    Style="{StaticResource MaterialDesignToolForegroundButton}" />
+                            <Button Content="{materialDesign:PackIcon ContentCopy}"
+                                    VerticalAlignment="Center"
+                                    Margin="4 0"
+                                    Command="Copy"
+                                    ToolTip="复制"
+                                    CommandTarget="{Binding RelatedRichTextBox}"
+                                    Style="{StaticResource MaterialDesignToolForegroundButton}" />
+                            <Button Content="{materialDesign:PackIcon ContentCut}"
+                                    VerticalAlignment="Center"
+                                    Margin="4 0"
+                                    Command="Cut"
+                                    ToolTip="剪切"
+                                    CommandTarget="{Binding RelatedRichTextBox}"
+                                    Style="{StaticResource MaterialDesignToolForegroundButton}" />
+                            <Button Content="{materialDesign:PackIcon ContentPaste}"
+                                    VerticalAlignment="Center"
+                                    Margin="4 0"
+                                    Command="Paste"
+                                    ToolTip="粘贴"
+                                    CommandTarget="{Binding RelatedRichTextBox}"
+                                    Style="{StaticResource MaterialDesignToolForegroundButton}" />
+                        </StackPanel>
+                    </Grid>
                     <WrapPanel Margin="0 6 0 0">
                         <ely:ColorPicker Margin="0 0 6 0"
                                          Color="{Binding ViewModel.TextColor, Mode=TwoWay, Delay=50}"

@@ -89,7 +89,7 @@ public class Settings : ObservableRecipient
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "StickyHomeworks.lnk"));
         set
         {
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "ClassIsland.lnk");
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "StickyHomeworks.lnk");
             try
             {
                 if (value)

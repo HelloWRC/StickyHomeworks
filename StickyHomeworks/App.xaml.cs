@@ -53,6 +53,7 @@ public partial class App : AppEx
                 services.AddSingleton<MainWindow>();
                 services.AddSingleton<HomeworkEditWindow>();
                 services.AddSingleton<CrashWindow>();
+                services.AddSingleton<WindowFocusObserverService>();
             }).
             Build();
         _ = Host.StartAsync();

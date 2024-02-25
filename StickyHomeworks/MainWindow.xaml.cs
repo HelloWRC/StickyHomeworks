@@ -42,15 +42,38 @@ public partial class MainWindow : Window
     public event EventHandler? OnHomeworkEditorUpdated;
 
     public MainWindow(ProfileService profileService,
-                      SettingsService settingsService)
+                      SettingsService settingsService,
+                      WindowFocusObserverService focusObserverService)
     {
         ProfileService = profileService;
         SettingsService = settingsService;
-        Automation.AddAutomationFocusChangedEventHandler(OnFocusChangedHandler);
+        //Automation.AddAutomationFocusChangedEventHandler(OnFocusChangedHandler);
         InitializeComponent();
+        focusObserverService.FocusChanged += FocusObserverServiceOnFocusChanged;
         ViewModel.PropertyChanged += ViewModelOnPropertyChanged;
         ViewModel.PropertyChanging += ViewModelOnPropertyChanging;
         DataContext = this;
+    }
+
+    private void FocusObserverServiceOnFocusChanged(object? sender, EventArgs e)
+    {
+        if (!ViewModel.IsDrawerOpened)
+            return;
+        try
+        {
+            var hWnd = NativeWindowHelper.GetForegroundWindow();
+            NativeWindowHelper.GetWindowThreadProcessId(hWnd, out var id);
+            using var proc = Process.GetProcessById(id);
+            if (proc.Id != Environment.ProcessId &&
+                !new List<string>(["ctfmon", "textinputhost", "chsime"]).Contains(proc.ProcessName.ToLower()))
+            {
+                Dispatcher.Invoke(() => ExitEditingMode());
+            }
+        }
+        catch
+        {
+            // ignored
+        }
     }
 
     private void ViewModelOnPropertyChanging(object? sender, PropertyChangingEventArgs e)
@@ -72,32 +95,7 @@ public partial class MainWindow : Window
             ExitEditingMode(false);
         }
     }
-
-    private void OnFocusChangedHandler(object sender, AutomationFocusChangedEventArgs e)
-    {
-        if (!ViewModel.IsDrawerOpened)
-            return;
-        try
-        {
-
-            var element = sender as AutomationElement;
-            if (element == null)
-                return;
-            var hWnd = NativeWindowHelper.GetForegroundWindow();
-            NativeWindowHelper.GetWindowThreadProcessId(hWnd, out var id);
-            using var proc = Process.GetProcessById(id);
-            Debug.WriteLine($"{proc.ProcessName} {e.EventId.ProgrammaticName}");
-            if (proc.Id != Environment.ProcessId &&
-                !new List<string>(["ctfmon", "textinputhost", "chsime"]).Contains(proc.ProcessName.ToLower()))
-            {
-                Dispatcher.Invoke(() => ExitEditingMode());
-            }
-        }
-        catch
-        {
-            // ignored
-        }
-    }
+    
 
     private void ExitEditingMode(bool hard=true)
     {
@@ -182,6 +180,11 @@ public partial class MainWindow : Window
     }
 
     private void ButtonCreateHomework_OnClick(object sender, RoutedEventArgs e)
+    {
+        CreateHomework();
+    }
+
+    private void CreateHomework()
     {
         ViewModel.IsUpdatingHomeworkSubject = true;
         OnHomeworkEditorUpdated?.Invoke(this ,EventArgs.Empty);
@@ -451,5 +454,10 @@ public partial class MainWindow : Window
     private void MainListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         //ExitEditingMode(false);
+    }
+
+    public void OnTextBoxEnter()
+    {
+        CreateHomework();
     }
 }

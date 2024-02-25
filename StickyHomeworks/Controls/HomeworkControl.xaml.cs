@@ -95,4 +95,12 @@ public partial class HomeworkControl : UserControl
             EnterEdit();
         }
     }
+
+    private void RichTextBox_OnKeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Enter)
+        {
+            App.GetService<MainWindow>().OnTextBoxEnter();
+        }
+    }
 }

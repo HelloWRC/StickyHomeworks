@@ -42,9 +42,15 @@
     <Window.Resources>
         <Style x:Key="MarkdownParagraphBaseStyle" TargetType="Paragraph">
             <Setter Property="FontWeight" Value="Regular"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="LineHeight" Value="1"/>
+            <Setter Property="Margin" Value="0"/>
         </Style>
 
         <Style TargetType="Paragraph" BasedOn="{StaticResource MarkdownParagraphBaseStyle}"/>
+        <Style TargetType="FlowDocument" >
+            <Setter Property="PagePadding" Value="0"/>
+        </Style>
         <Style x:Key="BlankFocusVisualStyle">
             <Setter Property="Control.Template">
                 <Setter.Value>
@@ -462,10 +468,10 @@
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
                             Margin="12">
-                    <!--<Image Source="/Assets/光辉矢愿_瞄准.png" Height="81" Width="81"
+                    <Image Source="/Assets/光辉矢愿_瞄准.png" Height="81" Width="81"
                            HorizontalAlignment="Center"
-                           Margin="0 0 0 8"/>-->
-                    <controls:WindowMovingDemo Margin="0 0 0 8" ToolTip="窗口操作演示"/>
+                           Margin="0 0 0 8"/>
+                    <!--<controls:WindowMovingDemo Margin="0 0 0 8" ToolTip="窗口操作演示"/>-->
                     <TextBlock Text="窗口已经解锁，拖动以移动窗口，拉伸边缘以调整窗口大小。"
                                TextWrapping="Wrap" 
                                HorizontalAlignment="Center"

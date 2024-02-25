@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,7 +24,7 @@ namespace StickyHomeworks.Views;
 /// <summary>
 /// HomeworkEditWindow.xaml 的交互逻辑
 /// </summary>
-public partial class HomeworkEditWindow : Window
+public partial class HomeworkEditWindow : Window, INotifyPropertyChanged
 {
     private RichTextBox _relatedRichTextBox = new();
     public MainWindow MainWindow { get; }
@@ -62,6 +63,7 @@ public partial class HomeworkEditWindow : Window
             UnregisterOldTextBox(_relatedRichTextBox);
             RegisterNewTextBox(value);
             _relatedRichTextBox = value;
+            OnPropertyChanged();
         }
     }
 
@@ -223,6 +225,7 @@ public partial class HomeworkEditWindow : Window
         {
             SettingsService.Settings.SavedColors.RemoveAt(6);
         }
+        SettingsService.SaveSettings();
     }
 
     private void ListBoxColors_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -239,5 +242,20 @@ public partial class HomeworkEditWindow : Window
         if (sender is ListBox l)
             l.SelectedIndex = -1;
         ViewModel.IsUpdatingColor = false;
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
     }
 }
