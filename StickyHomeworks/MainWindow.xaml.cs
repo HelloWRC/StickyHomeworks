@@ -25,6 +25,7 @@ using System.Windows.Forms;
 using System.Windows.Threading;
 using Stfu.Linq;
 using DataFormats = System.Windows.DataFormats;
+using DragEventArgs = System.Windows.DragEventArgs;
 
 namespace StickyHomeworks;
 
@@ -483,5 +484,20 @@ public partial class MainWindow : Window
     private void MenuItemRecoverExpiredHomework_OnClick(object sender, RoutedEventArgs e)
     {
         RecoverExpiredHomework();
+    }
+
+    private void MainWindow_OnDragOver(object sender, DragEventArgs e)
+    {
+
+    }
+
+    private void MainWindow_OnDragEnter(object sender, DragEventArgs e)
+    {
+        if (!e.Data.GetDataPresent(DataFormats.FileDrop))
+            return;
+        ViewModel.IsExpanded = false;
+        ViewModel.IsUnlocked = false;
+        SizeToContent = SizeToContent.Height;
+        Width = Math.Min(ActualWidth, 350);
     }
 }

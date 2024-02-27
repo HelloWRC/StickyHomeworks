@@ -25,7 +25,9 @@
         Icon="/Assets/AppLogo.png"
         StateChanged="MainWindow_OnStateChanged"
         Activated="MainWindow_OnActivated"
-        Deactivated="MainWindow_OnDeactivated">
+        Deactivated="MainWindow_OnDeactivated"
+        AllowDrop="True"
+        DragEnter="MainWindow_OnDragEnter">
     <Window.Style>
         <Style TargetType="Window">
             <Style.Triggers>
